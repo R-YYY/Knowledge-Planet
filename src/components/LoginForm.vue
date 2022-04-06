@@ -1,32 +1,42 @@
 <template>
   <div class="login_area">
-    <el-card shadow="always">
-      <img class="login_and_register_logo_text" src="../assets/zsxq.png" alt="">
-      <div class="login_form">
-        <el-form>
-          <el-form-item label="账号" class="login_and_register_input_item">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="密码" class="login_and_register_input_item">
-            <el-input></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div class="login_opt_area">
-        <p class="login_opt_forget">
-          <router-link class="login_opt_forget" :to="{name:'register'}">忘记密码？</router-link>
-        </p>
-        <el-button type="primary" class="login_opt_login">登录</el-button>
-        <p class="login_opt_register_area">没有账号？
-          <router-link class="login_opt_register" :to="{name:'register'}">点击注册</router-link></p>
-      </div>
-    </el-card>
+    <img class="login_and_register_logo_text" src="../assets/zsxq.png" alt="">
+    <div class="login_form">
+      <el-form>
+        <el-form-item  label="账号" class="login_and_register_input_item">
+          <el-input v-model="id" placeholder="请输入邮箱或账号"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" class="login_and_register_input_item">
+          <el-input v-model="password" placeholder="请输入密码" show-password></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="login_opt_area">
+      <p class="login_opt_forget" @click="toFindPsd">忘记密码？</p>
+      <el-button type="primary" class="login_opt_login" @click="login">登录</el-button>
+      <p class="login_opt_register_area">没有账号？
+        <router-link class="login_opt_register" :to="{name:'register'}">点击注册</router-link></p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "LoginForm"
+  name: "LoginForm",
+  data(){
+    return{
+      id:"",
+      password:"",
+    }
+  },
+  methods:{
+    login(){
+
+    },
+    toFindPsd(){
+      this.$emit('changeModel',true);
+    }
+  }
 }
 </script>
 
@@ -35,45 +45,53 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 450px;
+  width: 420px;
   height: 450px;
-  margin-left: -225px;
+  margin-left: -210px;
   margin-top: -225px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 20px;
+}
+
+.login_form{
+  position: relative;
+  left: 20px;
 }
 
 .login_and_register_logo_text{
   position: relative;
   top: 20px;
-  left: 105px;
+  left: 100px;
   width: 200px;
 }
 
 .login_and_register_input_item{
   position: relative;
-  left: 40px;
+  left: 30px;
   top: 30px;
-  width: 330px;
+  width: 310px;
 }
 
 .login_opt_area{
   position: relative;
   top: 15px;
-  left: 40px;
+  left: 50px;
 }
 
 .login_opt_login{
-  width: 330px;
+  width: 310px;
 }
 
 .login_opt_forget,.login_opt_register{
   font-size: 10px;
   margin-bottom: 40px;
-  color: #74D8BE;
+  color: black;
+  text-decoration:underline black;
+  cursor:pointer;
 }
 
 .login_opt_register_area{
   font-size: 10px;
-  margin-bottom: 40px;
 }
 
 </style>

@@ -1,15 +1,28 @@
 <template>
   <div id="login">
-    <LoginForm></LoginForm>
+    <LoginForm v-if="!isFindPsd" v-on:changeModel="changeModel"></LoginForm>
+    <FindPasswordForm v-if="isFindPsd" v-on:changeModel="changeModel"></FindPasswordForm>
   </div>
 </template>
 
 <script>
 import LoginForm from "@/components/LoginForm";
+import FindPasswordForm from "@/components/FindPasswordForm";
 export default {
   name: "LoginView",
+  data(){
+    return{
+      isFindPsd:false,
+    }
+  },
   components:{
+    FindPasswordForm,
     LoginForm,
+  },
+  methods:{
+    changeModel(res){
+      this.isFindPsd = res;
+    }
   }
 }
 </script>
@@ -20,6 +33,7 @@ export default {
   width: 100%;
   height: 100%;
   background: url("../assets/loginBackground.jpg") center no-repeat;
+  background-size: 100% 100%;
 }
 
 </style>
