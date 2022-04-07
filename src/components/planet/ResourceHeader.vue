@@ -50,6 +50,7 @@ export default {
   line-height: 50px;
   border-radius: 50px;
   box-shadow: 0 0 12px #dadada;
+  background-color: white;
 }
 
 #head {
