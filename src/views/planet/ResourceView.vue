@@ -1,7 +1,7 @@
 <template>
   <div id="resource">
     <Header></Header>
-      <HeadBar></HeadBar>
+      <HeadBar id="headBar"></HeadBar>
   </div>
 </template>
 
@@ -18,5 +18,8 @@ export default {
 </script>
 
 <style scoped>
-
+#headBar {
+  margin-top: 30px;
+  margin-left: 150px;
+}
 </style>
