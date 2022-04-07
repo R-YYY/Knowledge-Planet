@@ -11,8 +11,8 @@
     </div>
     <div id="right">
       <div id="icon1" class="icon" ></div>
-      <div id="icon3" class="icon" ></div>
       <div id="icon2" class="icon" ></div>
+      <div id="icon3" class="icon" ></div>
     </div>
   </div>
 </template>
@@ -46,8 +46,6 @@ export default {
   width: 200px;
   min-width: 200px;
   margin-right: 150px;
-  font-size: 28px;
-  line-height: 50px;
 }
 #center {
   line-height: 50px;
@@ -73,30 +71,24 @@ export default {
   background-repeat: no-repeat;
   background-position: 98% center;
 }
-/deep/ input:focus{
-  outline-color: #CECACA;
-}
 .icon{
   float: right;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-left: 20px;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   background-size: cover;
 }
 #icon1{
   background-image: url("../assets/icon/my.png");
+  height: 40px;
+  width: 40px;
+  margin-top: 5px;
 }
 #icon2{
-  background-image: url("../assets/icon/alert.png");
-  height: 30px;
-  width: 30px;
-  margin-top: 10px;
+  background-image: url("../assets/icon/message.png");
 }
 #icon3{
-  background-image: url("../assets/icon/message.png");
-  height: 30px;
-  width: 30px;
-  margin-top: 10px;
+  background-image: url("../assets/icon/alert.png");
 }
 </style>
