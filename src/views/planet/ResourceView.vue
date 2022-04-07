@@ -1,13 +1,17 @@
 <template>
   <div id="resource">
     <Header></Header>
+      <HeadBar></HeadBar>
   </div>
 </template>
 
 <script>
-//import Header from "@/components/Header.vue"
+import HeadBar from "@/components/planet/ResourceHeader"
 export default {
   name: "ResourceView",
+  components:{
+    HeadBar
+  }
 
 
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="headBar">
-
+    盗号
   </div>
 </template>
 
