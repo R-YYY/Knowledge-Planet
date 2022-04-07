@@ -8,13 +8,10 @@ module.exports = defineConfig({
     open: true,
     https: false,
     proxy: {
-      '/api': {
-        target: 'http://localhost:8888/',
+      '/kp/system': {
+        target: 'http://49.235.232.7:81/',
         ws: true,
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
       }
     }
   }

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import LoginForm from "@/components/LoginForm";
-import FindPasswordForm from "@/components/FindPasswordForm";
+import LoginForm from "@/components/login/LoginForm";
+import FindPasswordForm from "@/components/login/FindPasswordForm";
 export default {
   name: "LoginView",
   data(){
@@ -32,7 +32,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("../assets/loginBackground.jpg") center no-repeat;
+  background: url("../../assets/loginBackground.jpg") center no-repeat;
   background-size: 100% 100%;
 }
 

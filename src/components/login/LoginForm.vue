@@ -1,10 +1,10 @@
 <template>
   <div class="login_area">
-    <img class="login_and_register_logo_text" src="../assets/zsxq.png" alt="">
+    <img class="login_and_register_logo_text" src="../../assets/zsxq.png" alt="">
     <div class="login_form">
       <el-form>
-        <el-form-item  label="账号" class="login_and_register_input_item">
-          <el-input v-model="id" placeholder="请输入邮箱或账号"></el-input>
+        <el-form-item  label="邮箱" class="login_and_register_input_item" prop="email">
+          <el-input v-model="email" placeholder="请输入登录邮箱"></el-input>
         </el-form-item>
         <el-form-item label="密码" class="login_and_register_input_item">
           <el-input v-model="password" placeholder="请输入密码" show-password></el-input>
@@ -25,14 +25,39 @@ export default {
   name: "LoginForm",
   data(){
     return{
-      id:"",
+      email:"",
       password:"",
     }
   },
   methods:{
     login(){
-
+      if(this.email.trim() === ""){
+        this.$message({message: '请填写邮箱！', type: 'error'});
+        return;
+      }
+      if(!/^[a-zA-Z0-9_\-]{2,}@[a-zA-Z0-9_\-]{2,}(\.[a-zA-Z0-9_\-]+){1,2}$/.test(this.email)){
+        this.$message({message: '邮箱格式错误，请重新填写！', type: 'error'});
+        return;
+      }
+      let data = new FormData();
+      data.append("email",this.email);
+      data.append("password",this.$md5(this.password));
+      this.$axios({
+        url:"/login",
+        method:"post",
+        data:data
+      })
+      .then((res)=>{
+        this.$message({message: res.data.message, type: res.data.success?'success':'error'});
+        if(res.data.success){
+          window.sessionStorage.setItem("email",this.email);
+          window.sessionStorage.setItem("token",res.data.data.token);
+          console.log(window.sessionStorage.getItem("email"));
+          console.log(window.sessionStorage.getItem("token"));
+        }
+      })
     },
+
     toFindPsd(){
       this.$emit('changeModel',true);
     }

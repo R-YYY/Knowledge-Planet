@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LoginView from "@/views/LoginView";
-import RegisterView from "@/views/RegisterView";
+import LoginView from "@/views/login/LoginView";
+import RegisterView from "@/views/login/RegisterView";
 import ResourceView from "@/views/planet/ResourceView";
 
 Vue.use(VueRouter)

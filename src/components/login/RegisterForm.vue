@@ -1,8 +1,8 @@
 <template>
   <div class="register_area">
-      <img class="login_and_register_logo_text" src="../assets/zsxq.png" alt="">
+      <img class="login_and_register_logo_text" src="../../assets/zsxq.png" alt="">
       <div class="register_form">
-        <el-form :model="userData" :rules="registerRules" label-width="80px" label-position="right">
+        <el-form ref="registerForm" :model="userData" :rules="registerRules" label-width="80px" label-position="right">
           <el-form-item label="邮箱" class="login_and_register_input_item" prop="email">
             <el-input placeholder="请输入注册邮箱号" v-model="userData.email"></el-input>
           </el-form-item>
@@ -10,11 +10,11 @@
             <el-input placeholder="请输入验证码" v-model="userData.code" style="width: 120px;margin-right: 15px"></el-input>
             <el-button type="primary" size="small" @click="sendCode">发送验证码</el-button>
           </el-form-item>
-          <el-form-item label="密码" class="login_and_register_input_item" prop="psd1">
-            <el-input placeholder="请输入密码" v-model="userData.password1" show-password></el-input>
+          <el-form-item label="用户名" class="login_and_register_input_item" prop="name">
+            <el-input placeholder="请输入用户名" v-model="userData.name"></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" class="login_and_register_input_item" prop="psd2">
-            <el-input placeholder="请再次输入密码" v-model="userData.password2" show-password></el-input>
+          <el-form-item label="密码" class="login_and_register_input_item" prop="password">
+            <el-input placeholder="请输入密码" v-model="userData.password" show-password></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -34,8 +34,8 @@ export default {
       userData:{
         email:"",
         code:"",
-        password1:"",
-        password2:""
+        name:"",
+        password:""
       },
       registerRules:{
         email:[
@@ -45,23 +45,62 @@ export default {
         code:[
           { required: true, message: '请输入验证码', trigger: 'blur' }
         ],
-        psd1:[
+        name:[
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        password:[
           { required: true, message: '请输入密码', trigger: 'blur' },
           {min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur'}
-        ],
-        psd2:[
-          { required: true, message: '两次输入密码不一致!', trigger: 'blur' },
         ]
       }
     }
   },
   methods:{
     sendCode(){
-
+      if(this.userData.email.trim() === ""){
+        this.$message({message: '请填写邮箱！', type: 'error'});
+        return;
+      }
+      if(!/^[a-zA-Z0-9_\-]{2,}@[a-zA-Z0-9_\-]{2,}(\.[a-zA-Z0-9_\-]+){1,2}$/.test(this.userData.email)){
+        this.$message({message: '邮箱格式错误，请重新填写！', type: 'error'});
+        return;
+      }
+      this.$axios({
+        url:"/getVerificationCode/"+this.userData.email,
+        method:"get",
+      })
+      .then(()=>{
+        this.$message({message: '验证码发送成功，请前往邮箱查看！', type: 'success'});
+      })
+      .catch(()=>{
+        this.$message({message: '验证码发送失败，请重试！', type: 'error'});
+      })
     },
 
     register(){
-
+      this.$refs.registerForm.validate((valid)=>{
+        if(valid){
+          let data = new FormData();
+          data.append("email",this.userData.email);
+          data.append("verificationCode",this.userData.code);
+          data.append("nickName",this.userData.name);
+          data.append("password",this.$md5(this.userData.password));
+          this.$axios({
+            url:"/register",
+            method:"post",
+            data:data
+          })
+          .then((res)=>{
+            this.$message({message: res.data.message, type: res.data.success?'success':'error'});
+            if(res.data.success) {
+              this.$router.push("/login");
+            }
+          })
+        }
+        else {
+          this.$message({message: '注册信息填写错误，请重试！', type: 'error'});
+        }
+      })
     }
   }
 }
