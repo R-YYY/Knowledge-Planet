@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import {loginPost} from "@/api/login/login";
 export default {
   name: "LoginForm",
   data(){
@@ -39,15 +40,15 @@ export default {
         this.$message({message: '邮箱格式错误，请重新填写！', type: 'error'});
         return;
       }
-      let data = new FormData();
+      /*let data = new FormData();
       data.append("email",this.email);
       data.append("password",this.$md5(this.password));
       this.$axios({
         url:"/login",
         method:"post",
         data:data
-      })
-      .then((res)=>{
+      })*/
+    loginPost(this.email,this.$md5(this.password)).then((res)=>{
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
           window.sessionStorage.setItem("email",this.email);
