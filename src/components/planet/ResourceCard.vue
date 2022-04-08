@@ -130,7 +130,6 @@ content_right_bottom{
 .logo {
   width: 100%;
   height: auto;
-
 }
 .tag {
   display: inline-block;
