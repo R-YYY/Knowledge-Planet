@@ -9,9 +9,12 @@ module.exports = defineConfig({
     https: false,
     proxy: {
       '/kp/system': {
-        target: 'http://49.235.232.7:81/',
+        target: 'http://49.235.232.7:81',
         ws: true,
         changeOrigin: true,
+        pathRewrite: {
+          "^/kp/system": "/kp/system/"
+        }
       }
     }
   }

@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import {checkEmail, getVerificationCodeGet} from "@/api/login/login";
+
 export default {
   name: "FindPasswordForm",
   data(){
@@ -54,9 +56,21 @@ export default {
     changePsd(){
 
     },
-    sendCode() {
 
+    sendCode() {
+      let msg = checkEmail(this.userData.email)
+      if(msg !== "ok") {
+        this.$message({message: msg, type: 'error'});
+        return;
+      }
+      getVerificationCodeGet(this.userData.email).then((res) => {
+        console.log(res.data)
+        this.$message({message: '验证码发送成功，请前往邮箱查看！', type: 'success'});
+      }).catch(() => {
+        this.$message({message: '验证码发送失败，请重试！', type: 'error'});
+      })
     },
+
     toLogin(){
       this.$emit('changeModel',false);
     }

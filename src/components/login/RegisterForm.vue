@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {checkEmail, registerPost} from "@/api/login/login";
+import {getVerificationCodeGet} from "@/api/login/login";
 export default {
   name: "RegisterForm",
   data(){
@@ -57,22 +59,14 @@ export default {
   },
   methods:{
     sendCode(){
-      if(this.userData.email.trim() === ""){
-        this.$message({message: '请填写邮箱！', type: 'error'});
+      let msg = checkEmail(this.userData.email)
+      if(msg !== "ok") {
+        this.$message({message: msg, type: 'error'});
         return;
       }
-      if(!/^[a-zA-Z0-9_\-]{2,}@[a-zA-Z0-9_\-]{2,}(\.[a-zA-Z0-9_\-]+){1,2}$/.test(this.userData.email)){
-        this.$message({message: '邮箱格式错误，请重新填写！', type: 'error'});
-        return;
-      }
-      this.$axios({
-        url:"/getVerificationCode/"+this.userData.email,
-        method:"get",
-      })
-      .then(()=>{
+      getVerificationCodeGet(this.userData.email).then(() => {
         this.$message({message: '验证码发送成功，请前往邮箱查看！', type: 'success'});
-      })
-      .catch(()=>{
+      }).catch(() => {
         this.$message({message: '验证码发送失败，请重试！', type: 'error'});
       })
     },
@@ -80,17 +74,7 @@ export default {
     register(){
       this.$refs.registerForm.validate((valid)=>{
         if(valid){
-          let data = new FormData();
-          data.append("email",this.userData.email);
-          data.append("verificationCode",this.userData.code);
-          data.append("nickName",this.userData.name);
-          data.append("password",this.$md5(this.userData.password));
-          this.$axios({
-            url:"/register",
-            method:"post",
-            data:data
-          })
-          .then((res)=>{
+          registerPost(this.userData.email,this.userData.code,this.userData.name, this.$md5(this.userData.password)).then((res)=>{
             this.$message({message: res.data.message, type: res.data.success?'success':'error'});
             if(res.data.success) {
               this.$router.push("/login");
