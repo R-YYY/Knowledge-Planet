@@ -12,10 +12,7 @@ export function loginPost(email, password){
     data.append("password",password);
     return axios({
         method: 'POST',
-        url: 'http://localhost:8081/login/checkAccount',
-        headers: {
-            'Content-Type':'application/json'
-        },
+        url: '/login',
         data: data
     })
 }
