@@ -1,6 +1,6 @@
 <template>
   <div id="card">
-    <div id="content">
+    <div id="content" @click="getDetail">
       <div class="content_left">
         <img :src="message.img" alt="正在显示" class="logo">
       </div>
@@ -81,7 +81,17 @@ export default {
     },
     enter() {
       window.open(this.message.url)
+    },
+    getDetail(){
+      let str = JSON.stringify(this.message);
+      this.$router.push({
+        name:'resourceDetail',
+        params:{
+          message: str
+        }
+      })
     }
+
   }
 }
 </script>
@@ -91,6 +101,7 @@ export default {
   height: 220px;
   width: 350px;
   border-radius: 16px;
+  background-color: white;
   box-shadow: 0 0 30px #dcdcdc;
 }
 
