@@ -40,10 +40,7 @@ export default {
       loginPost(this.email,this.$md5(this.password)).then((res)=>{
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
-          window.sessionStorage.setItem("email",this.email);
-          window.sessionStorage.setItem("token",res.data.data.token);
-          console.log(window.sessionStorage.getItem("email"));
-          console.log(window.sessionStorage.getItem("token"));
+          document.cookie="token="+res.data.data.token;
         }
       })
     },
