@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import LoginView from "@/views/login/LoginView";
 import RegisterView from "@/views/login/RegisterView";
 import ResourceView from "@/views/planet/resource/ResourceView";
-import ResourceDetail from "@/views/planet/resource/DetailView"
+import ResourceDetail from "@/views/planet/resource/DetailView";
+import HomePageView from "@/views/homepage/HomePageView";
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
         path: '/planet/resource/detail/:rid',
         name: 'resourceDetail',
         component: ResourceDetail,
+    },
+    {
+        path: '/homepage',
+        name: 'homepage',
+        component: HomePageView,
     }
 ]
 
