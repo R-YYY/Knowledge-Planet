@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
     <Header></Header>
-    {{rid}}
-    <div id="detailCard">
+    <div id="detailCard" v-if="page">
       <div id="header">
         <h1>资源详情</h1>
       </div>
       <div id="content">
         <div id="contentHead">
-          <img :src="message.img" alt="">
+          <el-image :src="message.img" fit="cover" style="width: 120px;height: 120px">
+          </el-image>
           <h2>{{ message.title }}</h2>
           <p>{{ message.description }}</p>
           <div v-for="item in message.tags" :key="item" class="tag">
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div id="contentBody">
-          <el-descriptions column="1" colon>
+          <el-descriptions :column="1" colon>
             <el-descriptions-item label="链接">
               <el-link :href="message.url">{{ message.url }}</el-link>
             </el-descriptions-item>
@@ -45,12 +45,14 @@
 </template>
 
 <script>
+import {getResourceById, praise, unPraise, collect, unCollect} from "@/api/planet/resource"
+
 export default {
   name: "DetailView",
   data() {
     return {
-      message: {
-      },
+      page: false,
+      message: {},
       iconList: [
         'like.png',
         'like-active.png',
@@ -61,9 +63,26 @@ export default {
       starTag: 2,
     }
   },
-  mounted() {
-    console.log(this.$route.params)
-    this.message = JSON.parse(this.$route.params.message)
+  created() {
+    getResourceById(this.$route.params.rid).then((res) => {
+      this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'});
+      if (res.data.success) {
+        let result = res.data.data.result
+        this.message.rid = result.r_id
+        this.message.title = result.r_name
+        //this.message.img = result.coverage
+        this.message.img = 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png'
+        this.message.likes = result.praise_count
+        this.message.collect = result.collect_count
+        this.message.time = result.upload_time
+        this.message.url = result.link
+        this.message.description = result.r_description
+        this.message.detail = result.details
+        this.message.person = result.u_name
+      }
+      this.page = true
+    })
+
   },
 
   methods: {
@@ -71,13 +90,22 @@ export default {
       this.message.isLike = !this.message.isLike
       let span = e.currentTarget.children[1]
       if (this.message.isLike) {
-        this.message.likes++;
-        this.likeTag++;
-        span.className += " active"
+        praise('1234', this.message.rid).then((res) => {
+          if (res.data.success === true) {
+            this.message.likes++;
+            this.likeTag++;
+            span.className += " active"
+          }
+
+        })
       } else {
-        this.message.likes--;
-        this.likeTag--;
-        span.className = "text"
+        unPraise('1234', this.message.rid).then((res) => {
+          if (res.data.success === true) {
+            this.message.likes--;
+            this.likeTag--;
+            span.className = "text"
+          }
+        })
       }
 
     },
@@ -85,13 +113,22 @@ export default {
       this.message.isCollect = !this.message.isCollect
       let span = e.currentTarget.children[1]
       if (this.message.isCollect) {
-        this.message.collect++;
-        this.starTag++;
-        span.className += " active"
+        collect(1234,this.message.rid).then((res)=>{
+          if (res.data.success === true) {
+            this.message.collect++;
+            this.starTag++;
+            span.className += " active"
+          }
+        })
+
       } else {
-        this.message.collect--;
-        this.starTag--;
-        span.className = "text"
+        unCollect(1234,this.message.rid).then((res)=>{
+              if (res.data.success === true) {
+                this.message.collect--;
+                this.starTag--;
+                span.className = "text"
+              }
+        })
       }
     },
     enter() {
@@ -149,7 +186,7 @@ p {
   text-align: center;
 }
 
-#contentHead img {
+#contentHead el-image {
   width: 130px;
   height: auto;
 }

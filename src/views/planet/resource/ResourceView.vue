@@ -27,7 +27,7 @@ export default {
     return {
       resourceList: [
         {
-          id: 123,
+          rid: 2,
           title: 'Common.Utility',
           description: '这是一个好东西',
           detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
@@ -43,7 +43,7 @@ export default {
           url: 'http://www.baidu.com'
         },
         {
-          id: 123,
+          rid: 123,
           title: 'Common.Utility',
           description: '这是一个好东西',
           detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
@@ -59,7 +59,7 @@ export default {
           url: 'http://www.baidu.com'
         },
         {
-          id: 123,
+          rid: 124,
           title: 'Common.Utility',
           description: '这是一个好东西',
           detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
@@ -75,55 +75,7 @@ export default {
           url: 'http://www.baidu.com'
         },
         {
-          id: 123,
-          title: 'Common.Utility',
-          description: '这是一个好东西',
-          detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
-          img: 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png',
-          person: '张三',
-          time: '2021-12-2',
-          isPicked: true,
-          tags: ['github', '前端'],
-          likes: 240,
-          isLike: false,
-          isCollect: false,
-          collect: 96,
-          url: 'http://www.baidu.com'
-        },
-        {
-          id: 123,
-          title: 'Common.Utility',
-          description: '这是一个好东西',
-          detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
-          img: 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png',
-          person: '张三',
-          time: '2021-12-2',
-          isPicked: true,
-          tags: ['github', '前端'],
-          likes: 240,
-          isLike: false,
-          isCollect: false,
-          collect: 96,
-          url: 'http://www.baidu.com'
-        },
-        {
-          id: 123,
-          title: 'Common.Utility',
-          description: '这是一个好东西',
-          detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',
-          img: 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png',
-          person: '张三',
-          time: '2021-12-2',
-          isPicked: true,
-          tags: ['github', '前端'],
-          likes: 240,
-          isLike: false,
-          isCollect: false,
-          collect: 96,
-          url: 'http://www.baidu.com'
-        },
-        {
-          id: 123,
+          rid: 125,
           title: 'Common.Utility',
           description: '这是一个好东西',
           detail: '项目作者日常工作和网上总结和网上收集、整理的C#各种各样的功能类库。类于类之间没有之间的关联样的功能类库。类于类之间没有之间的关联',

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axios0 = axios.create({
-    baseURL:"/kp/system",
+    baseURL:"http://localhost:81/kp",
     withCredentials:  true,
     timeout:  5000
 })
@@ -13,7 +13,7 @@ export function loginPost(email, password){
     data.append("password",password);
     return axios0({
         method: 'POST',
-        url: '/login',
+        url: '/system/login',
         data: data
     })
 }
@@ -33,7 +33,7 @@ export function registerPost(email,code,name,password){
     data.append("password",password);
     return axios0({
         method:"POST",
-        url:"/register",
+        url:"/system/register",
         data:data,
     })
 }
@@ -48,3 +48,16 @@ export function checkEmail(email){
     return "ok";
 }
 
+export function updatePassword(oldPassword, newPassword){
+    const data = new FormData()
+    data.append("oldPassword",oldPassword);
+    data.append("newPassword",newPassword);
+    return axios0({
+        method: 'POST',
+        url: 'userInfo/updatePassword',
+        params:{
+            "oldPassword":oldPassword,
+            "newPassword":newPassword
+        }
+    })
+}

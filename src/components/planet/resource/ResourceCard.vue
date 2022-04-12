@@ -50,6 +50,7 @@ export default {
   },
   mounted() {
     this.message = this.resource
+    console.log(this.message.rid)
   },
   methods: {
     like(e) {
@@ -83,11 +84,10 @@ export default {
       window.open(this.message.url)
     },
     getDetail(){
-      let str = JSON.stringify(this.message);
       this.$router.push({
         name:'resourceDetail',
         params:{
-          message: str
+          rid: this.message.rid
         }
       })
     }

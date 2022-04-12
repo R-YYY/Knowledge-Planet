@@ -17,17 +17,22 @@
       <p class="login_opt_register_area">没有账号？
         <router-link class="login_opt_register" :to="{name:'register'}">点击注册</router-link></p>
     </div>
+    <div>
+      <el-input v-model="newPassword" placeholder="placeholder"></el-input>
+      <button @click="update">修改密码</button>
+    </div>
   </div>
 </template>
 
 <script>
-import {checkEmail, loginPost} from "@/api/login/login";
+import {checkEmail, loginPost, updatePassword} from "@/api/login/login";
 export default {
   name: "LoginForm",
   data(){
     return{
       email:"",
       password:"",
+      newPassword:"",
     }
   },
   methods:{
@@ -40,13 +45,19 @@ export default {
       loginPost(this.email,this.$md5(this.password)).then((res)=>{
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
-          document.cookie="token="+res.data.data.token;
         }
       })
     },
 
     toFindPsd(){
       this.$emit('changeModel',true);
+    },
+
+    update(){
+      console.log(this.$md5(this.newPassword),this.$md5(this.password))
+      updatePassword(this.$md5(this.password),this.$md5(this.newPassword)).then((res)=>{
+        console.log(res)
+      })
     }
   }
 }

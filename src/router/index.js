@@ -32,7 +32,7 @@ const routes = [
         component: ResourceView,
     },
     {
-        path: '/planet/resource/detail/:message',
+        path: '/planet/resource/detail/:rid',
         name: 'resourceDetail',
         component: ResourceDetail,
     }

@@ -21,6 +21,9 @@
           <el-form-item label="描述" :label-width="formLabelWidth">
             <el-input class="input" v-model="form.description" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="链接" :label-width="formLabelWidth">
+            <el-input class="input" v-model="form.url" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="简介" :label-width="formLabelWidth">
             <el-input
                 class="input"
@@ -44,7 +47,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button  @click="dialogFormVisible = false">确 定</el-button>
+          <el-button  @click="uploadResource">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -62,7 +65,7 @@ export default {
         title: '',
         description: '',
         detail: '',
-        url:'',
+        url:'https://',
         tags: [],
       },
       dialogFormVisible:true,
@@ -73,8 +76,8 @@ export default {
           label: '黄金糕'
         },
         {
-          value: '选项1',
-          label: '黄金糕'
+          value: '选项2',
+          label: '黄金'
         },
       ],
     }
@@ -88,6 +91,10 @@ export default {
         }
         e.target.className = "selectItem selectedItem"
       }
+    },
+    uploadResource(){
+
+      this.dialogFormVisible = true
     }
   }
 }
