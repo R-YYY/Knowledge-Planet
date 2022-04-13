@@ -11,10 +11,10 @@
         </template>
       </el-calendar>
     </div>
-    <div class="planetrank">
+    <div v-if="rankPage" class="planetrank">
       <div class="pt">星球热度排行榜</div>
       <div class="rankcontext" style="margin-top:20px;">
-      <div class="rank" v-for="item in planets" :key="index">
+      <div class="rank" v-for="item in planets" :key="item.index">
         <span style="border-radius: 50%;height: 30px;width: 30px;display: inline-block;background: #DDD1D1;vertical-align: top;margin-left: 30px;margin-bottom:10px;">
         <span style="display: block;color: white;height: 30px;line-height: 30px;text-align: center">{{item.index}}</span></span>
         <span style="margin-left:35px;height:30px;line-height: 30px;">{{item.title}}</span>
@@ -26,34 +26,36 @@
 </template>
 
 <script>
+import {getPlanetRank} from "@/api/homepage/planet"
 export default{
   data(){
     return{
       value:new Date(),
-      planets:[
-        {
-          index:'1',
-          title:'第一名'
-        },{
-          index:'2',
-          title:'第二名'
-        },{
-          index:'3',
-          title:'第三名'
-        },{
-          index:'4',
-          title:'第四名'
-        },{
-          index:'5',
-          title:'第五名'
-        }
-      ]
+      planets:[],
+      rankPage: false
     }
   },
   methods:{
     getDay(date){
       return date.getDate()
     }
+  },
+  mounted(){
+    getPlanetRank().then((res)=>{
+      if(res.data.success === true){
+        console.log(1)
+        let data = res.data.data.planetList
+        console.log(data)
+        for(let i = 0;i<5;i++){
+
+          this.planets[i] = {}
+          this.planets[i].index = i+1
+          this.planets[i].title=data[i].pname
+        }
+        this.rankPage = true
+      }
+
+    })
   }
 }
 </script>
