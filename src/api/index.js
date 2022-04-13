@@ -2,16 +2,21 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 const axiosInstance = Axios.create({
-    baseURL:"/kp/system",
-    withCredentials: true
+    baseURL: "http://101.35.194.132:81/kp",
+    withCredentials: true,
+    timeout: 5000
 })
 
 axiosInstance.interceptors.request.use(
-    (config) => {
-        config.headers['X-Requested-With'] = 'XMLHttpRequest'
-        const regex = /.*csrftoken=([^;.]*).*$/
-        config.headers['X-CSRFToken'] = document.cookie.match(regex) === null ? null : document.cookie.match(regex)[1]
+    config => {
+        if (window.sessionStorage.getItem('token')) {
+            config.headers['token'] = window.sessionStorage.getItem('token')
+        }
         return config
+    },
+    err => {
+        Vue.prototype.$message.error('请求超时')
+        return Promise.reject(err)
     }
 )
 
@@ -23,7 +28,5 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(error)
     }
 )
-
-Vue.prototype.axios = axiosInstance
 
 export default axiosInstance

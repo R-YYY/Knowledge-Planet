@@ -50,7 +50,6 @@ export default {
   },
   mounted() {
     this.message = this.resource
-    console.log(this.message.rid)
   },
   methods: {
     like(e) {

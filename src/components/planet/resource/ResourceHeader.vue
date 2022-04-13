@@ -12,74 +12,21 @@
       </ul>
     </div>
     <div id="button">
-      <el-button round icon="el-icon-upload" @click="dialogFormVisible=true">上传资源</el-button>
-      <el-dialog title="上传资源" :visible.sync="dialogFormVisible">
-        <el-form :model="form" class="form">
-          <el-form-item label="标题" :label-width="formLabelWidth">
-            <el-input class="input" v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="描述" :label-width="formLabelWidth">
-            <el-input class="input" v-model="form.description" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="链接" :label-width="formLabelWidth">
-            <el-input class="input" v-model="form.url" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="简介" :label-width="formLabelWidth">
-            <el-input
-                class="input"
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
-                v-model="form.detail">
-            </el-input>
-          </el-form-item>
-          <el-form-item label="标签" :label-width="formLabelWidth">
-            <el-select v-model="form.tags" multiple placeholder="请选择" class="input">
-              <el-option
-                  max-width="400px"
-                  v-for="tag in tagOptions"
-                  :key="tag.value"
-                  :label="tag.label"
-                  :value="tag.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button  @click="uploadResource">确 定</el-button>
-        </div>
-      </el-dialog>
+      <Upload></Upload>
     </div>
-
   </div>
 </template>
 
 <script>
+import Upload from '@/components/planet/resource/uploadForm'
 export default {
   name: "ResourceHeader",
+  components:{
+    Upload
+  },
   data() {
     return {
       selectTag: 0,
-      form: {
-        title: '',
-        description: '',
-        detail: '',
-        url:'https://',
-        tags: [],
-      },
-      dialogFormVisible:true,
-      formLabelWidth: '3em',
-      tagOptions:[
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '黄金'
-        },
-      ],
     }
   },
   methods: {
@@ -92,10 +39,7 @@ export default {
         e.target.className = "selectItem selectedItem"
       }
     },
-    uploadResource(){
 
-      this.dialogFormVisible = true
-    }
   }
 }
 </script>
@@ -136,18 +80,6 @@ export default {
   margin-right: 10px;
 }
 
-.el-button {
-  border-color: #00ded4;
-  color: #00ded4;
-}
-
-.el-button:hover,
-.el-button:focus {
-  background: #00ded4 !important;
-  color: white !important;
-  font-weight: bold;
-}
-
 #selector {
   flex: 4;
 }
@@ -185,23 +117,5 @@ export default {
   transform: translateY(2px);
   width: 18px;
   height: 18px;
-}
-
-.dialog-footer {
-  text-align: center;
-}
-.dialog-footer button{
-  margin-left: 20px;
-  margin-right: 20px;
-}
-.form{
-  margin-left: 10%;
-  margin-right: 10%;
-}
-.input{
-  width: 100%;
-}
-/deep/.el-select-dropdown__list {
-  width: 20px;
 }
 </style>

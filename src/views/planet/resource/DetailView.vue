@@ -66,19 +66,22 @@ export default {
   created() {
     getResourceById(this.$route.params.rid).then((res) => {
       this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'});
+      console.log(res)
       if (res.data.success) {
         let result = res.data.data.result
-        this.message.rid = result.r_id
-        this.message.title = result.r_name
-        //this.message.img = result.coverage
-        this.message.img = 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png'
-        this.message.likes = result.praise_count
-        this.message.collect = result.collect_count
-        this.message.time = result.upload_time
-        this.message.url = result.link
-        this.message.description = result.r_description
-        this.message.detail = result.details
-        this.message.person = result.u_name
+        this.message = {
+          rid: result.r_id,
+          title: result.r_name,
+          img: 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png',
+          //this.message.img = result.coverage,
+          likes: result.praise_count,
+          collect: result.collect_count,
+          time: result.upload_time,
+          url: result.link,
+          description: result.r_description,
+          detail: result.details,
+          person: result.u_name
+        }
       }
       this.page = true
     })
@@ -113,7 +116,7 @@ export default {
       this.message.isCollect = !this.message.isCollect
       let span = e.currentTarget.children[1]
       if (this.message.isCollect) {
-        collect(1234,this.message.rid).then((res)=>{
+        collect(1234, this.message.rid).then((res) => {
           if (res.data.success === true) {
             this.message.collect++;
             this.starTag++;
@@ -122,12 +125,12 @@ export default {
         })
 
       } else {
-        unCollect(1234,this.message.rid).then((res)=>{
-              if (res.data.success === true) {
-                this.message.collect--;
-                this.starTag--;
-                span.className = "text"
-              }
+        unCollect(1234, this.message.rid).then((res) => {
+          if (res.data.success === true) {
+            this.message.collect--;
+            this.starTag--;
+            span.className = "text"
+          }
         })
       }
     },
