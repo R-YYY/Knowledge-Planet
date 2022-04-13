@@ -6,6 +6,7 @@ import ResourceView from "@/views/planet/resource/ResourceView";
 import ResourceDetail from "@/views/planet/resource/DetailView";
 import HomePageView from "@/views/homepage/HomePageView";
 import RegisterSuccessView from "@/views/login/RegisterSuccessView";
+import FindPasswordView from "@/views/login/FindPasswordView";
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
         path: '/register',
         name: 'register',
         component: RegisterView
+    },
+    {
+        path: '/findPassword',
+        name: 'findPassword',
+        component: FindPasswordView,
     },
     {
         path: '/registerSuccess',
