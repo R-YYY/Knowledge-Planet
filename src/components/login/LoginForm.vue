@@ -1,6 +1,6 @@
 <template>
   <div class="login_area">
-    <img class="login_and_register_logo_text" src="../../assets/zsxq.png" alt="">
+    <img class="login_and_register_logo_text" src="../../assets/login/zsxq.png" alt="">
     <div class="login_form">
       <el-form>
         <el-form-item  label="邮箱" class="login_and_register_input_item" prop="email">
@@ -17,10 +17,10 @@
       <p class="login_opt_register_area">没有账号？
         <router-link class="login_opt_register" :to="{name:'register'}">点击注册</router-link></p>
     </div>
-    <div>
-      <el-input v-model="newPassword" placeholder="placeholder"></el-input>
-      <button @click="update">修改密码</button>
-    </div>
+<!--    <div>-->
+<!--      <el-input v-model="newPassword" placeholder="placeholder"></el-input>-->
+<!--      <button @click="update">修改密码</button>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -45,7 +45,12 @@ export default {
       loginPost(this.email,this.$md5(this.password)).then((res)=>{
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
+          window.sessionStorage.setItem("email",this.email);
+          window.sessionStorage.setItem("token",res.data.data.token);
+          this.$router.push({name:'homepage'});
         }
+      }).catch(()=>{
+        this.$message({message: "系统错误" , type: 'error'});
       })
     },
 
@@ -53,12 +58,12 @@ export default {
       this.$emit('changeModel',true);
     },
 
-    update(){
-      console.log(this.$md5(this.newPassword),this.$md5(this.password))
-      updatePassword(this.$md5(this.password),this.$md5(this.newPassword)).then((res)=>{
-        console.log(res)
-      })
-    }
+    // update(){
+    //   console.log(this.$md5(this.newPassword),this.$md5(this.password))
+    //   updatePassword(this.$md5(this.password),this.$md5(this.newPassword)).then((res)=>{
+    //     console.log(res)
+    //   })
+    // }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axios0 = axios.create({
-    baseURL:"http://localhost:81/kp",
+    baseURL:"http://49.235.232.7:81/kp/system",
     withCredentials:  true,
     timeout:  5000
 })
@@ -13,7 +13,7 @@ export function loginPost(email, password){
     data.append("password",password);
     return axios0({
         method: 'POST',
-        url: '/system/login',
+        url: '/login',
         data: data
     })
 }
@@ -33,7 +33,7 @@ export function registerPost(email,code,name,password){
     data.append("password",password);
     return axios0({
         method:"POST",
-        url:"/system/register",
+        url:"/register",
         data:data,
     })
 }
@@ -42,7 +42,7 @@ export function checkEmail(email){
     if(email.trim() === ""){
         return "请填写邮箱！";
     }
-    if(!/^[a-zA-Z0-9_\-]{2,}@[a-zA-Z0-9_\-]{2,}(\.[a-zA-Z0-9_\-]+){1,2}$/.test(email)){
+    if(!/^[a-zA-Z0-9_\-]{2,}@[a-zA-Z0-9_\-]{2,}(\.[a-zA-Z0-9_\-]+){1,2}$/.test(email.trim())){
         return "邮箱格式错误，请重新填写！";
     }
     return "ok";
