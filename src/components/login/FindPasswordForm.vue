@@ -1,6 +1,6 @@
 <template>
   <div class="find_psd_area">
-    <img class="login_and_register_logo_text" src="../../assets/zsxq.png" alt="">
+    <img class="login_and_register_logo_text" src="../../assets/login/zsxq.png" alt="">
     <div class="find_psd_form">
       <el-form :model="userData" :rules="findRules" label-width="70px" label-position="right">
         <el-form-item  label="邮箱" class="login_and_register_input_item" prop="email">

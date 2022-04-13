@@ -66,7 +66,7 @@ export default {
 
 #logo {
   position: relative;
-  background-image: url("../assets/zsxq.png");
+  background-image: url("../assets/login/zsxq.png");
   background-size: auto 100%;
   background-repeat: no-repeat;
   height: 80%;

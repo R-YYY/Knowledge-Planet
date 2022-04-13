@@ -10,7 +10,7 @@ export default {
   name: "RegisterView",
   components: {
     RegisterForm,
-  }
+  },
 }
 </script>
 
@@ -19,7 +19,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("../../assets/registerBackground.jpg") center no-repeat;
+  background: url("../../assets/login/registerBackground.jpg") center no-repeat;
   background-size: 100% 100%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="register_area">
-      <img class="login_and_register_logo_text" src="../../assets/zsxq.png" alt="">
+      <img class="login_and_register_logo_text" src="../../assets/login/zsxq.png" alt="">
       <div class="register_form">
         <el-form ref="registerForm" :model="userData" :rules="registerRules" label-width="80px" label-position="right">
           <el-form-item label="邮箱" class="login_and_register_input_item" prop="email">
@@ -37,8 +37,9 @@ export default {
         email:"",
         code:"",
         name:"",
-        password:""
+        password:"",
       },
+      count:'',
       registerRules:{
         email:[
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -77,7 +78,7 @@ export default {
           registerPost(this.userData.email,this.userData.code,this.userData.name, this.$md5(this.userData.password)).then((res)=>{
             this.$message({message: res.data.message, type: res.data.success?'success':'error'});
             if(res.data.success) {
-              this.$router.push("/login");
+              this.$router.push("/registerSuccess");
             }
           })
         }
@@ -85,7 +86,7 @@ export default {
           this.$message({message: '注册信息填写错误，请重试！', type: 'error'});
         }
       })
-    }
+    },
   }
 }
 </script>

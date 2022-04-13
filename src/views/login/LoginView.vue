@@ -32,7 +32,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("../../assets/loginBackground.jpg") center no-repeat;
+  background: url("../../assets/login/loginBackground.jpg") center no-repeat;
   background-size: 100% 100%;
 }
 
