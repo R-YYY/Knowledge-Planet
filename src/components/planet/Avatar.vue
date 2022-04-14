@@ -12,7 +12,10 @@ export default {
   name: "Avatar",
   props: ['placing', 'name', 'imgUrl'],
   data() {
-    return {}
+    return {
+      timer: null,
+      sign: true
+    }
   },
   mounted() {
     let avatar = document.querySelector('.avatar')
@@ -25,15 +28,18 @@ export default {
   methods: {
     showFullName() {
       let tag = document.querySelector('.tag')
-      let width = tag.clientWidth
-      tag.style.transform = 'translateX(-' + width / 2 + 'px)'
-      tag.style.transition= '0.5s linear'
+      tag.style.transition = '0.5s linear'
+      this.changeWidth(tag)
     },
-    hideFullName(){
+    hideFullName() {
       let tag = document.querySelector('.tag')
+      this.changeWidth(tag)
+    },
+    changeWidth(tag){
       let width = tag.clientWidth
       tag.style.transform = 'translateX(-' + width / 2 + 'px)'
     }
+
   }
 }
 </script>
@@ -71,6 +77,7 @@ export default {
   opacity: 0.9;
 
 }
+
 .tag:hover {
   max-width: none;
 }

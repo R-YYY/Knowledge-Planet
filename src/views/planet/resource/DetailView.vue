@@ -41,14 +41,18 @@
         </div>
       </div>
     </div>
+    <Avatar :name="avatar.name" :placing="avatar.placing" :imgUrl="avatar.imgUrl"></Avatar>
   </div>
 </template>
 
 <script>
 import {getResourceById, praise, unPraise, collect, unCollect} from "@/api/planet/resource"
-
+import Avatar from "@/components/planet/Avatar"
 export default {
   name: "DetailView",
+  components:{
+    Avatar
+  },
   data() {
     return {
       page: false,
@@ -61,6 +65,11 @@ export default {
       ],
       likeTag: 0,
       starTag: 2,
+      avatar:{
+        name:"小济阿瓦达asd",
+        placing:"1",
+        imgUrl:'https://tse1-mm.cn.bing.net/th/id/R-C.6f3812af899915ec57ee2e7d7a277d72?rik=qiMWKqmZtKFBZA&riu=http%3a%2f%2fscimg.jianbihuadq.com%2f202012%2f2020120319570822.jpg&ehk=ypsLEZAjwfnVoLPwnQtjL%2fcDSf0SuedZf5vnf%2ffyscE%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1'
+      }
     }
   },
   created() {
