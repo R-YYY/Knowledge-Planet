@@ -1,6 +1,6 @@
 <template>
-  <div class="avatar">
-    <div id="tag" class="tag" @mouseover="showFullName" @mouseleave="hideFullName">
+  <div class="avatar" :style="{backgroundImage:'url('+imgUrl+')'}">
+    <div ref="tag" class="tag"  @mouseover="showFullName" @mouseleave="hideFullName">
       <span class="ranking">{{ placing }}</span>
       <span class="name">{{ name }}</span>
     </div>
@@ -14,32 +14,29 @@ export default {
   data() {
     return {
       timer: null,
-      sign: true
+      sign: true,
     }
   },
   mounted() {
-    let avatar = document.querySelector('.avatar')
-    avatar.style.backgroundImage = 'url("' + this.imgUrl + '")'
-    let tag = document.querySelector('.tag')
-    this.changeWidth(tag)
+     this.changeWidth(this.$refs.tag)
   },
   methods: {
-    showFullName() {
+    showFullName(e) {
+      let tag = e.currentTarget
       if(this.timer) clearTimeout(this.timer)
       if(this.sign===true){
         this.timer = setTimeout(()=>{
-          let tag = document.querySelector('.tag')
           tag.style.transition = '0.5s linear'
           this.sign = false
           this.changeWidth(tag)
         },100)
       }
     },
-    hideFullName() {
+    hideFullName(e) {
+      let tag = e.currentTarget
       if(this.timer) clearTimeout(this.timer)
       if(this.sign===false){
         this.timer = setTimeout(()=>{
-          let tag = document.querySelector('.tag')
           this.sign = true
           this.changeWidth(tag)
         },100)
