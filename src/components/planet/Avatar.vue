@@ -1,6 +1,6 @@
 <template>
   <div class="avatar" :style="{backgroundImage:'url('+imgUrl+')'}">
-    <div ref="tag" class="tag"  @mouseover="showFullName" @mouseleave="hideFullName">
+    <div ref="tag" class="tag" @mouseover="showFullName" @mouseleave="hideFullName">
       <span class="ranking">{{ placing }}</span>
       <span class="name">{{ name }}</span>
     </div>
@@ -18,34 +18,34 @@ export default {
     }
   },
   mounted() {
-     this.changeWidth(this.$refs.tag)
+    this.changeWidth(this.$refs.tag)
   },
   methods: {
     showFullName(e) {
       let tag = e.currentTarget
-      if(this.timer) clearTimeout(this.timer)
-      if(this.sign===true){
-        this.timer = setTimeout(()=>{
+      if (this.timer) clearTimeout(this.timer)
+      if (this.sign === true) {
+        this.timer = setTimeout(() => {
           tag.style.transition = '0.5s linear'
           this.sign = false
           this.changeWidth(tag)
-        },100)
+        }, 100)
       }
     },
     hideFullName(e) {
       let tag = e.currentTarget
-      if(this.timer) clearTimeout(this.timer)
-      if(this.sign===false){
-        this.timer = setTimeout(()=>{
+      if (this.timer) clearTimeout(this.timer)
+      if (this.sign === false) {
+        this.timer = setTimeout(() => {
           this.sign = true
           this.changeWidth(tag)
-        },100)
+        }, 100)
       }
     },
-    changeWidth(tag){
-      if(this.sign===false)
+    changeWidth(tag) {
+      if (this.sign === false)
         tag.style.maxWidth = 'none'
-      else{
+      else {
         tag.style.maxWidth = '70px'
       }
       let width = tag.clientWidth
