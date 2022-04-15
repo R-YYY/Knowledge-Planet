@@ -47,14 +47,12 @@ export default{
         let data = res.data.data.planetList
         console.log(data)
         for(let i = 0;i<5;i++){
-
           this.planets[i] = {}
           this.planets[i].index = i+1
-          this.planets[i].title=data[i].pname
+          this.planets[i].title=data[i].planetName
         }
         this.rankPage = true
       }
-
     })
   }
 }
