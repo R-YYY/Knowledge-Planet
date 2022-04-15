@@ -1,6 +1,6 @@
 <template>
   <div id="findPassword">
-    <div class="card">
+    <div class="find_psd_card">
       <img class="logo" src="../../assets/login/zsxq.png" alt="">
       <div class="form">
         <el-form :model="userData" :rules="findRules" label-width="70px" label-position="right">
@@ -88,7 +88,7 @@ export default {
   background-size: 100% 100%;
 }
 
-.card{
+.find_psd_card{
   position: absolute;
   left: 50%;
   top: 50%;

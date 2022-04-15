@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <div class="card">
+    <div class="login_card">
       <img class="logo" src="../../assets/login/zsxq.png" alt="">
       <div class="login_form">
         <el-form>
@@ -69,7 +69,7 @@ export default {
   background-size: 100% 100%;
 }
 
-.card{
+.login_card{
   position: absolute;
   left: 50%;
   top: 50%;

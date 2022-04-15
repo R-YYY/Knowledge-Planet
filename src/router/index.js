@@ -7,6 +7,7 @@ import ResourceDetail from "@/views/planet/resource/DetailView";
 import HomePageView from "@/views/homepage/HomePageView";
 import RegisterSuccessView from "@/views/login/RegisterSuccessView";
 import FindPasswordView from "@/views/login/FindPasswordView";
+import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
 
 Vue.use(VueRouter)
 
@@ -49,6 +50,11 @@ const routes = [
         path: '/homepage',
         name: 'homepage',
         component: HomePageView,
+    },
+    {
+        path: '/planet/homepage',
+        name:'planetHomepage',
+        component: PlanetHomePageView,
     }
 ]
 

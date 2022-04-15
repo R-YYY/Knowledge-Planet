@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <div class="card">
+    <div class="register_card">
       <img class="logo" src="../../assets/login/zsxq.png" alt="">
       <div class="register_form">
         <el-form ref="registerForm" :model="userData" :rules="registerRules" label-width="80px" label-position="right">
@@ -102,7 +102,7 @@ export default {
   background-size: 100% 100%;
 }
 
-.card{
+.register_card{
   position: absolute;
   left: 50%;
   top: 50%;

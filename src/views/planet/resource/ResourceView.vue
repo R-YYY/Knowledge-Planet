@@ -111,7 +111,7 @@ export default {
   justify-content: space-between;
 }
 
-.card {
+.find_psd_card {
   margin: 40px 20px 10px 20px;
 }
 </style>
