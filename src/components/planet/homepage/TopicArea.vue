@@ -12,17 +12,16 @@
     </div>
     <div v-for="i in 10">
       <div class="desc">
-        <p class="name">自学前端需要达到什么水平才能去工作？</p>
-        <p class="content">历史的车轮滚滚向前，今天的web前端虽然名义上还叫前端，但在职业技能上已经要求一个
-          合格前端开发人员可以独立完成项目，取代后端。职场竞争残酷，“全能”是这个......</p>
+        <p class="name">{{topics[i-1].name}}</p>
+        <p class="content">{{topics[i-1].content}}</p>
       </div>
       <div class="opt">
         <img src="../../../assets/icon/comment.png" alt="">
-        <span>99+</span>
+        <span>{{topics[i-1].comment_num>99?"99+":topics[i-1].comment_num}}</span>
       </div>
       <div class="opt">
         <img src="../../../assets/icon/thumb.png" alt="">
-        <span>99+</span>
+        <span>{{topics[i-1].thumb_num>99?"99+":topics[i-1].thumb_num}}</span>
       </div>
       <div class="answer">
         <img src="../../../assets/icon/write.png" alt="">
@@ -38,7 +37,7 @@ export default {
   name: "TopicArea",
   data(){
     return{
-
+      topics:[],
     }
   },
   methods:{
@@ -48,6 +47,18 @@ export default {
       document.getElementById("recommend").className="no_show";
       document.getElementById(obj).className="show";
     },
+  },
+  created() {
+    for (let i = 0; i < 10; i++) {
+      this.topics.push({
+        name:"哈哈哈嗝，Are you kidding me?",
+        content:"这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容" +
+            "这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容这是一" +
+            "个虚假的内容这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容这是一个虚假的内容",
+        comment_num:100-i,
+        thumb_num:100-i,
+      })
+    }
   }
 }
 </script>
@@ -57,9 +68,10 @@ export default {
   text-align: left;
   width: 800px;
   height: 100%;
-  margin: 30px 30px 0 180px;
+  margin: 30px 30px 0;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 0 15px #cdcdcd;
 }
 
 .topic_header{
@@ -134,6 +146,12 @@ export default {
   line-height: 25px;
   margin-left: 30px;
   margin-right: 40px;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  line-clamp:2;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  text-overflow:ellipsis ;
 }
 
 .line{

@@ -64,6 +64,7 @@ export default {
   height: 690px;
   border-radius: 20px;
   background-color: white;
+  box-shadow: 0 0 15px #cdcdcd;
 }
 
 .header{
