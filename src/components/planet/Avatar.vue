@@ -21,21 +21,36 @@ export default {
     let avatar = document.querySelector('.avatar')
     avatar.style.backgroundImage = 'url("' + this.imgUrl + '")'
     let tag = document.querySelector('.tag')
-    let width = tag.clientWidth
-    tag.style.transform = 'translateX(-' + width / 2 + 'px)'
-
+    this.changeWidth(tag)
   },
   methods: {
     showFullName() {
-      let tag = document.querySelector('.tag')
-      tag.style.transition = '0.5s linear'
-      this.changeWidth(tag)
+      if(this.timer) clearTimeout(this.timer)
+      if(this.sign===true){
+        this.timer = setTimeout(()=>{
+          let tag = document.querySelector('.tag')
+          tag.style.transition = '0.5s linear'
+          this.sign = false
+          this.changeWidth(tag)
+        },100)
+      }
     },
     hideFullName() {
-      let tag = document.querySelector('.tag')
-      this.changeWidth(tag)
+      if(this.timer) clearTimeout(this.timer)
+      if(this.sign===false){
+        this.timer = setTimeout(()=>{
+          let tag = document.querySelector('.tag')
+          this.sign = true
+          this.changeWidth(tag)
+        },100)
+      }
     },
     changeWidth(tag){
+      if(this.sign===false)
+        tag.style.maxWidth = 'none'
+      else{
+        tag.style.maxWidth = '70px'
+      }
       let width = tag.clientWidth
       tag.style.transform = 'translateX(-' + width / 2 + 'px)'
     }
@@ -76,10 +91,6 @@ export default {
   box-shadow: 0 0 15px #cdcdcd;
   opacity: 0.9;
 
-}
-
-.tag:hover {
-  max-width: none;
 }
 
 .ranking {
