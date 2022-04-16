@@ -1,5 +1,5 @@
 <template>
-  <div style="position: fixed">
+  <div>
     <div class="choice_card">
       <div class="choice">
         <img src="../../../assets/icon/resources.png" alt="">
@@ -35,8 +35,10 @@ export default {
 .choice_card{
   width: 150px;
   margin-top: 30px;
+  margin-left: 100px;
   background: white;
   border-radius: 20px;
+  box-shadow: 0 0 15px #cdcdcd;
 }
 
 .choice{

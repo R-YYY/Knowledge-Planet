@@ -2,13 +2,13 @@
   <div id="planetHomePage">
     <Header></Header>
     <div class="main">
-      <div class="left">
+      <div>
         <PlanetChoice></PlanetChoice>
       </div>
-      <div class="mid">
+      <div>
         <TopicArea></TopicArea>
       </div>
-      <div class="right">
+      <div>
         <IntegralRank></IntegralRank>
       </div>
     </div>
@@ -31,28 +31,8 @@ export default {
 }
 
 .main{
+  display: flex;
   text-align: center;
-  height: 2000px;
-}
-
-.left{
-  display: inline-block;
-  vertical-align: top;
   height: 100%;
-  /*background-color: #ff0f05;*/
-}
-
-.mid{
-  display: inline-block;
-  vertical-align: top;
-  height: 100%;
-  /*background-color: #3aff52;*/
-}
-
-.right{
-  display: inline-block;
-  vertical-align: top;
-  height: 100%;
-  /*background-color: #80c4ff;*/
 }
 </style>
