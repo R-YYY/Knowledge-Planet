@@ -1,10 +1,40 @@
 <template>
   <div id="navbar">
-    <div class="box">
-      <img src="../../assets/homepageimg/fav.png" class="icon_img">
-      <div class="title">我的星球</div>
-      <div class="intro">我参加的星球交流群</div>
-    </div>
+    <el-popover
+        placement="right-start"
+        title="我的星球"
+        trigger="click">
+      <div class="planets">
+        <div class="joinplanet">
+          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我参加的星球</h>
+          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
+            <el-tag
+                v-for="item in joinplanets"
+                effect="dark"
+                style="margin-left:30px;margin-top:20px;"
+                type="success"
+            >{{ item }}</el-tag>
+          </div>
+        </div>
+        <div class="createplanet" style="margin-top:20px;">
+          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h>
+          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
+            <el-tag
+                v-for="item in createplanets"
+                effect="dark"
+                type="danger"
+                style="margin-left:30px;margin-top:20px;"
+            >{{ item }}</el-tag>
+          </div>
+        </div>
+      </div>
+      <div class="box" slot="reference">
+        <img src="../../assets/homepageimg/fav.png" class="icon_img">
+        <div class="title">我的星球</div>
+        <div class="intro">我参加的星球交流群</div>
+      </div>
+    </el-popover>
+
     <div class="box" @click="showCreatePlanet=true">
       <img src="../../assets/homepageimg/addnew.png" class="icon_img">
       <div class="title">创建星球</div>
@@ -33,14 +63,8 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item label="星球代码" :label-width="planetformLabelWidth">
-            <el-input class="input" v-model="planetform.code" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="星球名字" :label-width="planetformLabelWidth">
             <el-input class="input" v-model="planetform.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="星球容量" :label-width="planetformLabelWidth">
-            <el-input class="input" v-model="planetform.maxnumber" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="创建时间" :label-width="planetformLabelWidth">
             <el-col :span="11">
@@ -77,12 +101,12 @@ export default{
       noticePage:false,
       planetform:{
         avatar:'',
-        code:'',
         name:'',
-        maxnumber:'',
         createtime:'',
         description:''
-      }
+      },
+      joinplanets:["你的名字","你的名字","你的名字","你的名字","你的名字","你的名字"],
+      createplanets:["你的名字", "你的名字","你的名字","你的名字","你的名字"]
     }
   },
   methods:{
