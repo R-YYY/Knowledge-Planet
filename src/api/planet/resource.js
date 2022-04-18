@@ -54,7 +54,7 @@ export function collect(resourceId) {
 export function unCollect(resourceId) {
     return axios({
         method: "post",
-        url: "/resource/unCollect",
+        url: "/resource/uncollect",
         params: {
             resourceId: resourceId
         }
