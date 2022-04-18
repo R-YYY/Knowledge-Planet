@@ -2,11 +2,11 @@
   <div id="card">
     <div id="content" @click="getDetail">
       <div class="content_left">
-        <img :src="message.img" alt="正在显示" class="logo">
+        <img :src="message.coverage" alt="正在显示" class="logo">
       </div>
       <div class="content_right">
-        <div class="content_right_top">{{message.title}}</div>
-        <div class="content_right_middle">{{message.description}}</div>
+        <div class="content_right_top">{{ message.resourceName }}</div>
+        <div class="content_right_middle">{{ message.resourceDescription }}</div>
         <div class="content_right_bottom">
           <div v-for="item in message.tags" :key="item" class="tag">
             <el-tag type="info" effect="plain" size="small">{{ item }}</el-tag>
@@ -17,11 +17,11 @@
     <div id="footer">
       <div class="footer_left" @click="like">
         <img :src="require('@/assets/icon/'+iconList[likeTag])" class="icon">
-        <span class="text">{{ message.likes }}</span>
+        <span ref="like" class="text">{{ message.likeCount }}</span>
       </div>
-      <div class="footer_center" @click="collect">
+      <div class="footer_center" @click="star">
         <img :src="require('@/assets/icon/'+iconList[starTag])" class="icon">
-        <span class="text">{{ message.collect }}</span>
+        <span ref="collect" class="text">{{ message.collectCount }}</span>
       </div>
       <div class="footer_right" @click="enter">
         <img src="@/assets/icon/enter2.png" class="icon">
@@ -32,60 +32,121 @@
 </template>
 
 <script>
+import {praise, unPraise, collect, unCollect} from "@/api/planet/resource";
+
 export default {
   name: "ResourceCard",
   props: ['resource'],
   data() {
     return {
-      message: {},
+      message: {
+        checkInfo: null,
+        collectCount: null,
+        collected: null,
+        coverage: null,
+        details: null,
+        isRecommended: null,
+        likeCount: null,
+        liked: false,
+        link: null,
+        planetCode: null,
+        resourceDescription: null,
+        resourceId: null,
+        resourceName: null,
+        status: null,
+        uploadTime: null,
+        uploaderAvatar: null,
+        uploaderId: null,
+        uploaderName: null,
+      },
       iconList: [
         'like.png',
         'like-active.png',
         'star.png',
         'star-active.png'
       ],
-      likeTag:0,
-      starTag:2,
+      likeTag: 0,
+      starTag: 2,
     }
   },
   mounted() {
     this.message = this.resource
+    console.log(this.message)
+    if (this.message.liked) {
+      this.$refs.like.className += " active"
+      this.likeTag++;
+    }
+    if (this.message.collected) {
+      this.$refs.collect.className += " active"
+      this.starTag++;
+    }
   },
   methods: {
     like(e) {
-      this.message.isLike = !this.message.isLike
       let span = e.currentTarget.children[1]
-      if (this.message.isLike) {
-        this.message.likes++;
-        this.likeTag++;
-        span.className += " active"
+      if (!this.message.liked) {
+        praise(this.message.resourceId).then((res) => {
+          if(res.data.success===true){
+            this.message.liked = !this.message.liked
+            this.message.likeCount++;
+            this.likeTag++;
+            span.className = "text active"
+          }
+          else{
+            this.$message({message: "点赞失败，系统错误" , type: 'error'});
+          }
+        }).catch(()=>{
+          this.$message({message: "点赞失败，系统错误" , type: 'error'});
+        })
       } else {
-        this.message.likes--;
-        this.likeTag--;
-        span.className = "text"
+        unPraise(this.message.resourceId).then((res) => {
+          if(res.data.success===true) {
+            this.message.liked = !this.message.liked
+            this.message.likeCount--;
+            this.likeTag--;
+            span.className = "text"
+          }
+        }).catch(()=>{
+          this.$message({message: "取消点赞失败，系统错误" , type: 'error'});
+        })
+
       }
 
     },
-    collect(e) {
-      this.message.isCollect = !this.message.isCollect
+    star(e) {
       let span = e.currentTarget.children[1]
-      if (this.message.isCollect) {
-        this.message.collect++;
-        this.starTag++;
-        span.className += " active"
+      if (!this.message.collected) {
+        collect(this.message.resourceId).then((res) => {
+          if(res.data.success===true){
+            this.message.collected = !this.message.collected
+            this.message.collectCount++;
+            this.starTag++;
+            span.className = "text active"
+          }
+        }).catch(()=>{
+          this.$message({message: "收藏失败，系统错误" , type: 'error'});
+        })
       } else {
-        this.message.collect--;
-        this.starTag--;
-        span.className = "text"
+        unCollect(this.message.resourceId).then((res) => {
+          if(res.data.success===true){
+            this.message.collected = !this.message.collected
+            this.message.collectCount--;
+            this.starTag--;
+            span.className = "text"
+          }
+        }).catch(()=>{
+          this.$message({message: "取消收藏失败，系统错误" , type: 'error'});
+        })
+
       }
     },
     enter() {
       window.open(this.message.url)
     },
-    getDetail(){
+    getDetail() {
       this.$router.push({
-        name:'resourceDetail',
-        params:{
+        name: 'resourceDetail',
+        params: {
           rid: this.message.rid
         }
       })
@@ -110,41 +171,49 @@ export default {
   width: 100%;
   border-bottom: 2px solid #dadada;
 }
-.content_left{
+
+.content_left {
   flex: 1;
   margin-left: 10px;
   margin-top: 10px;
 }
-.content_right{
+
+.content_right {
   flex: 2;
   display: flex;
   flex-direction: column;
   margin: 20px 20px 10px 0;
 }
-.content_right_top{
+
+.content_right_top {
   flex: 1;
   font-weight: bold;
   font-size: 18px;
   color: #5e5e5e;
 }
-.content_right_middle{
+
+.content_right_middle {
   flex: 3;
   font-size: 14px;
   color: #757575;
   overflow: hidden;
   margin-bottom: 10px;
 }
-content_right_bottom{
+
+content_right_bottom {
   flex: 1;
 }
+
 .logo {
   width: 100%;
   height: auto;
 }
+
 .tag {
   display: inline-block;
   margin-left: 10px;
 }
+
 #footer {
   display: flex;
 }

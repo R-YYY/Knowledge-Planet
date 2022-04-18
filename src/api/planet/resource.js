@@ -1,73 +1,62 @@
 import axios from "../index";
-//
-// const axios1 = axios.create({
-//     baseURL:"http://101.35.194.132:81/kp/resource",
-//     withCredentials:  true,
-//     timeout:  5000
-// })
 
-export function uploadResource(uid, pCode, uName, rName, link, coverage){
-    const data = new FormData()
-    data.append("email",email);
-    data.append("password",password);
+export function uploadResource(data) {
     return axios({
         method: 'POST',
-        url: '/login',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        url: '/resource/uploadResource',
         data: data
     })
 }
 
-export function getResourceById(rid){
+export function getResourceByPCode(planetCode) {
     return axios({
-        method:"GET",
-        url:"/resource/getResourceById/",
-        params:{
-            r_id:rid
-        }
-
-    })
-}
-
-export function praise(uid,rid){
-    return axios({
-        method:"post",
-        url:"/resource/praise",
-        params:{
-            u_id:uid,
-            r_id:rid
+        method: "GET",
+        url: "/resource/getResourceByPCode",
+        params: {
+            planetCode: planetCode
         }
     })
 }
 
-export function unPraise(uid,rid){
+export function praise(resourceId) {
     return axios({
-        method:"post",
-        url:"/resource/unPraise",
-        params:{
-            u_id:uid,
-            r_id:rid
+        method: "post",
+        url: "/resource/praise",
+        params: {
+            resourceId: resourceId
         }
     })
 }
 
-export function collect(uid,rid){
+export function unPraise(resourceId) {
     return axios({
-        method:"post",
-        url:"/resource/collect",
-        params:{
-            u_id:uid,
-            r_id:rid
+        method: "post",
+        url: "/resource/unPraise",
+        params: {
+            resourceId: resourceId
         }
     })
 }
 
-export function unCollect(uid,rid){
+export function collect(resourceId) {
     return axios({
-        method:"post",
-        url:"/resource/unCollect",
-        params:{
-            u_id:uid,
-            r_id:rid
+        method: "post",
+        url: "/resource/collect",
+        params: {
+            resourceId: resourceId
+        }
+    })
+}
+
+export function unCollect(resourceId) {
+    return axios({
+        method: "post",
+        url: "/resource/unCollect",
+        params: {
+            resourceId: resourceId
         }
     })
 }

@@ -1,27 +1,22 @@
-import axios from "axios";
+import axios from "../index.js";
 
-const axios0 = axios.create({
-    baseURL:"http://49.235.232.7:81/kp/system",
-    withCredentials:  true,
-    timeout:  5000
-})
 
 
 export function loginPost(email, password){
     const data = new FormData()
     data.append("email",email);
     data.append("password",password);
-    return axios0({
+    return axios({
         method: 'POST',
-        url: '/login',
+        url: '/system/login',
         data: data
     })
 }
 
 export function getVerificationCodeGet(email){
-    return axios0({
+    return axios({
         method:"GET",
-        url:"/getVerificationCode/"+email,
+        url:"/system/getVerificationCode/"+email,
     })
 }
 
@@ -31,9 +26,9 @@ export function registerPost(email,code,name,password){
     data.append("verificationCode",code);
     data.append("nickName",name);
     data.append("password",password);
-    return axios0({
+    return axios({
         method:"POST",
-        url:"/register",
+        url:"/system/register",
         data:data,
     })
 }
@@ -52,9 +47,9 @@ export function updatePassword(oldPassword, newPassword){
     const data = new FormData()
     data.append("oldPassword",oldPassword);
     data.append("newPassword",newPassword);
-    return axios0({
+    return axios({
         method: 'POST',
-        url: 'userInfo/updatePassword',
+        url: '/system/userInfo/updatePassword',
         params:{
             "oldPassword":oldPassword,
             "newPassword":newPassword

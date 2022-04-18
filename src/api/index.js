@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 const axiosInstance = Axios.create({
-    baseURL: "http://101.35.194.132:81/kp",
-    withCredentials: true,
+    baseURL: "http://49.235.232.7:81/kp",
     timeout: 5000
 })
 
 axiosInstance.interceptors.request.use(
     config => {
+        config.headers['Content-Type']= 'application/json;charset=UTF-8'
         if (window.sessionStorage.getItem('token')) {
             config.headers['token'] = window.sessionStorage.getItem('token')
         }

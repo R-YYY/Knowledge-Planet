@@ -41,8 +41,7 @@
         </div>
       </div>
     </div>
-    <Avatar :name="avatar.name" :placing="avatar.placing" :imgUrl="avatar.imgUrl"></Avatar>
-  </div>
+     </div>
 </template>
 
 <script>

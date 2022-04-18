@@ -39,7 +39,6 @@ export default {
         e.target.className = "selectItem selectedItem"
       }
     },
-
   }
 }
 </script>

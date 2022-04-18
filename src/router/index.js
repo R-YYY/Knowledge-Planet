@@ -9,6 +9,7 @@ import RegisterSuccessView from "@/views/login/RegisterSuccessView";
 import FindPasswordView from "@/views/login/FindPasswordView";
 import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
 
+
 Vue.use(VueRouter)
 
 const routes = [
