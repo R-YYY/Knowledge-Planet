@@ -243,12 +243,14 @@ content_right_bottom {
   /*margin-top: 6px;*/
   transform: translateY(3px);
   height: 20px;
+  cursor: pointer;
 }
 
 .text {
   margin-left: 5px;
   color: #bebebe;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .active {
