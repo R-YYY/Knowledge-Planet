@@ -17,7 +17,6 @@
             <span style="margin-top:20px;font-align:left">{{item.planetName}}</span>
             <span >{{item.hot}}</span>
           </div>
-
         </div>
       </div>
       <div id="right">

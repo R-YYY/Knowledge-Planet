@@ -23,3 +23,16 @@ export function getSearchPlanet(searchContent) {
         }
     })
 }
+
+
+export function createPlanet(name,description,coverage) {
+    return axios({
+        method: "POST",
+        url: '/planet/createPlanet',
+        params:{
+            planetName:name,
+            planetDescription:description,
+            planetAvatar:coverage
+        }
+    })
+}

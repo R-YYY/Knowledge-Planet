@@ -7,16 +7,16 @@
       <div class="planets">
         <div class="joinplanet">
           <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我参加的星球</h>
-          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
+          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-20px;">
             <el-tag
                 v-for="item in joinplanets"
                 effect="dark"
-                style="margin-left:30px;margin-top:20px;"
+                style="margin-left:30px;"
                 type="success"
             >{{ item }}</el-tag>
           </div>
         </div>
-        <div class="createplanet" style="margin-top:20px;">
+        <div class="createplanet" style="margin-top:50px;">
           <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h>
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
             <el-tag
@@ -40,6 +40,7 @@
       <div class="title">创建星球</div>
       <div class="intro">创建你想要的星球</div>
     </div>
+
     <div class="systemnotice" v-if="noticePage">
       <span class="notice" style="font-weight: bold;font-size:24px;color:#2C2C2C;font-family: 'Microsoft YaHei'">系统公告</span>
       <el-carousel height="190px" indicator-position="outside">
@@ -50,6 +51,7 @@
         </el-carousel-item>
       </el-carousel>
     </div>
+
     <dic class="createplanet">
       <el-dialog :visible.sync="showCreatePlanet">
         <el-form :model="planetform" class="planetform">
@@ -66,11 +68,11 @@
           <el-form-item label="星球名字" :label-width="planetformLabelWidth">
             <el-input class="input" v-model="planetform.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="创建时间" :label-width="planetformLabelWidth">
-            <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="planetform.createtime" style="width: 100%;"></el-date-picker>
-            </el-col>
-          </el-form-item>
+<!--          <el-form-item label="创建时间" :label-width="planetformLabelWidth">-->
+<!--            <el-col :span="11">-->
+<!--              <el-date-picker type="date" placeholder="选择日期" v-model="planetform.createtime" style="width: 100%;"></el-date-picker>-->
+<!--            </el-col>-->
+<!--          </el-form-item>-->
           <el-form-item label="星球描述" :label-width="planetformLabelWidth">
             <el-input
                 class="input"
@@ -83,7 +85,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="showCreatePlanet = false">取 消</el-button>
-          <el-button @click="isCreatePlanet">确 定</el-button>
+          <el-button @click="upload">确 定</el-button>
         </div>
       </el-dialog>
     </dic>
@@ -91,7 +93,9 @@
 </template>
 
 <script>
-import {getAllNotice} from "@/api/homepage/planet"
+import cos from "@/api/cos";
+import {createPlanet} from "@/api/homepage/planet";
+import {getAllNotice} from "@/api/homepage/planet";
 export default{
   data(){
     return{
@@ -102,8 +106,9 @@ export default{
       planetform:{
         avatar:'',
         name:'',
-        createtime:'',
-        description:''
+        // createtime:'',
+        description:'',
+        coverage:{}
       },
       joinplanets:["你的名字","你的名字","你的名字","你的名字","你的名字","你的名字"],
       createplanets:["你的名字", "你的名字","你的名字","你的名字","你的名字"]
@@ -113,11 +118,40 @@ export default{
     isCreatePlanet(){
       this.showCreatePlanet=true
     },
+    upload() {
+      let key = this.planetform.coverage.uid+this.planetform.coverage.name
+      let coverage = this.planetform.coverage
+      let planetform = this.planetform
+      cos.putObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: key,              /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: coverage, // 上传文件对象
+        onProgress: function (progressData) {
+          console.log(JSON.stringify(progressData));
+        }
+      }, function (err, data) {
+        console.log(data)
+        if(err||data.statusCode!==200){
+          console.log("图片上传失败，请重新上传")
+        }
+        else{
+          let name=planetform.name
+          let description=planetform.description
+          let coverage="https://"+data.Location
+          createPlanet(name,description,coverage).then((res)=>{
+            console.log(res)
+          })
+        }
+
+      })
+      this.showCreatePlanet = false
+    },
     handlePicturePreview(file) {
-      this.planetform.image = file.raw
+      this.planetform.coverage = file.raw
       this.planetform.avatar = URL.createObjectURL(file.raw);
-      console.log(URL.createObjectURL(file.raw))
-    }
+    },
   },
   mounted(){
     getAllNotice().then((res)=>{
@@ -146,7 +180,7 @@ export default{
 .box{
   height: 86px;
   width: 230px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
 }
@@ -184,20 +218,22 @@ export default{
 }
 .nt{
   font-size:20px;
+  font-weight:bold;
   font-family: "Microsoft YaHei";
   font-color:#2C2C2C;
-  margin-left:30px;
+  margin-left:10px;
   margin-top:35px;
 }
 .ni{
   font-size:14px;
   font-family: "Microsoft YaHei";
   font-color:#000000;
-  margin-left:30px;
+  margin-left:10px;
   margin-top:25px;
 }
 .nf{
   font-size:14px;
+  font-weight:bold;
   font-family: "Microsoft YaHei";
   font-color:#000000;
   margin-left:200px;
