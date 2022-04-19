@@ -3,10 +3,11 @@
     <div class="alivedate">
       <el-calendar v-model="value">
         <template
-        slot="dateCell"
-        slot-scope="{date,data}">
-          <div class="date-content">
-            <span class="text">{{getDay(date)}}</span>
+            slot="dateCell"
+            slot-scope="{date,data}">
+          <div class="date-content" @click="todo(data)">
+            <span class="text" v-if="compare(data,datedate) === 1">{{getDay(date)}}✔️</span>
+            <span class="text" v-if="compare(data,datedate) === 0" >{{getDay(date)}}</span>
           </div>
         </template>
       </el-calendar>
@@ -14,11 +15,11 @@
     <div v-if="rankPage" class="planetrank">
       <div class="pt">星球热度排行榜</div>
       <div class="rankcontext" style="margin-top:20px;">
-      <div class="rank" v-for="item in planets" :key="item.index">
+        <div class="rank" v-for="item in planets" :key="item.index">
         <span style="border-radius: 50%;height: 30px;width: 30px;display: inline-block;background: #DDD1D1;vertical-align: top;margin-left: 30px;margin-bottom:10px;">
         <span style="display: block;color: white;height: 30px;line-height: 30px;text-align: center">{{item.index}}</span></span>
-        <span style="margin-left:35px;height:30px;line-height: 30px;">{{item.title}}</span>
-      </div>
+          <span style="margin-left:35px;height:30px;line-height: 30px;">{{item.title}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -32,12 +33,34 @@ export default{
     return{
       value:new Date(),
       planets:[],
-      rankPage: false
+      rankPage: false,
+      datedate:["2022-04-16","2022-04-15","2022-03-28"],
     }
   },
   methods:{
     getDay(date){
       return date.getDate()
+    },
+    // getToday(){
+    //   let nowDate = new Date()
+    //   let date = {
+    //     year: nowDate.getFullYear(),
+    //     month: nowDate.getMonth() + 1,
+    //     date: nowDate.getDate()
+    //   }
+    //   if (parseInt(date.date) < 10) {
+    //     date.date = '0' + date.date
+    //   }
+    //   this.systemTime = date.year + '-' + date.month + '-' + date.date
+    //   return this.systemTime
+    // },
+    compare(data,datedate){
+      if(datedate.includes(data.day)){
+        return 1
+      }
+      else{
+        return 0
+      }
     }
   },
   mounted(){
