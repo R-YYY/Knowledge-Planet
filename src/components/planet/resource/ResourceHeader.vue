@@ -102,6 +102,7 @@ export default {
 }
 
 #selector ul li {
+  cursor: pointer;
   display: inline;
   position: relative;
   margin-right: 30px;
@@ -128,5 +129,6 @@ export default {
   transform: translateY(2px);
   width: 18px;
   height: 18px;
+  cursor: default;
 }
 </style>
