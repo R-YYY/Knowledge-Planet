@@ -1,21 +1,25 @@
-import axios from "axios";
-
-const axios2 = axios.create({
-    baseURL:"http://101.35.194.132:81/kp",
-    withCredentials:  true,
-    timeout:  5000
-})
+import axios from "../index.js";
 
 export function getPlanetRank(){
-    return axios2({
+    return axios({
         method:"GET",
         url:"/planet/getHotPlanet/",
     })
 }
 
 export function getAllNotice(){
-    return axios2({
+    return axios({
         method:"GET",
         url:"/system/getAllNotice/",
+    })
+}
+
+export function getSearchPlanet(searchContent) {
+    return axios({
+        method: "GET",
+        url: "/planet/searchPlanet",
+        params:{
+            keyWord:searchContent
+        }
     })
 }
