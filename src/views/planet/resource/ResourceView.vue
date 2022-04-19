@@ -2,14 +2,14 @@
   <div id="resource">
     <Header></Header>
     <div id="main">
-      <HeadBar></HeadBar>
-      <div id="content">
-        <div class="card" v-for="(item,index) in resourceList" :key="item.id">
-          <Card :resource="item"></Card>
+      <HeadBar @select="select"></HeadBar>
+      <div class="content">
+        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId">
+          <Card :resource="item" v-show="isRecommended||item.isRecommended"></Card>
         </div>
       </div>
-
     </div>
+
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import HeadBar from "@/components/planet/resource/ResourceHeader"
 import Card from "@/components/planet/resource/ResourceCard"
 
 import {getResourceByPCode} from "@/api/planet/resource"
+import {compareByDesc, compareByAsc} from "@/utils/compare";
 
 export default {
   name: "ResourceView",
@@ -27,21 +28,40 @@ export default {
   },
   data() {
     return {
+      page: 'all',
       planetCode: "1234",
-      resourceList: []
+      resourceList: [],
+      resourceListByTime: [],
+      isRecommended: true,
     }
   },
-  mounted() {
+  created() {
     getResourceByPCode(1234).then((res) => {
-      for (let item of res.data.data.resourceList) {
+      let list = res.data.data.resourceList
+      for (let item of list) {
         this.resourceList.push(item)
       }
     }).catch(() => {
       this.$message({message: "系统错误", type: 'error'});
     })
   },
-  methods() {
-
+  methods: {
+    select(val) {
+      console.log(val)
+      switch (val) {
+        case "all":
+          this.isRecommended = true;
+          this.resourceList.sort(compareByDesc("likeCount"))
+          break;
+        case "time":
+          this.isRecommended = true;
+          this.resourceList.sort(compareByDesc("uploadTime"))
+          break;
+        case "recommend":
+          this.isRecommended = false;
+          break;
+      }
+    }
   }
 
 
@@ -53,7 +73,7 @@ export default {
   margin: 30px 100px 0 100px;
 }
 
-#content {
+.content {
   margin-left: 20px;
   margin-right: 20px;
   display: flex;

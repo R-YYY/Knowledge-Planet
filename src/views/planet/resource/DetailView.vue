@@ -1,16 +1,16 @@
 <template>
   <div id="detail">
     <Header></Header>
-    <div id="detailCard" v-if="page">
+    <div id="detailCard">
       <div id="header">
         <h1>资源详情</h1>
       </div>
       <div id="content">
         <div id="contentHead">
-          <el-image :src="message.img" fit="cover" style="width: 120px;height: 120px">
+          <el-image :src="message.coverage" fit="cover" class="logo">
           </el-image>
-          <h2>{{ message.title }}</h2>
-          <p>{{ message.description }}</p>
+          <h2>{{ message.resourceName }}</h2>
+          <p>{{ message.resourceDescription }}</p>
           <div v-for="item in message.tags" :key="item" class="tag">
             <el-tag type="info" effect="plain" size="small">{{ item }}</el-tag>
           </div>
@@ -18,22 +18,35 @@
         <div id="contentBody">
           <el-descriptions :column="1" colon>
             <el-descriptions-item label="链接">
-              <el-link :href="message.url">{{ message.url }}</el-link>
+              <el-link :href="message.link">{{ message.link }}</el-link>
             </el-descriptions-item>
             <el-descriptions-item label="详情">{{ message.detail }}</el-descriptions-item>
-            <el-descriptions-item label="时间">{{ message.time }}</el-descriptions-item>
-            <el-descriptions-item label="荐者">{{ message.person }}</el-descriptions-item>
+            <el-descriptions-item label="时间">{{ message.uploadTime }}</el-descriptions-item>
+            <el-descriptions-item label="荐者">
+<!--              <img style="height: 20px;position: absolute"-->
+<!--                   :src="message.uploaderAvatar"-->
+<!--                   @error="this.src='../../../assets/icon/my.png'"-->
+<!--                   >-->
+              <el-image class="miniIcon" :src="message.uploaderAvatar">
+                <div slot="error" class="image-slot">
+                  <img style="height: 20px;"
+                       src="../../../assets/icon/my.png">
+                </div>
+              </el-image>
+              <span style="width: 25px"></span>
+              {{ message.uploaderName }}
+            </el-descriptions-item>
           </el-descriptions>
         </div>
       </div>
       <div id="footer">
-        <div class="footer_left" @click="like">
+        <div class="footer_left" @click="throttleLike($event)">
           <img :src="require('@/assets/icon/'+iconList[likeTag])" class="icon">
-          <span class="text">{{ message.likes }}</span>
+          <span ref="like" class="text">{{ message.likeCount }}</span>
         </div>
-        <div class="footer_center" @click="collect">
+        <div class="footer_center" @click="throttleStar($event)">
           <img :src="require('@/assets/icon/'+iconList[starTag])" class="icon">
-          <span class="text">{{ message.collect }}</span>
+          <span ref="collect" class="text">{{ message.collectCount }}</span>
         </div>
         <div class="footer_right" @click="enter">
           <img src="@/assets/icon/enter2.png" class="icon">
@@ -41,17 +54,15 @@
         </div>
       </div>
     </div>
-     </div>
+  </div>
 </template>
 
 <script>
-import {getResourceById, praise, unPraise, collect, unCollect} from "@/api/planet/resource"
-import Avatar from "@/components/planet/Avatar"
+import {praise, unPraise, collect, unCollect} from "@/api/planet/resource"
+import throttle from "@/utils/throttle";
+
 export default {
   name: "DetailView",
-  components:{
-    Avatar
-  },
   data() {
     return {
       page: false,
@@ -64,82 +75,80 @@ export default {
       ],
       likeTag: 0,
       starTag: 2,
-      avatar:{
-        name:"小济阿瓦达asd",
-        placing:"1",
-        imgUrl:'https://tse1-mm.cn.bing.net/th/id/R-C.6f3812af899915ec57ee2e7d7a277d72?rik=qiMWKqmZtKFBZA&riu=http%3a%2f%2fscimg.jianbihuadq.com%2f202012%2f2020120319570822.jpg&ehk=ypsLEZAjwfnVoLPwnQtjL%2fcDSf0SuedZf5vnf%2ffyscE%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1'
-      }
     }
   },
   created() {
-    getResourceById(this.$route.params.rid).then((res) => {
-      this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'});
-      console.log(res)
-      if (res.data.success) {
-        let result = res.data.data.result
-        this.message = {
-          rid: result.r_id,
-          title: result.r_name,
-          img: 'https://img.51miz.com/Element/00/33/31/09/db33029b_E333109_68c43404.png',
-          //this.message.img = result.coverage,
-          likes: result.praise_count,
-          collect: result.collect_count,
-          time: result.upload_time,
-          url: result.link,
-          description: result.r_description,
-          detail: result.details,
-          person: result.u_name
-        }
-      }
-      this.page = true
-    })
-
+    this.message = JSON.parse(sessionStorage.getItem('resource'))
+    console.log(this.message)
+    this.throttleStar = throttle(this.star, 1000)
+    this.throttleLike = throttle(this.like, 1000)
   },
-
+  mounted() {
+    if (this.message.liked) {
+      this.$refs.like.className += " active"
+      this.likeTag++;
+    }
+    if (this.message.collected) {
+      this.$refs.collect.className += " active"
+      this.starTag++;
+    }
+  },
   methods: {
     like(e) {
-      this.message.isLike = !this.message.isLike
       let span = e.currentTarget.children[1]
-      if (this.message.isLike) {
-        praise('1234', this.message.rid).then((res) => {
+      if (!this.message.liked) {
+        praise(this.message.resourceId).then((res) => {
           if (res.data.success === true) {
-            this.message.likes++;
+            this.message.liked = !this.message.liked
+            this.message.likeCount++;
             this.likeTag++;
-            span.className += " active"
+            span.className = "text active"
+          } else {
+            this.$message({message: "点赞失败，系统错误", type: 'error'});
           }
-
+        }).catch(() => {
+          this.$message({message: "点赞失败，系统错误", type: 'error'});
         })
       } else {
-        unPraise('1234', this.message.rid).then((res) => {
+        unPraise(this.message.resourceId).then((res) => {
           if (res.data.success === true) {
-            this.message.likes--;
+            this.message.liked = !this.message.liked
+            this.message.likeCount--;
             this.likeTag--;
             span.className = "text"
           }
+        }).catch(() => {
+          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
         })
+
       }
 
     },
-    collect(e) {
-      this.message.isCollect = !this.message.isCollect
+    star(e) {
       let span = e.currentTarget.children[1]
-      if (this.message.isCollect) {
-        collect(1234, this.message.rid).then((res) => {
+      if (!this.message.collected) {
+        collect(this.message.resourceId).then((res) => {
           if (res.data.success === true) {
-            this.message.collect++;
+            this.message.collected = !this.message.collected
+            this.message.collectCount++;
             this.starTag++;
-            span.className += " active"
+            span.className = "text active"
           }
+        }).catch(() => {
+          this.$message({message: "收藏失败，系统错误", type: 'error'});
         })
-
       } else {
-        unCollect(1234, this.message.rid).then((res) => {
+        unCollect(this.message.resourceId).then((res) => {
           if (res.data.success === true) {
-            this.message.collect--;
+            this.message.collected = !this.message.collected
+            this.message.collectCount--;
             this.starTag--;
             span.className = "text"
           }
+        }).catch(() => {
+          this.$message({message: "取消收藏失败，系统错误", type: 'error'});
         })
+
       }
     },
     enter() {
@@ -169,6 +178,11 @@ export default {
   border-bottom: 2px solid #e7e7e7;
 }
 
+.logo{
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+}
 h1, h2 {
   margin-top: 0;
   margin-left: 30px;
@@ -212,7 +226,9 @@ p {
   text-align: left;
   margin-left: 10px;
 }
-
+.miniIcon{
+  height: 20px;position: absolute
+}
 .demo-table-expand {
   font-size: 0;
 }

@@ -61,7 +61,7 @@ export default {
     return {
       dialogFormVisible:false,
       form: {
-        planetCode:'',
+        planetCode:'1234',
         resourceName: '',
         description: '',
         detail: '',
@@ -85,30 +85,33 @@ export default {
   },
   methods: {
     upload() {
+      let key = this.form.coverage.uid+this.form.coverage.name
+      let coverage = this.form.coverage
+      let form = this.form
       cos.putObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: this.form.coverage.uid+this.form.coverage.name,              /* 必须 */
+        Key: key,              /* 必须 */
         StorageClass: 'STANDARD',
-        Body: this.form.coverage, // 上传文件对象
+        Body: coverage, // 上传文件对象
         onProgress: function (progressData) {
           console.log(JSON.stringify(progressData));
         }
       }, function (err, data) {
+        console.log(data)
         if(err||data.statusCode!==200){
           console.log("图片上传失败，请重新上传")
         }
         else{
-          this.form.imageUrl = data.Location
-          let data = JSON.stringify({
-            "planetCode": this.planetCode,
-            "resourceName": this.form.resourceName,
-            "link": this.form.link,
-            "coverage": data.Location,
-            "resourceDescription": this.form.description,
-            "details": this.form.details
+          let resource = JSON.stringify({
+            "planetCode": form.planetCode,
+            "resourceName": form.resourceName,
+            "link": form.link,
+            "coverage": "https://"+data.Location,
+            "resourceDescription": form.description,
+            "details": form.detail
           })
-          uploadResource(data).then((res)=>{
+          uploadResource(resource).then((res)=>{
             console.log(res)
           })
         }

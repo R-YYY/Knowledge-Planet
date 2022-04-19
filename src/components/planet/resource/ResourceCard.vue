@@ -15,11 +15,11 @@
       </div>
     </div>
     <div id="footer">
-      <div class="footer_left" @click="like">
+      <div class="footer_left" @click="throttleLike($event)">
         <img :src="require('@/assets/icon/'+iconList[likeTag])" class="icon">
         <span ref="like" class="text">{{ message.likeCount }}</span>
       </div>
-      <div class="footer_center" @click="star">
+      <div class="footer_center" @click="throttleStar($event)">
         <img :src="require('@/assets/icon/'+iconList[starTag])" class="icon">
         <span ref="collect" class="text">{{ message.collectCount }}</span>
       </div>
@@ -33,6 +33,7 @@
 
 <script>
 import {praise, unPraise, collect, unCollect} from "@/api/planet/resource";
+import throttle from "@/utils/throttle";
 
 export default {
   name: "ResourceCard",
@@ -69,9 +70,12 @@ export default {
       starTag: 2,
     }
   },
+  created() {
+    this.throttleStar = throttle(this.star,1000)
+    this.throttleLike = throttle(this.like, 1000)
+  },
   mounted() {
     this.message = this.resource
-    console.log(this.message)
     if (this.message.liked) {
       this.$refs.like.className += " active"
       this.likeTag++;
@@ -86,28 +90,27 @@ export default {
       let span = e.currentTarget.children[1]
       if (!this.message.liked) {
         praise(this.message.resourceId).then((res) => {
-          if(res.data.success===true){
+          if (res.data.success === true) {
             this.message.liked = !this.message.liked
             this.message.likeCount++;
             this.likeTag++;
             span.className = "text active"
+          } else {
+            this.$message({message: "点赞失败，系统错误", type: 'error'});
           }
-          else{
-            this.$message({message: "点赞失败，系统错误" , type: 'error'});
-          }
-        }).catch(()=>{
-          this.$message({message: "点赞失败，系统错误" , type: 'error'});
+        }).catch(() => {
+          this.$message({message: "点赞失败，系统错误", type: 'error'});
         })
       } else {
         unPraise(this.message.resourceId).then((res) => {
-          if(res.data.success===true) {
+          if (res.data.success === true) {
             this.message.liked = !this.message.liked
             this.message.likeCount--;
             this.likeTag--;
             span.className = "text"
           }
-        }).catch(()=>{
-          this.$message({message: "取消点赞失败，系统错误" , type: 'error'});
+        }).catch(() => {
+          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
         })
 
       }
@@ -117,25 +120,25 @@ export default {
       let span = e.currentTarget.children[1]
       if (!this.message.collected) {
         collect(this.message.resourceId).then((res) => {
-          if(res.data.success===true){
+          if (res.data.success === true) {
             this.message.collected = !this.message.collected
             this.message.collectCount++;
             this.starTag++;
             span.className = "text active"
           }
-        }).catch(()=>{
-          this.$message({message: "收藏失败，系统错误" , type: 'error'});
+        }).catch(() => {
+          this.$message({message: "收藏失败，系统错误", type: 'error'});
         })
       } else {
         unCollect(this.message.resourceId).then((res) => {
-          if(res.data.success===true){
+          if (res.data.success === true) {
             this.message.collected = !this.message.collected
             this.message.collectCount--;
             this.starTag--;
             span.className = "text"
           }
-        }).catch(()=>{
-          this.$message({message: "取消收藏失败，系统错误" , type: 'error'});
+        }).catch(() => {
+          this.$message({message: "取消收藏失败，系统错误", type: 'error'});
         })
 
       }
@@ -144,10 +147,11 @@ export default {
       window.open(this.message.url)
     },
     getDetail() {
+      sessionStorage.setItem('resource', JSON.stringify(this.message))
       this.$router.push({
         name: 'resourceDetail',
         params: {
-          rid: this.message.rid
+          rid: this.message.resourceId
         }
       })
     }
@@ -174,8 +178,8 @@ export default {
 
 .content_left {
   flex: 1;
-  margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-right: 10px;
 }
 
 .content_right {
@@ -205,7 +209,9 @@ content_right_bottom {
 }
 
 .logo {
-  width: 100%;
+  width: 80%;
+  margin-left: 15%;
+  border-radius: 8px;
   height: auto;
 }
 

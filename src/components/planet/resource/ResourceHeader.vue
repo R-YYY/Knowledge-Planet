@@ -6,7 +6,7 @@
       <ul @click="select">
         <li><span class="selectItem selectedItem">全部</span></li>
         <li><span class="selectItem">最新</span></li>
-        <li><span class="selectItem">球主推荐</span>
+        <li><span class="selectItem">星主推荐</span>
           <div id="fire"></div>
         </li>
       </ul>
@@ -37,8 +37,20 @@ export default {
           span.className = "selectItem"
         }
         e.target.className = "selectItem selectedItem"
+        switch (e.target.innerHTML){
+          case "全部":
+            this.$emit('select','all')
+            break;
+          case "最新":
+            this.$emit('select','time')
+            break;
+          case "星主推荐":
+            this.$emit('select', 'recommend')
+            break;
+        }
       }
     },
+
   }
 }
 </script>
