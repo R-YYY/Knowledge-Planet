@@ -1,6 +1,6 @@
 <template>
   <div id="homepage">
-    <Header></Header>
+    <HomePageHeader></HomePageHeader>
     <div id="main">
       <NavBar></NavBar>
       <RecommendPlanet></RecommendPlanet>
@@ -10,16 +10,16 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import NavBar from "@/components/homepage/NavBar";
 import RecommendPlanet from "@/components/homepage/RecommendPlanet";
 import DateRank from "@/components/homepage/DateRank";
+import HomePageHeader from "@/components/HomePageHeader";
 
 export default{
   name:"HomePageView",
   components:{
+    HomePageHeader,
     RecommendPlanet,
-    Header,
     NavBar,
     DateRank
   },

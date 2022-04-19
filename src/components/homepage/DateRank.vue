@@ -18,7 +18,9 @@
         <div class="rank" v-for="item in planets" :key="item.index">
         <span style="border-radius: 50%;height: 30px;width: 30px;display: inline-block;background: #DDD1D1;vertical-align: top;margin-left: 30px;margin-bottom:10px;">
         <span style="display: block;color: white;height: 30px;line-height: 30px;text-align: center">{{item.index}}</span></span>
-          <span style="margin-left:35px;height:30px;line-height: 30px;">{{item.title}}</span>
+          <span class="aaa">{{item.title}}</span>
+          <span ><img src="../../assets/homepageimg/hot.png" class="hot_img"></span>
+          <span style="height: 30px;line-height: 30px;">{{item.planethot}}</span>
         </div>
       </div>
     </div>
@@ -34,7 +36,7 @@ export default{
       value:new Date(),
       planets:[],
       rankPage: false,
-      datedate:["2022-04-16","2022-04-15","2022-03-28"],
+      datedate:["2022-04-16","2022-04-15","2022-03-28","2022-04-17","2022-04-18"],
     }
   },
   methods:{
@@ -73,6 +75,7 @@ export default{
           this.planets[i] = {}
           this.planets[i].index = i+1
           this.planets[i].title=data[i].planetName
+          this.planets[i].planethot=data[i].hot
         }
         this.rankPage = true
       }
@@ -91,6 +94,7 @@ export default{
   box-shadow: 0 0 30px #dcdcdc;
 }
 .planetrank{
+  position:relative;
   margin-left:1175px;
   margin-top:30px;
   width:350px;
@@ -112,5 +116,14 @@ export default{
   font-color:#2C2C2C;
   margin-left:80px;
   height:20px;
+}
+.hot_img{
+  margin-left:130px;
+  width:20px;
+}
+.aaa{
+  display: inline-block;
+  width:50px;
+  margin-left:20px;
 }
 </style>

@@ -56,7 +56,7 @@ export default{
 <style scoped>
 #recommendplanet{
   position:relative;
-  margin-top:-230px;
+  margin-top:-577px;
   margin-left:370px;
 }
 .rpcontent{
