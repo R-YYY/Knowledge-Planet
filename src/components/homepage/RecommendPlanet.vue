@@ -11,7 +11,6 @@
         </el-popover>
       </div>
 
-
       <div class="rpcontent" v-for="(item,index) in recommendplanet" :key="index">
         <div class="content">
           <img src="../../assets/homepageimg/1.jpg" class="planet_img">
@@ -39,21 +38,6 @@ import { getRecommendPlanet} from "@/api/homepage/planet";
 export default{
   data(){
     return{
-      recplanets:[
-        {
-          img:'',
-          title:'一路向北',
-          intro:'我一路向北，离开有你的季节，你说你好累，已无法再爱上谁。风在山路吹，过往的画面全都是不对，细数惭愧，我伤你几回。',
-          time:'2022年4月8日',
-          person:'周杰伦'
-        },{
-          img:'',
-          title:'花海',
-          intro:'原谅说太快,爱成了阻碍，手中的风筝放太快回不来，不要你离开，回忆划不开，欠你的宠爱，我在等待重来，天空仍灿烂，它爱着大海，情歌被打败，爱已不存在。',
-          time:'2022年4月8日',
-          person:'周杰伦'
-        }
-      ],
       recommendplanet:[]
     }
   },
@@ -80,6 +64,7 @@ export default{
 }
 .rpcontent{
   margin-top:25px;
+
 }
 .content{
   position:relative;

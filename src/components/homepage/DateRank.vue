@@ -1,6 +1,6 @@
 <template>
   <div id="daterank" >
-    <div class="alivedate">
+    <div class="alivedate" v-if="calendarPage">
       <el-calendar v-model="value">
         <template
             slot="dateCell"
@@ -37,7 +37,6 @@ export default{
       planets:[],
       rankPage: false,
       calendarPage:false,
-      datedate:["2022-04-16","2022-04-15","2022-03-28","2022-04-17","2022-04-18"],
       activedate:[]
     }
   },
@@ -71,9 +70,7 @@ export default{
     }),
         getLoginRecord().then((res)=>{
           if(res.data.success === true){
-            console.log(12345678910)
-            let data=data.data["date:"]
-
+            let data=res.data.data.date
             console.log(data)
             this.activedate=data
             this.calendarPage=true

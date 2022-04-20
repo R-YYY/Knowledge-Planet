@@ -10,6 +10,7 @@
                   v-model="searchContent"
                   placeholder="请输入内容"
                   @keyup.enter.native="searchplanet"
+                  @blur="isShowResult=false"
         >
         </el-input>
         <div class="searchresult" v-show="isShowResult">
