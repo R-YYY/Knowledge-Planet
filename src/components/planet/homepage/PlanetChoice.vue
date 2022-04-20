@@ -49,15 +49,15 @@ export default {
 .choice{
   position: relative;
   cursor: pointer;
-  height: 70px;
-  line-height: 70px;
+  height: 60px;
+  line-height: 60px;
 }
 
 .choice img{
   position: absolute;
   width: 30px;
   height: 30px;
-  top: 20px;
+  top: 15px;
   left: 15px;
 }
 
