@@ -4,7 +4,7 @@
       <img src="../../assets/login/success.png" alt="" class="success_icon">
       <p class="gongxi"><b>恭喜您！</b></p>
       <p class="fanhui">您已{{message}}！{{count}}秒后即将返回登录页面，你也可以选择
-        <span class="lijifanhui" @click="toLogin">立即返回</span></p>
+        <router-link class="lijifanhui" :to="{name:'login'}">立即返回</router-link></p>
     </div>
   </div>
 </template>
@@ -19,10 +19,6 @@ export default {
     }
   },
   methods:{
-    toLogin(){
-      this.$router.push("/login");
-    },
-
     countDown() {
       const TIME_COUNT = 5;
       if (!this.timer) {
