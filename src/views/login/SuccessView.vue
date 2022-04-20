@@ -3,7 +3,7 @@
     <div class="success_area">
       <img src="../../assets/login/success.png" alt="" class="success_icon">
       <p class="gongxi"><b>恭喜您！</b></p>
-      <p class="fanhui">您已注册成功！{{count}}秒后即将返回登录页面，你也可以选择
+      <p class="fanhui">您已{{message}}！{{count}}秒后即将返回登录页面，你也可以选择
         <span class="lijifanhui" @click="toLogin">立即返回</span></p>
     </div>
   </div>
@@ -11,9 +11,10 @@
 
 <script>
 export default {
-  name: "RegisterSuccess",
+  name: "Success",
   data(){
     return{
+      message:"",
       count:''
     }
   },
@@ -41,6 +42,7 @@ export default {
   },
 
   created() {
+    this.message = this.$route.params.message;
     this.countDown();
   }
 }

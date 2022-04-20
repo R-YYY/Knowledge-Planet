@@ -80,7 +80,12 @@ export default {
           registerPost(this.userData.email,this.userData.code,this.userData.name, this.$md5(this.userData.password)).then((res)=>{
             this.$message({message: res.data.message, type: res.data.success?'success':'error'});
             if(res.data.success) {
-              this.$router.push("/registerSuccess");
+              this.$router.push({
+                name:"success",
+                params:{
+                  message:"注册成功",
+                },
+              });
             }
           })
         }
