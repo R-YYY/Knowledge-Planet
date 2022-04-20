@@ -13,9 +13,9 @@
         >
         </el-input>
         <div class="searchresult" v-show="isShowResult">
-          <div class="result" v-for="item in planetResult" style="margin-left:-420px;">
-            <span style="margin-top:20px;font-align:left">{{item.planetName}}</span>
-            <span >{{item.hot}}</span>
+          <div class="result" v-for="item in planetResult" >
+            <span style="margin-top:20px;">星球名字：{{item.planetName}}</span>
+            <span style="margin-left:50px;">星球热度：{{item.hot}}</span>
           </div>
         </div>
       </div>
@@ -142,13 +142,11 @@ export default {
 }
 .searchresult{
   width:505px;
-  height:260px;
+  text-align:left;
   margin-left:165px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color:antiquewhite;
+  background-color:whitesmoke;
   position:absolute;
-  /*z-index:1;*/
-  /*overflow: hidden*/
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
-  <div id="daterank">
+  <div id="daterank" >
     <div class="alivedate">
       <el-calendar v-model="value">
         <template
             slot="dateCell"
             slot-scope="{date,data}">
-          <div class="date-content" @click="todo(data)">
-            <span class="text" v-if="compare(data,datedate) === 1">{{getDay(date)}}✔️</span>
-            <span class="text" v-if="compare(data,datedate) === 0" >{{getDay(date)}}</span>
+          <div class="date-content">
+            <span class="text" v-if="compare(data,activedate) === 1">{{getDay(date)}}✔️</span>
+            <span class="text" v-if="compare(data,activedate) === 0" >{{getDay(date)}}</span>
           </div>
         </template>
       </el-calendar>
@@ -16,8 +16,7 @@
       <div class="pt">星球热度排行榜</div>
       <div class="rankcontext" style="margin-top:20px;">
         <div class="rank" v-for="item in planets" :key="item.index">
-        <span style="border-radius: 50%;height: 30px;width: 30px;display: inline-block;background: #DDD1D1;vertical-align: top;margin-left: 30px;margin-bottom:10px;">
-        <span style="display: block;color: white;height: 30px;line-height: 30px;text-align: center">{{item.index}}</span></span>
+          <div class="placing">{{item.index}}</div>
           <span class="aaa">{{item.title}}</span>
           <span ><img src="../../assets/homepageimg/hot.png" class="hot_img"></span>
           <span style="height: 30px;line-height: 30px;">{{item.planethot}}</span>
@@ -29,35 +28,25 @@
 </template>
 
 <script>
-import {getPlanetRank} from "@/api/homepage/planet"
+import {getLoginRecord} from "@/api/homepage/planet"
+import {getHotPlanet} from "@/api/homepage/planet"
 export default{
   data(){
     return{
       value:new Date(),
       planets:[],
       rankPage: false,
+      calendarPage:false,
       datedate:["2022-04-16","2022-04-15","2022-03-28","2022-04-17","2022-04-18"],
+      activedate:[]
     }
   },
   methods:{
     getDay(date){
       return date.getDate()
     },
-    // getToday(){
-    //   let nowDate = new Date()
-    //   let date = {
-    //     year: nowDate.getFullYear(),
-    //     month: nowDate.getMonth() + 1,
-    //     date: nowDate.getDate()
-    //   }
-    //   if (parseInt(date.date) < 10) {
-    //     date.date = '0' + date.date
-    //   }
-    //   this.systemTime = date.year + '-' + date.month + '-' + date.date
-    //   return this.systemTime
-    // },
-    compare(data,datedate){
-      if(datedate.includes(data.day)){
+    compare(data,activedate){
+      if(activedate.includes(data.day)){
         return 1
       }
       else{
@@ -66,12 +55,12 @@ export default{
     }
   },
   mounted(){
-    getPlanetRank().then((res)=>{
+    getHotPlanet().then((res)=>{
       if(res.data.success === true){
         console.log(1)
         let data = res.data.data.planetList
         console.log(data)
-        for(let i = 0;i<5;i++){
+        for(let i = 0;i<data.length;i++){
           this.planets[i] = {}
           this.planets[i].index = i+1
           this.planets[i].title=data[i].planetName
@@ -79,28 +68,40 @@ export default{
         }
         this.rankPage = true
       }
-    })
+    }),
+        getLoginRecord().then((res)=>{
+          if(res.data.success === true){
+            console.log(12345678910)
+            let data=data.data["date:"]
+
+            console.log(data)
+            this.activedate=data
+            this.calendarPage=true
+          }
+        })
+
   }
 }
 </script>
 
 <style scoped>
-.alivedate{
-  margin-left:1175px;
-  margin-top:-600px;
-  width:350px;
-  height:310px;
+#daterank{
+  display: inline-block;
   border-radius: 16px;
-  box-shadow: 0 0 30px #dcdcdc;
+}
+.alivedate{
+
+  width:350px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px #dcdcdc;
 }
 .planetrank{
-  position:relative;
-  margin-left:1175px;
-  margin-top:30px;
-  width:350px;
-  height:260px;
   border-radius: 16px;
-  box-shadow: 0 0 30px #dcdcdc;
+  margin-top: 40px;
+  position:relative;
+  width:350px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px #dcdcdc;
 }
 /deep/  .el-calendar-table .el-calendar-day{
   /*box-sizing: border-box;*/
@@ -109,12 +110,21 @@ export default{
   font-size:8px;
   width: 50px;
   height: 30px;
+  border-radius: 16px!important;
+}
+.el-calendar{
+  border-radius: 16px;
+}
+/deep/ .el-calendar__header{
+  border-radius: 16px;
 }
 .pt{
+  position: relative;
   font-family: "Microsoft YaHei";
   font-size:24px;
   font-color:#2C2C2C;
-  margin-left:80px;
+  padding-top: 15px;
+  text-align: center;
   height:20px;
 }
 .hot_img{
@@ -125,5 +135,21 @@ export default{
   display: inline-block;
   width:50px;
   margin-left:20px;
+}
+.rank{
+  height: 50px;
+  line-height: 50px;
+}
+.placing{
+  margin-left:20px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: #ddd1d1;
+  height:40px;
+  width: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  color: white
 }
 </style>

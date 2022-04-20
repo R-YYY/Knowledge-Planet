@@ -2,17 +2,27 @@
   <div id="recommendplanet">
     <div class="rep">
       <div class="rptext">推荐星球</div>
-      <div class="rpcontent" v-for="(item,index) in recplanets" :key="index">
+      <div class="hint" >
+        <el-popover
+            placement="right-start"
+            trigger="hover"
+            content="为你推荐最感兴趣的星球">
+            <img src="../../assets/homepageimg/hint.png" class="hintpng" slot="reference">
+        </el-popover>
+      </div>
+
+
+      <div class="rpcontent" v-for="(item,index) in recommendplanet" :key="index">
         <div class="content">
           <img src="../../assets/homepageimg/1.jpg" class="planet_img">
-          <div class="ptitle">{{ item.title }}</div>
-          <div class="pintro">{{item.intro}}</div>
+          <div class="ptitle">{{ item.planetName }}</div>
+          <div class="pintro">{{item.planetDescription}}</div>
           <div class="goin">
             <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center">加入</el-button>
           </div>
           <div class="other">
-            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.time}}</span>
-            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：{{item.person}}</span>
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.createTime}}</span>
+<!--            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：{{item.person}}</span>-->
           </div>
           <div class="divide">
             <el-divider></el-divider>
@@ -24,6 +34,8 @@
 </template>
 
 <script>
+import { getRecommendPlanet} from "@/api/homepage/planet";
+
 export default{
   data(){
     return{
@@ -40,36 +52,43 @@ export default{
           intro:'原谅说太快,爱成了阻碍，手中的风筝放太快回不来，不要你离开，回忆划不开，欠你的宠爱，我在等待重来，天空仍灿烂，它爱着大海，情歌被打败，爱已不存在。',
           time:'2022年4月8日',
           person:'周杰伦'
-        },{
-          img:'',
-          title:'园游会',
-          intro:'琥珀色黄昏像糖在很美的远方，你的脸没有化妆我却疯狂爱上，思念跟影子在傍晚一起被拉长，我手中那张入场券陪我数羊，薄荷色草地芬芳像风没有形状。',
-          time:'2022年4月8日',
-          person:'周杰伦'
         }
-      ]
+      ],
+      recommendplanet:[]
     }
+  },
+  methods:{
+
+  },
+  mounted(){
+    getRecommendPlanet().then((res)=>{
+      if(res.data.success === true){
+        console.log(1)
+        let data = res.data.data.planetList
+        console.log(data)
+        this.recommendplanet=data
+
+      }
+    })
   }
 }
 </script>
 
 <style scoped>
 #recommendplanet{
-  position:relative;
-  margin-top:-597px;
-  margin-left:370px;
+
 }
 .rpcontent{
   margin-top:25px;
 }
 .content{
   position:relative;
-  margin-top:10px;
+  margin-top:30px;
 }
 .rep{
   /*position: relative;*/
   width:780px;
-  height:600px;
+  /*height:600px;*/
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
 }
@@ -81,9 +100,11 @@ export default{
   left:30px;
   top:20px;
   font-weight: bold;
+  width:100px;
 }
 .planet_img{
-  width:179px;
+  border-radius: 50%;
+  width:120px;
   height:120px;
   margin-left:30px;
 }
@@ -115,5 +136,14 @@ export default{
 .divide{
   width:740px;
   margin-left:20px;
+}
+.hintpng{
+  style:inline-block;
+  height:18px;
+  width:20px;
+}
+.hint{
+  margin-left:130px;
+  margin-top:-5px;
 }
 </style>

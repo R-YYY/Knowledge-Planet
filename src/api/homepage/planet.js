@@ -1,11 +1,11 @@
 import axios from "../index.js";
 
-export function getPlanetRank(){
-    return axios({
-        method:"GET",
-        url:"/planet/getHotPlanet/",
-    })
-}
+// export function getPlanetRank(){
+//     return axios({
+//         method:"GET",
+//         url:"/planet/getHotPlanet/",
+//     })
+// }
 
 export function getAllNotice(){
     return axios({
@@ -24,7 +24,6 @@ export function getSearchPlanet(searchContent) {
     })
 }
 
-
 export function createPlanet(name,description,coverage) {
     return axios({
         method: "POST",
@@ -34,5 +33,26 @@ export function createPlanet(name,description,coverage) {
             planetDescription:description,
             planetAvatar:coverage
         }
+    })
+}
+
+export function getLoginRecord(){
+    return axios({
+        method:"GET",
+        url:'/system/getLoginRecord',
+    })
+}
+
+export function getRecommendPlanet(){
+    return axios({
+        method:"GET",
+        url:'/planet/getRecommendPlanet',
+    })
+}
+
+export function getHotPlanet(){
+    return axios({
+        method:"GET",
+        url:'/planet/getHotPlanet',
     })
 }

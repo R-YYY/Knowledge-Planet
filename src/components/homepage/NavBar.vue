@@ -11,12 +11,12 @@
             <el-tag
                 v-for="item in joinplanets"
                 effect="dark"
-                style="margin-left:30px;"
+                style="margin-left:30px;margin-top:30px;"
                 type="success"
             >{{ item }}</el-tag>
           </div>
         </div>
-        <div class="createplanet" style="margin-top:50px;">
+        <div class="createplanet" style="margin-top:30px;">
           <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h>
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
             <el-tag
@@ -29,21 +29,35 @@
         </div>
       </div>
       <div class="box" slot="reference">
-        <img src="../../assets/homepageimg/fav.png" class="icon_img">
-        <div class="title">我的星球</div>
-        <div class="intro">我参加的星球交流群</div>
+        <div class="left"><img src="../../assets/homepageimg/fav.png" class="icon_img">
+        </div><div class="right">
+        <span class="title">我的星球</span>
+        <span class="intro">我参加的星球交流群</span>
+
+        </div>
       </div>
     </el-popover>
 
     <div class="box" @click="showCreatePlanet=true">
-      <img src="../../assets/homepageimg/addnew.png" class="icon_img">
-      <div class="title">创建星球</div>
-      <div class="intro">创建你想要的星球</div>
+      <div class="left">   <img src="../../assets/homepageimg/addnew.png" class="icon_img"> </div>
+
+      <div class="right">
+        <span class="title">创建星球</span>
+        <span class="intro">创建你想要的星球</span>
+      </div>
     </div>
 
     <div class="systemnotice" v-if="noticePage">
       <span class="notice" style="font-weight: bold;font-size:24px;color:#2C2C2C;font-family: 'Microsoft YaHei'">系统公告</span>
-      <el-carousel height="190px" indicator-position="outside">
+      <div class="hint" >
+        <el-popover
+            placement="right-start"
+            trigger="hover"
+            content="展示系统的通知">
+          <img src="../../assets/homepageimg/hint.png" class="hintpng" slot="reference">
+        </el-popover>
+      </div>
+      <el-carousel height="150px">
         <el-carousel-item v-for="item in notices" :key="item">
           <div class="nt">{{item.title}}</div>
           <div class="ni">{{item.infor}}</div>
@@ -52,7 +66,7 @@
       </el-carousel>
     </div>
 
-    <dic class="createplanet">
+    <div class="createplanet">
       <el-dialog :visible.sync="showCreatePlanet">
         <el-form :model="planetform" class="planetform">
           <el-form-item label="星球图片" :label-width="planetformLabelWidth">
@@ -68,11 +82,6 @@
           <el-form-item label="星球名字" :label-width="planetformLabelWidth">
             <el-input class="input" v-model="planetform.name" autocomplete="off"></el-input>
           </el-form-item>
-<!--          <el-form-item label="创建时间" :label-width="planetformLabelWidth">-->
-<!--            <el-col :span="11">-->
-<!--              <el-date-picker type="date" placeholder="选择日期" v-model="planetform.createtime" style="width: 100%;"></el-date-picker>-->
-<!--            </el-col>-->
-<!--          </el-form-item>-->
           <el-form-item label="星球描述" :label-width="planetformLabelWidth">
             <el-input
                 class="input"
@@ -88,7 +97,7 @@
           <el-button @click="upload">确 定</el-button>
         </div>
       </el-dialog>
-    </dic>
+    </div>
   </div>
 </template>
 
@@ -110,7 +119,7 @@ export default{
         description:'',
         coverage:{}
       },
-      joinplanets:["你的名字","你的名字","你的名字","你的名字","你的名字","你的名字"],
+      joinplanets:["你的名字","灿烂天空","昨日青空","你的名字","你的名字","你的名字"],
       createplanets:["你的名字", "你的名字","你的名字","你的名字","你的名字"]
     }
   },
@@ -174,62 +183,78 @@ export default{
 
 <style>
 #navbar{
-  margin-top:60px;
-  margin-left:70px;
 }
 .box{
-  height: 86px;
-  width: 230px;
+  position: relative;
+  display: flex;
+  height: 76px;
+  width: 200px;
   margin-bottom: 50px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
 }
+.left{
+  flex: 2;
+  position: relative;
+}
 .icon_img{
-  width:50px;
-  height:50px;
-  margin-top:18px;
-  margin-left:15px;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  flex:1;
+  width:40px;
+  height:40px;
+}
+.right{
+  flex:5;
+  display: flex;
+  flex-direction: column;
 }
 .title{
-  margin-left:75px;
-  margin-top: -52px;
+  flex: 1;
+  padding-top: 14px;
   font-family: "Microsoft YaHei";
   font-size:20px;
   font-color:#2C2C2C;
 }
 .intro{
-  margin-left:75px;
+  flex: 1;
+  display: block;
   font-family: "Microsoft YaHei";
   font-size:14px;
   font-color:#2C2C2C;
 }
 .systemnotice{
+  text-align: center;
   margin-top:90px;
-  height: 286px;
-  width: 330px;
-  margin-left:-50px;
+  height: 200px;
+  width: 200px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
 }
 .notice{
   position:relative;
-  margin-left:100px;
-  top:20px;
+  top:15px;
 }
 .nt{
-  font-size:20px;
+  font-size:18px;
   font-weight:bold;
   font-family: "Microsoft YaHei";
-  font-color:#2C2C2C;
-  margin-left:10px;
-  margin-top:35px;
+  font-color: #575757;
+  text-align: left;
+  margin-left: 1em;
+  margin-top:25px;
 }
 .ni{
   font-size:14px;
   font-family: "Microsoft YaHei";
   font-color:#000000;
   margin-left:10px;
-  margin-top:25px;
+  margin-top:10px;
+  margin-right: 10px;
+  text-align: left;
 }
 .nf{
   font-size:14px;
@@ -299,5 +324,14 @@ export default{
   width: 100px;
   height: 100px;
   background-size: cover;
+}
+.hintpng{
+  style:inline-block;
+  height:18px;
+  width:20px;
+}
+.hint{
+  margin-left:125px;
+  margin-top:-10px;
 }
 </style>
