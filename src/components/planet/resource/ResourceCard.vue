@@ -8,7 +8,7 @@
         <div class="content_right_top">{{ message.resourceName }}</div>
         <div class="content_right_middle">{{ message.resourceDescription }}</div>
         <div class="content_right_bottom">
-          <div v-for="item in message.tags" :key="item" class="tag">
+          <div v-for="item in message.tagList" :key="item" class="tag">
             <el-tag type="info" effect="plain" size="small">{{ item }}</el-tag>
           </div>
         </div>
@@ -59,6 +59,7 @@ export default {
         uploaderAvatar: null,
         uploaderId: null,
         uploaderName: null,
+        tagList:null
       },
       iconList: [
         'like.png',
@@ -144,7 +145,7 @@ export default {
       }
     },
     enter() {
-      window.open(this.message.url)
+      window.open(this.message.link)
     },
     getDetail() {
       sessionStorage.setItem('resource', JSON.stringify(this.message))

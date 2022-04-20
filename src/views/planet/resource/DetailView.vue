@@ -11,7 +11,7 @@
           </el-image>
           <h2>{{ message.resourceName }}</h2>
           <p>{{ message.resourceDescription }}</p>
-          <div v-for="item in message.tags" :key="item" class="tag">
+          <div v-for="item in message.tagList" :key="item" class="tag">
             <el-tag type="info" effect="plain" size="small">{{ item }}</el-tag>
           </div>
         </div>
@@ -20,13 +20,9 @@
             <el-descriptions-item label="链接">
               <el-link :href="message.link">{{ message.link }}</el-link>
             </el-descriptions-item>
-            <el-descriptions-item label="详情">{{ message.detail }}</el-descriptions-item>
+            <el-descriptions-item label="详情">{{ message.details }}</el-descriptions-item>
             <el-descriptions-item label="时间">{{ message.uploadTime }}</el-descriptions-item>
             <el-descriptions-item label="荐者">
-<!--              <img style="height: 20px;position: absolute"-->
-<!--                   :src="message.uploaderAvatar"-->
-<!--                   @error="this.src='../../../assets/icon/my.png'"-->
-<!--                   >-->
               <el-image class="miniIcon" :src="message.uploaderAvatar">
                 <div slot="error" class="image-slot">
                   <img style="height: 20px;"
@@ -152,7 +148,7 @@ export default {
       }
     },
     enter() {
-      window.open(this.message.url)
+      window.open(this.message.link)
     },
   }
 }
@@ -224,7 +220,7 @@ p {
 
 #contentBody {
   text-align: left;
-  margin-left: 10px;
+  margin-left: 30px;
 }
 .miniIcon{
   height: 20px;position: absolute

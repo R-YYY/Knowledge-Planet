@@ -6,7 +6,7 @@
         <ul @click="select">
           <li><span class="selectItem selectedItem">全部</span></li>
           <li><span class="selectItem">最新</span></li>
-          <li><span class="selectItem">星主推荐</span>
+          <li><span class="selectItem">只看星主</span>
             <div id="fire"></div>
           </li>
         </ul>

@@ -131,6 +131,7 @@ export default{
       let key = this.planetform.coverage.uid+this.planetform.coverage.name
       let coverage = this.planetform.coverage
       let planetform = this.planetform
+      let that = this
       cos.putObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
@@ -151,6 +152,7 @@ export default{
           let coverage="https://"+data.Location
           createPlanet(name,description,coverage).then((res)=>{
             console.log(res)
+            that.$router.push("planet")
           })
         }
 

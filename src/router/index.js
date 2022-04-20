@@ -53,7 +53,7 @@ const routes = [
         component: HomePageView,
     },
     {
-        path: '/planet/homepage',
+        path: '/planet',
         name:'planetHomepage',
         component: PlanetHomePageView,
     }

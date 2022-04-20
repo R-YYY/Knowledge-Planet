@@ -2,6 +2,7 @@
   <div id="resource">
     <Header></Header>
     <div id="main">
+      <el-backtop target="#resource"><i class="el-icon-caret-top"></i></el-backtop>
       <HeadBar @select="select"></HeadBar>
       <div class="content">
         <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId">
@@ -9,7 +10,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -31,7 +31,6 @@ export default {
       page: 'all',
       planetCode: "1234",
       resourceList: [],
-      resourceListByTime: [],
       isRecommended: true,
     }
   },
@@ -69,6 +68,10 @@ export default {
 </script>
 
 <style scoped>
+#resource{
+  height: 100vh;
+  overflow-x: hidden;
+}
 #main {
   margin: 30px 100px 0 100px;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="choice_card">
-      <div class="choice">
+      <div class="choice" @click="resource">
         <img src="../../../assets/icon/resources.png" alt="">
         <span>星球资源</span>
       </div>
@@ -16,18 +16,23 @@
         <span>知识竞赛</span>
       </div>
     </div>
-    <div class="choice_card">
-      <div class="choice">
-        <img src="../../../assets/icon/notice.png" alt="">
-        <span>系统公告</span>
-      </div>
-    </div>
+<!--    <div class="choice_card">-->
+<!--      <div class="choice">-->
+<!--        <img src="../../../assets/icon/notice.png" alt="">-->
+<!--        <span>星球通知</span>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
 export default {
-  name: "PlanetChoice"
+  name: "PlanetChoice",
+  methods:{
+    resource(){
+      this.$router.push("resource")
+    }
+  }
 }
 </script>
 

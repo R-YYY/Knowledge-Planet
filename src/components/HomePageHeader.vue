@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="homepageheader">
+    <div id="homepageHeader">
       <div id="left">
         <div id="logo"></div>
       </div>
@@ -13,7 +13,7 @@
                   @blur="isShowResult=false"
         >
         </el-input>
-        <div class="searchresult" v-show="isShowResult">
+        <div class="searchResult" v-show="isShowResult">
           <div class="result" v-for="item in planetResult" >
             <span style="margin-top:20px;">星球名字：{{item.planetName}}</span>
             <span style="margin-left:50px;">星球热度：{{item.hot}}</span>
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style scoped>
-#homepageheader {
+#homepageHeader {
   position: fixed;
   z-index: 100;
   display: flex;
@@ -141,7 +141,7 @@ export default {
 #icon3 {
   background-image: url("../assets/icon/alert.png");
 }
-.searchresult{
+.searchResult{
   width:505px;
   text-align:left;
   margin-left:165px;

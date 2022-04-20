@@ -96,12 +96,13 @@ export default {
 }
 
 #selector ul {
-
+  font-weight: bold;
   list-style-type: none;
   display: inline;
 }
 
 #selector ul li {
+  color: #999898;
   cursor: pointer;
   display: inline;
   position: relative;
