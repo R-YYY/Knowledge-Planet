@@ -13,24 +13,6 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="标题" prop="resourceName" :label-width="formLabelWidth">
-          <el-input class="input" v-model="form.resourceName" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="description" :label-width="formLabelWidth">
-          <el-input class="input" v-model="form.description" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="链接" prop="link" :label-width="formLabelWidth">
-          <el-input class="input" v-model="form.link" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="简介" prop="detail" :label-width="formLabelWidth">
-          <el-input
-              class="input"
-              type="textarea"
-              :rows="2"
-              placeholder="请输入内容"
-              v-model="form.detail">
-          </el-input>
-        </el-form-item>
         <el-form-item label="标签" prop="tags" :label-width="formLabelWidth">
           <el-tag
               :key="tag"
@@ -51,6 +33,40 @@
           >
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+        </el-form-item>
+        <el-form-item label="标题" prop="resourceName" :label-width="formLabelWidth">
+          <el-input class="input" v-model="form.resourceName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="description" :label-width="formLabelWidth">
+          <el-input class="input" v-model="form.description" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="简介" prop="detail" :label-width="formLabelWidth">
+          <el-input
+              class="input"
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="form.detail">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="格式" :label-width="formLabelWidth">
+          <el-radio v-model="type" label="1">链接</el-radio>
+          <el-radio v-model="type" label="2">文件</el-radio>
+        </el-form-item>
+
+        <el-form-item label="链接" prop="link" :label-width="formLabelWidth" v-show="type==='1'">
+          <el-input class="input" v-model="form.link" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="文件" prop="file" :label-width="formLabelWidth" v-show="type==='2'">
+          <el-upload
+              action="string"
+              class="upload-demo"
+              :http-request="uploadFile"
+              :on-remove="removeFile"
+              :limit="1">
+            <el-button size="small">点击上传</el-button>
+            <span slot="tip" style="margin-left: 20px" class="el-upload__tip">只能上传文件，且不超过2M</span>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -81,30 +97,31 @@ export default {
         imageUrl: '',
         coverage: {},
       },
+      file: '',
+      type: "1",
       inputVisible: false,
       inputValue: '',
       formLabelWidth: '4em',
-      rules:{
+      rules: {
         resourceName: [
-          {required:true,message:'请输入资源名称',trigger:'blur'},
+          {required: true, message: '请输入资源名称', trigger: 'blur'},
         ],
         description: [
-          {required:true,message:'请输入简单描述',trigger:'blur'},
-          {min:2,max:20,message:'长度在2到20个字符',trigger: 'blur'},
+          {required: true, message: '请输入简单描述', trigger: 'blur'},
+          {min: 2, max: 20, message: '长度在2到20个字符', trigger: 'blur'},
         ],
         detail: [
-          {required:true,message:'请输入详细信息',trigger:'blur'},
-          {min:10,message:'长度大于10个字符',trigger: 'blur'},
+          {required: true, message: '请输入详细信息', trigger: 'blur'},
+          {min: 10, message: '长度大于10个字符', trigger: 'blur'},
         ],
         link: [
-          {required:true,message:'请输入活动名称',trigger:'blur'},
-          {min:2,max:16,message:'长度在2到16个字符',trigger: 'blur'},
+          {required: true, message: '请输入链接', trigger: 'blur'},
         ],
         tags: [
-          {type:'array',required:true,message:'至少上传一个标签',trigger:'blur'},
+          {type: 'array', required: true, message: '至少上传一个标签', trigger: 'blur'},
         ],
         coverage: [
-          {required:true,message:'请上传封面',trigger:'blur'},
+          {required: true, message: '请上传封面', trigger: 'blur'},
         ],
       }
     }
@@ -117,16 +134,13 @@ export default {
           return false;
         }
       });
-      let key = this.form.coverage.uid + this.form.coverage.name
-      let coverage = this.form.coverage
-      let form = this.form
       let that = this
       cos.putObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: key,              /* 必须 */
+        Key: that.form.coverage.uid + that.form.coverage.name,              /* 必须 */
         StorageClass: 'STANDARD',
-        Body: coverage, // 上传文件对象
+        Body: that.form.coverage, // 上传文件对象
         onProgress: function (progressData) {
           console.log(JSON.stringify(progressData));
         }
@@ -136,18 +150,18 @@ export default {
           this.$message.error("图片上传失败，请重新上传")
         } else {
           let resource = JSON.stringify({
-            "planetCode": form.planetCode,
-            "resourceName": form.resourceName,
-            "link": form.link,
+            "planetCode": that.form.planetCode,
+            "resourceName": that.form.resourceName,
+            "link": that.form.link,
             "coverage": "https://" + data.Location,
-            "resourceDescription": form.description,
-            "details": form.detail,
-            "tagList": form.tags
+            "resourceDescription": that.form.description,
+            "details": that.form.detail,
+            "tagList": that.form.tags
           })
           uploadResource(resource).then((res) => {
             console.log(res)
             if (res.data.success === true) {
-              that.$message("上传成功",'success')
+              that.$message("上传成功", 'success')
               that.dialogFormVisible = false
             }
           }).catch(err)
@@ -159,6 +173,10 @@ export default {
       })
     },
     handlePicturePreview(file) {
+      const isJPG = file.type === 'image/jpeg';
+      if (!isJPG) {
+        this.$message.error("请上传图片")
+      }
       this.form.coverage = file.raw
       this.form.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -180,9 +198,51 @@ export default {
       }
       this.inputVisible = false;
       this.inputValue = '';
+    },
+
+    uploadFile(e) {
+      const isLt2M = e.file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('上传文件不能超过 2MB!');
+      }
+      let that = this
+      cos.putObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: e.file.uid + e.file.name,              /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: e.file, // 上传文件对象
+        onProgress: function (progressData) {
+          console.log(JSON.stringify(progressData));
+        }
+      }, function (err, data) {
+        console.log(data)
+        if (err || data.statusCode !== 200) {
+          that.$message.error("文件上传失败，请重新上传")
+        } else {
+          that.form.link = 'https://' + data.Location
+          console.log("文件上传成功")
+        }
+      })
+    },
+    removeFile(file, fileList) {
+      console.log(file)
+      let that = this
+      cos.deleteObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: file.raw.uid + file.raw.name,              /* 必须 */
+      }, function (err, data) {
+        console.log(err,data)
+        if (err || data.statusCode !== 200) {
+          that.$message.error("文件失败")
+        } else {
+          that.form.link = ''
+          console.log("文件删除成功")
+        }
+      })
     }
   }
-
 }
 </script>
 
@@ -191,7 +251,7 @@ export default {
 
 .el-button {
   font-weight: bolder;
-  border:1px solid #00ded4;
+  border: 1px solid #00ded4;
   color: #00ded4;
 }
 

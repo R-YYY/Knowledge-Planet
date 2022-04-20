@@ -5,7 +5,16 @@
     <div id="selector">
       <ul @click="select">
         <li><span class="selectItem selectedItem">全部</span></li>
-        <li><span class="selectItem">最新</span></li>
+        <li>
+          <el-tooltip content="查看点赞数最高的前10个资源" effect="light" placement="top">
+            <span class="selectItem">热门</span>
+          </el-tooltip>
+        </li>
+        <li>
+          <el-tooltip content="查看最新的前10个资源" effect="light" placement="top">
+            <span class="selectItem">最新</span>
+          </el-tooltip>
+        </li>
         <li><span class="selectItem">星主推荐</span>
           <div id="fire"></div>
         </li>
@@ -19,9 +28,10 @@
 
 <script>
 import Upload from '@/components/planet/resource/uploadForm'
+
 export default {
   name: "ResourceHeader",
-  components:{
+  components: {
     Upload
   },
   data() {
@@ -37,12 +47,15 @@ export default {
           span.className = "selectItem"
         }
         e.target.className = "selectItem selectedItem"
-        switch (e.target.innerHTML){
+        switch (e.target.innerHTML) {
           case "全部":
-            this.$emit('select','all')
+            this.$emit('select', 'all')
+            break;
+          case "热门":
+            this.$emit('select', 'hot')
             break;
           case "最新":
-            this.$emit('select','time')
+            this.$emit('select', 'time')
             break;
           case "星主推荐":
             this.$emit('select', 'recommend')

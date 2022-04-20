@@ -4,9 +4,16 @@
     <div id="main">
       <el-backtop target="#resource"><i class="el-icon-caret-top"></i></el-backtop>
       <HeadBar @select="select"></HeadBar>
-      <div class="content">
-        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId">
-          <Card :resource="item" v-show="isRecommended||item.isRecommended"></Card>
+      <div v-if="type==='all'||type==='recommend'" class="content">
+        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
+             v-show="isRecommended||item.isRecommended">
+          <Card :resource="item"></Card>
+        </div>
+      </div>
+      <div v-else class="content">
+        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
+             v-show="index<10">
+          <Card :resource="item"></Card>
         </div>
       </div>
     </div>
@@ -16,7 +23,6 @@
 <script>
 import HeadBar from "@/components/planet/resource/ResourceHeader"
 import Card from "@/components/planet/resource/ResourceCard"
-
 import {getResourceByPCode} from "@/api/planet/resource"
 import {compareByDesc, compareByAsc} from "@/utils/compare";
 
@@ -28,14 +34,15 @@ export default {
   },
   data() {
     return {
-      page: 'all',
       planetCode: "1234",
       resourceList: [],
       isRecommended: true,
+      type: 'all'
     }
   },
   created() {
     getResourceByPCode(1234).then((res) => {
+      console.log(res)
       let list = res.data.data.resourceList
       for (let item of list) {
         this.resourceList.push(item)
@@ -46,9 +53,13 @@ export default {
   },
   methods: {
     select(val) {
-      console.log(val)
+      this.type = val
       switch (val) {
         case "all":
+          this.isRecommended = true;
+          this.resourceList.sort(compareByAsc("resourceId"))
+          break;
+        case "hot":
           this.isRecommended = true;
           this.resourceList.sort(compareByDesc("likeCount"))
           break;
@@ -68,10 +79,11 @@ export default {
 </script>
 
 <style scoped>
-#resource{
+#resource {
   height: 100vh;
   overflow-x: hidden;
 }
+
 #main {
   margin: 30px 100px 0 100px;
 }

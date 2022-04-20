@@ -51,6 +51,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -150,6 +151,16 @@ export default {
     enter() {
       window.open(this.message.link)
     },
+    getMessage(){
+      let xhr = new XMLHttpRequest()
+      xhr.open('get','https://knewledgeplanet.usemock.com/kp?userId=1')
+      xhr.send()
+      xhr.onreadystatechange = function (res){
+        if(xhr.readyState===4||xhr.status===200){
+          console.log(xhr.responseText)
+        }
+      }
+    }
   }
 }
 </script>
