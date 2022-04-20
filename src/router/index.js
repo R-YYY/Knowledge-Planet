@@ -5,7 +5,7 @@ import RegisterView from "@/views/login/RegisterView";
 import ResourceView from "@/views/planet/resource/ResourceView";
 import ResourceDetail from "@/views/planet/resource/DetailView";
 import HomePageView from "@/views/homepage/HomePageView";
-import RegisterSuccessView from "@/views/login/RegisterSuccessView";
+import Success from "@/views/login/SuccessView";
 import FindPasswordView from "@/views/login/FindPasswordView";
 import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
 
@@ -33,9 +33,9 @@ const routes = [
         component: FindPasswordView,
     },
     {
-        path: '/registerSuccess',
-        name: 'registerSuccess',
-        component: RegisterSuccessView,
+        path: '/success',
+        name: 'success',
+        component: Success,
     },
     {
         path: '/planet/resource',

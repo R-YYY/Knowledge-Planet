@@ -49,10 +49,22 @@ export function updatePassword(oldPassword, newPassword){
     data.append("newPassword",newPassword);
     return axios({
         method: 'POST',
-        url: '/system/userInfo/updatePassword',
+        url: '/userInfo/updatePassword',
         params:{
             "oldPassword":oldPassword,
             "newPassword":newPassword
         }
+    })
+}
+
+export function findPassword(email,code, password){
+    const data = new FormData()
+    data.append("email",email);
+    data.append("verificationCode",code);
+    data.append("newPassword",password);
+    return axios({
+        method: 'POST',
+        url: '/userInfo/setNewPassword',
+        data:data,
     })
 }

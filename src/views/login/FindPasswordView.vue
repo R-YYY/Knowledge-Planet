@@ -3,7 +3,7 @@
     <div class="find_psd_card">
       <img class="logo" src="../../assets/login/zsxq.png" alt="">
       <div class="form">
-        <el-form :model="userData" :rules="findRules" label-width="70px" label-position="right">
+        <el-form ref="findPsdForm" :model="userData" :rules="findRules" label-width="70px" label-position="right">
           <el-form-item  label="邮箱" class="input_item" prop="email">
             <el-input v-model="userData.email" placeholder="请输入邮箱"></el-input>
           </el-form-item>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {checkEmail, getVerificationCodeGet} from "@/api/login/login";
+import {checkEmail, findPassword, getVerificationCodeGet, registerPost} from "@/api/login/login";
 
 export default {
   name: "FindPasswordView",
@@ -56,7 +56,24 @@ export default {
   },
   methods:{
     changePsd(){
-
+      this.$refs.findPsdForm.validate((valid)=>{
+        if(valid){
+          findPassword(this.userData.email,this.userData.code, this.$md5(this.userData.password)).then((res)=>{
+            this.$message({message: res.data.message, type: res.data.success?'success':'error'});
+            if(res.data.success) {
+              this.$router.push({
+                name:"success",
+                params:{
+                  message:"修改成功",
+                },
+              });
+            }
+          })
+        }
+        else {
+          this.$message({message: '信息填写错误，请重试！', type: 'error'});
+        }
+      })
     },
 
     sendCode() {
