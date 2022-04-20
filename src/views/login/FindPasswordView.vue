@@ -21,7 +21,7 @@
         <span class="register">没有账号？
         <router-link class="register_btn" :to="{name:'register'}">点击注册</router-link></span>
         <span class="login">已有账号？
-        <span class="login_btn" @click="toLogin">登录</span></span>
+        <router-link class="login_btn" :to="{name:'login'}">登录</router-link></span>
       </div>
     </div>
   </div>
@@ -88,10 +88,6 @@ export default {
         this.$message({message: '验证码发送失败，请重试！', type: 'error'});
       })
     },
-
-    toLogin(){
-      this.$router.push("/login");
-    }
   }
 }
 </script>
@@ -164,6 +160,7 @@ export default {
 }
 
 .login_btn{
+  color: black;
   text-decoration:underline black;
   cursor:pointer;
 }
