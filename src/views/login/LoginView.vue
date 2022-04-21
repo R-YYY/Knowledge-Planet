@@ -59,13 +59,13 @@ export default {
   },
   methods:{
     login(){
-      if(this.code !== this.identifyCode){
-        this.$message({message: "验证码错误！", type: 'error'});
-        return;
-      }
       let msg = checkEmail(this.email)
       if(msg !== "ok") {
         this.$message({message: msg, type: 'error'});
+        return;
+      }
+      if(this.code !== this.identifyCode){
+        this.$message({message: "验证码错误！", type: 'error'});
         return;
       }
       loginPost(this.email,this.$md5(this.password)).then((res)=>{
@@ -78,10 +78,6 @@ export default {
       }).catch(()=>{
         this.$message({message: "系统错误" , type: 'error'});
       })
-    },
-
-    toFindPsd(){
-      this.$router.push("/findPassword");
     },
 
     //生成随机数

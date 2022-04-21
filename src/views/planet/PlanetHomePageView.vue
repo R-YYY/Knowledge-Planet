@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import IntegralRank from "@/components/planet/homepage/IntegralRank";
+import IntegralRank from "@/components/planet/homepage/integral/IntegralRank";
 import TopicArea from "@/components/planet/homepage/TopicArea";
 import PlanetChoice from "@/components/planet/homepage/PlanetChoice";
 export default {
