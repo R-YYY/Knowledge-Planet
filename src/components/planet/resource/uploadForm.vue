@@ -147,7 +147,7 @@ export default {
       uploadResource(resource).then((res) => {
         console.log(res)
         if (res.data.success === true) {
-          that.$message("上传成功", 'success')
+          that.$message.success("上传成功")
           that.dialogFormVisible = false
         }
       }).catch((err) => {
