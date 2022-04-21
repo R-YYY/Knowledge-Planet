@@ -12,7 +12,7 @@
       </div>
       <div v-else class="content">
         <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
-             v-show="index<10">
+             v-if="index<11">
           <Card :resource="item"></Card>
         </div>
       </div>
@@ -99,5 +99,8 @@ export default {
 
 .card {
   margin: 40px 20px 10px 20px;
+}
+div .card:nth-last-child(1):nth-child(3n - 1){
+  margin-right: calc(30% + 80px);
 }
 </style>

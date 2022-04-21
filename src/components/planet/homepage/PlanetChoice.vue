@@ -30,7 +30,7 @@ export default {
   name: "PlanetChoice",
   methods:{
     resource(){
-      this.$router.push("resource")
+      this.$router.push("planet/resource")
     }
   }
 }

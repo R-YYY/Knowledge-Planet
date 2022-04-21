@@ -6,10 +6,11 @@
         <el-form-item label="图片" :label-width="formLabelWidth">
           <el-upload
               class="avatar-uploader"
-              :auto-upload="false"
-              action="string"
-              :on-change="handlePicturePreview">
-            <div v-if="form.imageUrl" :style="{backgroundImage:'url('+form.imageUrl+')'}" class="picture"></div>
+              :http-request="uploadCoverage"
+              :on-remove="removeCoverage"
+              :limit="1"
+              action="string">
+            <div v-if="form.coverage" :style="{backgroundImage:'url('+form.coverage+')'}" class="picture"></div>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -88,16 +89,14 @@ export default {
     return {
       dialogFormVisible: false,
       form: {
-        planetCode: '1234',
+        planetCode: '23',
         resourceName: '',
         description: '',
         detail: '',
         link: 'https://',
         tags: [],
-        imageUrl: '',
-        coverage: {},
+        coverage: '',
       },
-      file: '',
       type: "1",
       inputVisible: false,
       inputValue: '',
@@ -134,63 +133,36 @@ export default {
           return false;
         }
       });
-      let that = this
-      cos.putObject({
-        Bucket: 'covenant-1308013334', /* 必须 */
-        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: that.form.coverage.uid + that.form.coverage.name,              /* 必须 */
-        StorageClass: 'STANDARD',
-        Body: that.form.coverage, // 上传文件对象
-        onProgress: function (progressData) {
-          console.log(JSON.stringify(progressData));
-        }
-      }, function (err, data) {
-        console.log(data)
-        if (err || data.statusCode !== 200) {
-          this.$message.error("图片上传失败，请重新上传")
-        } else {
-          let resource = JSON.stringify({
-            "planetCode": that.form.planetCode,
-            "resourceName": that.form.resourceName,
-            "link": that.form.link,
-            "coverage": "https://" + data.Location,
-            "resourceDescription": that.form.description,
-            "details": that.form.detail,
-            "tagList": that.form.tags
-          })
-          uploadResource(resource).then((res) => {
-            console.log(res)
-            if (res.data.success === true) {
-              that.$message("上传成功", 'success')
-              that.dialogFormVisible = false
-            }
-          }).catch(err)
-          {
-            console.log(err)
-          }
-        }
-
+      let resource = JSON.stringify({
+        "planetCode": this.form.planetCode,
+        "resourceName": this.form.resourceName,
+        "link": this.form.link,
+        "coverage": this.form.coverage,
+        "resourceDescription": this.form.description,
+        "details": this.form.detail,
+        "tagList": this.form.tags
       })
-    },
-    handlePicturePreview(file) {
-      const isJPG = file.type === 'image/jpeg';
-      if (!isJPG) {
-        this.$message.error("请上传图片")
-      }
-      this.form.coverage = file.raw
-      this.form.imageUrl = URL.createObjectURL(file.raw);
+      console.log(resource)
+      let that = this
+      uploadResource(resource).then((res) => {
+        console.log(res)
+        if (res.data.success === true) {
+          that.$message("上传成功", 'success')
+          that.dialogFormVisible = false
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     handleClose(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
     },
-
     showInput() {
       this.inputVisible = true;
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
-
     handleInputConfirm() {
       let inputValue = this.inputValue;
       if (inputValue) {
@@ -199,7 +171,48 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-
+    uploadCoverage(e) {
+      const isJPG = e.file.type === 'image/jpeg';
+      if (!isJPG) {
+        this.$message.error("请上传图片")
+      }
+      let that = this
+      cos.putObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: 'resourceCoverage/' + e.file.uid + e.file.name,              /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: e.file, // 上传文件对象
+        onProgress: function (progressData) {
+          console.log(JSON.stringify(progressData));
+        }
+      }, function (err, data) {
+        console.log(data)
+        if (err || data.statusCode !== 200) {
+          that.$message.error("图片上传失败，请重新上传")
+        } else {
+          that.form.coverage = 'https://' + data.Location
+          console.log("图片上传成功")
+        }
+      })
+    },
+    removeCoverage(file, fileList) {
+      console.log(file)
+      let that = this
+      cos.deleteObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: file.raw.uid + file.raw.name,              /* 必须 */
+      }, function (err, data) {
+        console.log(err, data)
+        if (err || data.statusCode !== 204) {
+          that.$message.error("图片文件失败")
+        } else {
+          that.form.coverage = ''
+          console.log("图片删除成功")
+        }
+      })
+    },
     uploadFile(e) {
       const isLt2M = e.file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -209,7 +222,7 @@ export default {
       cos.putObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: e.file.uid + e.file.name,              /* 必须 */
+        Key: 'resourceFiles/' + e.file.uid + e.file.name,              /* 必须 */
         StorageClass: 'STANDARD',
         Body: e.file, // 上传文件对象
         onProgress: function (progressData) {
@@ -233,9 +246,9 @@ export default {
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
         Key: file.raw.uid + file.raw.name,              /* 必须 */
       }, function (err, data) {
-        console.log(err,data)
-        if (err || data.statusCode !== 200) {
-          that.$message.error("文件失败")
+        console.log(err, data)
+        if (err || data.statusCode !== 204) {
+          that.$message.error("删除文件失败")
         } else {
           that.form.link = ''
           console.log("文件删除成功")
