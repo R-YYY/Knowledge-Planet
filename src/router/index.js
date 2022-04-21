@@ -8,6 +8,7 @@ import HomePageView from "@/views/homepage/HomePageView";
 import Success from "@/views/login/SuccessView";
 import FindPasswordView from "@/views/login/FindPasswordView";
 import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
+import MemberView from "@/views/planet/member/MemberView";
 
 
 Vue.use(VueRouter)
@@ -56,6 +57,11 @@ const routes = [
         path: '/planet',
         name:'planetHomepage',
         component: PlanetHomePageView,
+    },
+    {
+        path: '/planet/member',
+        name:'member',
+        component: MemberView,
     }
 ]
 

@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="choice_card">
+      <div class="choice" @click="$router.push('/planet')">
+        <img src="../../../assets/icon/resources.png" alt="">
+        <span>星球讨论</span>
+      </div>
+      <hr class="line">
       <div class="choice" @click="resource">
         <img src="../../../assets/icon/resources.png" alt="">
         <span>星球资源</span>
@@ -16,12 +21,12 @@
         <span>知识竞赛</span>
       </div>
     </div>
-<!--    <div class="choice_card">-->
-<!--      <div class="choice">-->
-<!--        <img src="../../../assets/icon/notice.png" alt="">-->
-<!--        <span>星球通知</span>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="choice_card">
+      <div class="choice" @click="$router.push('/planet/member')">
+        <img src="../../../assets/icon/member.png" alt="">
+        <span>成员管理</span>
+      </div>
+    </div>
   </div>
 </template>
 
