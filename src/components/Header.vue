@@ -55,9 +55,8 @@ export default {
     },
     screenChange() {
       let that = this
+      this.timer = true
       setTimeout(function () {
-        console.log(that.screenWidth)
-        console.log(that.mode)
         if (that.screenWidth < 930 && that.searchVisible) {
           that.searchVisible = false
         } else if (that.screenWidth >= 930 && !that.searchVisible) {
@@ -80,7 +79,6 @@ export default {
     screenWidth(val) {
       if (!this.timer) {
         this.screenWidth = val
-        this.timer = true
         this.screenChange()
       }
     }
