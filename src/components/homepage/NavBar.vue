@@ -124,9 +124,6 @@ export default{
     }
   },
   methods:{
-    isCreatePlanet(){
-      this.showCreatePlanet=true
-    },
     upload() {
       let key = this.planetform.coverage.uid+this.planetform.coverage.name
       let coverage = this.planetform.coverage
