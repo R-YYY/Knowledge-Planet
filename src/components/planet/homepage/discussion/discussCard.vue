@@ -3,7 +3,8 @@
     <div class="desc">
       <h1 class="name">{{ topic.name }}</h1>
       <div class="text">
-        <span class="content" @click="contentVisible = !contentVisible">{{ contentVisible ? topic.content : topic.shortContent }}</span>
+        <span class="content"
+              @click="contentVisible = !contentVisible">{{ contentVisible ? topic.content : topic.shortContent }}</span>
         <span class="showButton" @click="contentVisible = !contentVisible">
           {{ contentVisible ? '收起' : '显示全部' }}
           <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
@@ -20,23 +21,26 @@
     </div>
     <el-button id="answerButton" round icon="el-icon-edit" @click="answerFormVisible=true">回答
     </el-button>
-    <answerForm v-if="answerFormVisible"></answerForm>
+    <transition name="el-zoom-in-top">
+      <answerForm v-if="answerFormVisible" @cancel="answerFormVisible=false"></answerForm>
+    </transition>
     <hr class="line">
   </div>
 </template>
 
 <script>
 import answerForm from "@/components/planet/homepage/discussion/answerForm";
+
 export default {
   name: "discussCard",
   props: ['topic'],
-  components:{
+  components: {
     answerForm
   },
   data() {
     return {
       contentVisible: false,
-      answerFormVisible:true
+      answerFormVisible: false
     }
   },
   created() {
@@ -157,6 +161,7 @@ export default {
 }
 
 #answerButton {
-  position: absolute;right:50px
+  position: absolute;
+  right: 50px
 }
 </style>

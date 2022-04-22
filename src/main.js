@@ -15,7 +15,7 @@ Vue.prototype.$md5 = md5;
 Vue.use(ElementUI)
 //全局组件
 Vue.component('Header',Header)
-
+// Vue.component(CollapseTransition.name, CollapseTransition)
 
 new Vue({
   router,
