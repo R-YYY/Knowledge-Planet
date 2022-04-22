@@ -49,7 +49,7 @@ export default {
   methods: {
     autoTextAreaHeight(e) {
       e.target.style.height = 'auto'
-      e.target.style.height = e.target.scrollHeight + "px"
+      e.target.style.height =e.target.scrollTop + e.target.scrollHeight + "px"
     },
     uploadClick() {
       document.querySelector('#file').click();
@@ -141,6 +141,7 @@ export default {
   box-sizing: border-box;
   padding: 10px 20px;
   resize: none;
+  overflow: hidden;
 }
 
 .input:focus {

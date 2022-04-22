@@ -1,14 +1,22 @@
 <template>
   <div>
     <div class="desc">
-      <h1 class="name">{{ topic.name }}</h1>
+      <h1 class="titleName">{{ topic.name }}</h1>
+      <div class="questionerInfo" v-show="contentVisible">
+        <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
+        <span class="questionerName">{{ name }}</span>
+      </div>
       <div class="text">
         <span class="content"
               @click="contentVisible = !contentVisible">{{ contentVisible ? topic.content : topic.shortContent }}</span>
-        <span class="showButton" @click="contentVisible = !contentVisible">
-          {{ contentVisible ? '收起' : '显示全部' }}
+        <span class="showButton" v-show="!contentVisible" @click="contentVisible = !contentVisible">
+          显示全部
           <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
         </span>
+        <div class="time" v-show="contentVisible">发布于{{ time }}
+          <span class="showButton" @click="contentVisible = !contentVisible">收起
+          <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
+        </span></div>
       </div>
     </div>
     <div class="opt">
@@ -40,15 +48,16 @@ export default {
   data() {
     return {
       contentVisible: false,
-      answerFormVisible: false
+      answerFormVisible: false,
+      avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff6%2Fc9%2Ff6%2Ff6c9f647a533782026c0609ac5d550df.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1653216789&t=5a8da6e8d7dd650e0f696a7bf3a480b5',
+      name: 'asdasd',
+      time: '2012-12-32 12:30'
     }
   },
   created() {
     let content = this.topic.content
     this.topic.shortContent = ''
-    console.log(content.length)
     let reg = /[^\x00-\xff]/
-    console.log(reg.test('一'))
     let l = 0
     if (content.length <= 70) {
       this.topic.shortContent = content
@@ -62,8 +71,6 @@ export default {
       }
     }
     this.topic.shortContent += '...'
-    console.log(this.topic.shortContent)
-    console.log(this.topic.shortContent.length)
 
   }
 }
@@ -77,11 +84,34 @@ export default {
   padding: 0 20px;
 }
 
-.name {
-  margin: 20px 0;
+.titleName {
+  margin: 20px 0 10px;
   color: #6A6868;
   font-weight: bold;
   font-size: 18px;
+}
+
+.questionerInfo {
+  height: 24px;
+  margin-bottom: 10px;
+  line-height: 24px;
+}
+
+.avatar {
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.questionerName {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #4a4a4a;
 }
 
 .text {
@@ -102,9 +132,16 @@ export default {
   /*text-overflow: ellipsis;*/
 }
 
+.time {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #acacac;
+}
+
 .showButton {
   margin-left: 10px;
   color: #74D8BE;
+  font-size: 14px;
 }
 
 .line {
