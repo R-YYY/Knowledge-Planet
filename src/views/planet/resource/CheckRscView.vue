@@ -1,29 +1,30 @@
 <template>
-  <div id="resource">
+  <div id="checkRsc">
     <Header></Header>
     <div id="main">
-      <el-backtop target="#resource"><i class="el-icon-caret-top"></i></el-backtop>
+      <el-backtop target="#checkRsc"><i class="el-icon-caret-top"></i></el-backtop>
       <div style="display: flex">
-        <HeadBar @select="select"></HeadBar>
-        <div v-if="isManager" class="switch">
+        <CheckRscHeader @select="select"></CheckRscHeader>
+        <div class="switch">
           <span>管理员审核模式</span>
           <el-switch
-              @change="$router.push({name:'checkResource'})"
+              v-model="check"
+              @change="$router.push({name:'resource'})"
               active-color="#74D8BE"
               inactive-color="#CECACA">
           </el-switch>
         </div>
       </div>
-      <div v-if="type==='all'||type==='recommend'" class="content">
-        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
-             v-show="isRecommended||item.isRecommended">
-          <Card :resource="item"></Card>
+      <div v-if="type==='unChecked'" class="content">
+        <div class="card" v-for="item in resourceList" :key="item.resourceId"
+             v-show="item.status===0">
+          <CheckRscCard :resource="item"></CheckRscCard>
         </div>
       </div>
       <div v-else class="content">
-        <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
-             v-if="index<11">
-          <Card :resource="item"></Card>
+        <div class="card" v-for="item in resourceList" :key="item.resourceId"
+             v-show="item.status===1 && (showAllChecked?true:item.isRecommended===isRecommended)">
+          <CheckRscCard :resource="item"></CheckRscCard>
         </div>
       </div>
     </div>
@@ -31,24 +32,23 @@
 </template>
 
 <script>
-import HeadBar from "@/components/planet/resource/ResourceHeader"
-import Card from "@/components/planet/resource/ResourceCard"
-import {getResourceByPCode} from "@/api/planet/resource"
-import {compareByDesc, compareByAsc} from "@/utils/compare";
-
+import CheckRscHeader from "@/components/planet/checkRsc/CheckRscHeader";
+import CheckRscCard from "@/components/planet/checkRsc/CheckRscCard";
+import {getResourceByPCode} from "@/api/planet/resource";
 export default {
-  name: "ResourceView",
+  name: "CheckRscView",
   components: {
-    HeadBar,
-    Card
+    CheckRscCard,
+    CheckRscHeader,
   },
   data() {
     return {
+      check:true,
       planetCode: "23",
       resourceList: [],
       isRecommended: true,
-      type: 'all',
-      isManager:true,
+      type: 'unChecked',
+      showAllChecked:false,
     }
   },
   created() {
@@ -66,31 +66,27 @@ export default {
     select(val) {
       this.type = val
       switch (val) {
-        case "all":
-          this.isRecommended = true;
-          this.resourceList.sort(compareByAsc("resourceId"))
+        case "checked":
+          this.showAllChecked = true;
           break;
-        case "hot":
+        case "checked&&recommend":
+          this.showAllChecked = false;
           this.isRecommended = true;
-          this.resourceList.sort(compareByDesc("likeCount"))
           break;
-        case "time":
-          this.isRecommended = true;
-          this.resourceList.sort(compareByDesc("uploadTime"))
-          break;
-        case "recommend":
+        case "checked&&unRecommend":
+          this.showAllChecked = false;
           this.isRecommended = false;
           break;
+        case "unChecked":
+          break;
       }
-    }
+    },
   }
-
-
 }
 </script>
 
 <style scoped>
-#resource {
+#checkRsc {
   height: 100vh;
   overflow-x: hidden;
 }
