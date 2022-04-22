@@ -23,25 +23,42 @@
       <div id="right">
         <div id="icon1" class="icon"></div>
         <div id="icon2" class="icon"></div>
-        <div id="icon3" class="icon"></div>
+        <div class="noticeicon" @click="showNotice()">
+          <div id="icon3" class="icon"></div>
+          <el-badge value="New" class="noticenumber" v-show="isShowNoticeNumber"></el-badge>
+        </div>
       </div>
     </div>
     <div class="placeholder">
     </div>
-
+    <el-drawer
+        style="margin-top:50px;"
+        :visible.sync="isShowNoticeDrawer"
+        z-index="2">
+      <h style="font-family: 'Microsoft YaHei';font-size:20px;font-weight: bold;margin-left:20px;">系统通知</h>
+      <div class="allnotice" v-for="item in notices" >
+        <p style="font-weight: bold;font-family: 'Microsoft YaHei';margin-left: 20px;">{{item.title}}</p>
+        <p style="font-family: 'Microsoft YaHei';margin-left: 20px;">{{item.content}}</p>
+        <el-divider></el-divider>
+      </div>
+    </el-drawer>
   </div>
 
 </template>
 
 <script>
 import {getSearchPlanet} from "@/api/homepage/planet"
+import {getAllNotice} from "@/api/homepage/planet"
 export default {
   name: "HomePageHeader",
   data() {
     return {
       searchContent: '',
+      isShowNoticeNumber:true,
       isShowResult:false,
-      planetResult:[]
+      planetResult:[],
+      notices:[],
+      isShowNoticeDrawer:false
     }
   },
   methods:{
@@ -56,7 +73,21 @@ export default {
           this.planetResult=data
         }
       })
+    },
+    showNotice(){
+      this.isShowNoticeDrawer=!this.isShowNoticeDrawer
+      this.isShowNoticeNumber=false
+      getAllNotice().then((res)=>{
+        if(res.data.success === true){
+          let data = res.data.data.notices
+          console.log(data)
+          console.log(222222)
+          this.notices=data
+          console.log(this.notices)
+        }
+      })
     }
+
   },
   mounted(){
 
@@ -149,5 +180,9 @@ export default {
   box-shadow: 0 0 30px #dcdcdc;
   background-color:whitesmoke;
   position:absolute;
+}
+.noticenumber{
+  margin-left:75px;
+  margin-top:-65px;
 }
 </style>

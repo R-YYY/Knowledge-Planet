@@ -14,14 +14,14 @@
       <div class="rpcontent" v-for="(item,index) in recommendplanet" :key="index">
         <div class="content">
           <img src="../../assets/homepageimg/1.jpg" class="planet_img">
-          <div class="ptitle">{{ item.planetName }}</div>
-          <div class="pintro">{{item.planetDescription}}</div>
+          <div class="ptitle">{{ item.planet.planetName }}</div>
+          <div class="pintro">{{ item.planet.planetDescription}}</div>
           <div class="goin">
             <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center">加入</el-button>
           </div>
           <div class="other">
-            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.createTime}}</span>
-<!--            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：{{item.person}}</span>-->
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：{{item.uploaderName}}</span>
           </div>
           <div class="divide">
             <el-divider></el-divider>
@@ -47,11 +47,8 @@ export default{
   mounted(){
     getRecommendPlanet().then((res)=>{
       if(res.data.success === true){
-        console.log(1)
         let data = res.data.data.planetList
-        console.log(data)
         this.recommendplanet=data
-
       }
     })
   }
