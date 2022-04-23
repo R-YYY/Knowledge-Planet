@@ -1,57 +1,84 @@
 <template>
-  <div>
-    <div class="desc">
-      <h1 class="titleName">{{ topic.name }}</h1>
-      <div class="questionerInfo" v-show="contentVisible">
-        <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
-        <span class="questionerName">{{ name }}</span>
-      </div>
+  <div class="desc">
+    <div class="questionerInfo">
+      <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
+      <span class="questionerName">{{ name }}</span>
+    </div>
+    <div class="main">
       <div class="text">
         <span class="content"
               @click="contentVisible = !contentVisible">{{ contentVisible ? topic.content : topic.shortContent }}</span>
-        <span class="showButton" v-show="!contentVisible" @click="contentVisible = !contentVisible">
-          显示全部
+        <span class="showButton" @click="contentVisible = !contentVisible">
+          {{ !contentVisible ? '显示全部' : '收起' }}
           <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
         </span>
-        <div class="time" v-show="contentVisible">发布于{{ time }}
-          <span class="showButton" @click="contentVisible = !contentVisible">收起
-          <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
-        </span></div>
+        <div v-if="pictureList.length!==0" class="pictureList">
+          <div class="pictureWall clearfix">
+            <div v-for="(picture,index) in pictureList"
+                 :style="{backgroundImage:'url('+picture+')'}"
+                 class="picture">
+            </div>
+          </div>
+        </div>
+        <div class="time">发布于{{ time }}</div>
       </div>
     </div>
-    <div class="opt">
-      <img src="@/assets/icon/comment.png" alt="">
-      <span>{{ topic.comment_num > 99 ? "99+" : topic.comment_num }}</span>
+    <div class="footer">
+      <div class="opt" @click="commentAreaVisible=!commentAreaVisible">
+        <img src="@/assets/icon/comment.png" alt="">
+        <span>{{ topic.comment_num > 99 ? "99+" : topic.comment_num }}</span>
+      </div>
+      <div class="opt">
+        <img src="@/assets/icon/thumb.png" alt="">
+        <span>{{ topic.thumb_num > 99 ? "99+" : topic.thumb_num }}</span>
+      </div>
+      <el-button id="answerButton"
+                 :class="commentBarVisible?'onComment':'notOnComment'"
+                 @click="commentBarVisible=!commentBarVisible">
+        {{ !commentBarVisible ? '评论' : '取消' }}
+      </el-button>
+      <el-button id="submitButton" v-show="commentBarVisible">发送</el-button>
     </div>
-    <div class="opt">
-      <img src="@/assets/icon/thumb.png" alt="">
-      <span>{{ topic.thumb_num > 99 ? "99+" : topic.thumb_num }}</span>
-    </div>
-    <el-button id="answerButton" round icon="el-icon-edit" @click="answerFormVisible=true">回答
-    </el-button>
-    <transition name="el-zoom-in-top">
-      <answerForm v-if="answerFormVisible" @cancel="answerFormVisible=false"></answerForm>
+    <transition name="el-zoom-in-center">
+      <div v-show="commentBarVisible" class="commentInput">
+        <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
+        <textarea rows="1"
+                  v-model="commentContent"
+                  @input="autoTextAreaHeight"
+                  placeholder="发布你的评论"
+                  class="input"></textarea>
+      </div>
     </transition>
+    <commentArea v-show="commentAreaVisible"></commentArea>
     <hr class="line">
   </div>
 </template>
 
 <script>
 import answerForm from "@/components/planet/homepage/discussion/answerForm";
-
+import commentArea from "@/components/planet/homepage/discussion/commentArea";
 export default {
   name: "discussCard",
   props: ['topic'],
   components: {
-    answerForm
+    answerForm,
+    commentArea
   },
   data() {
     return {
       contentVisible: false,
-      answerFormVisible: false,
       avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff6%2Fc9%2Ff6%2Ff6c9f647a533782026c0609ac5d550df.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1653216789&t=5a8da6e8d7dd650e0f696a7bf3a480b5',
-      name: 'asdasd',
-      time: '2012-12-32 12:30'
+      name: '小刘',
+      time: '2012-12-32 12:30',
+      commentBarVisible: false,
+      commentAreaVisible: false,
+      commentContent: '',
+      pictureList: ['https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
+        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
+        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
+        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
+        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
+        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg'],
     }
   },
   created() {
@@ -59,19 +86,24 @@ export default {
     this.topic.shortContent = ''
     let reg = /[^\x00-\xff]/
     let l = 0
-    if (content.length <= 70) {
+    if (content.length <= 140) {
       this.topic.shortContent = content
     } else {
       for (let i = 0; i < content.length; i++) {
         this.topic.shortContent += content.charAt(i)
         l = (l + (reg.test(content.charAt(i)) ? 2 : 1))
-        if (l >= 160) {
+        if (l >= 280) {
           break
         }
       }
+      this.topic.shortContent += '...'
     }
-    this.topic.shortContent += '...'
-
+  },
+  methods: {
+    autoTextAreaHeight(e) {
+      e.target.style.height = 'auto'
+      e.target.style.height = e.target.scrollTop + e.target.scrollHeight + "px"
+    },
   }
 }
 </script>
@@ -80,38 +112,37 @@ export default {
 
 .desc {
   position: relative;
-  cursor: pointer;
-  padding: 0 20px;
-}
-
-.titleName {
-  margin: 20px 0 10px;
-  color: #6A6868;
-  font-weight: bold;
-  font-size: 18px;
+  padding: 20px 50px;
 }
 
 .questionerInfo {
-  height: 24px;
+  height: 35px;
   margin-bottom: 10px;
-  line-height: 24px;
+  line-height: 35px;
 }
+
 
 .avatar {
   vertical-align: middle;
   display: inline-block;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
+  height: 35px;
+  width: 35px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
 }
 
 .questionerName {
   margin-left: 10px;
   font-weight: bold;
   color: #4a4a4a;
+  cursor: pointer;
+}
+
+.main {
+  margin: 0 20px 0 40px;
 }
 
 .text {
@@ -124,6 +155,7 @@ export default {
   color: #6A6868;
   font-size: 16px;
   line-height: 25px;
+  cursor: pointer;
   /*display: -webkit-box;*/
   /*-webkit-box-orient: vertical;*/
   /*line-clamp: 2;*/
@@ -142,12 +174,51 @@ export default {
   margin-left: 10px;
   color: #74D8BE;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .line {
   margin: 15px 20px 0px 20px;
   border-top: 1px dashed #C1C0C0;
   border-bottom: 0;
+}
+
+
+.pictureWall {
+  margin-top: 0;
+  margin-right: 100px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.picture {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  float: left;
+  border-radius: 8px;
+  margin: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.footer {
+  margin: 0 20px;
+  height: 30px;
+  line-height: 30px;
 }
 
 .opt {
@@ -173,32 +244,69 @@ export default {
   margin-left: 20px;
 }
 
-.el-button {
-  padding: 0 10px !important;
+.el-button,
+.el-button:focus {
+  transition: .3s linear;
+  padding: 0 15px !important;
   height: 32px;
   line-height: 28px;
   font-weight: bold;
   border: 1px solid #74D8BE;
-  box-shadow: 1px 2px 1px #74D8BE;
-  color: #74D8BE;
+  background: #fff !important;
+  box-shadow: 0px 2px 1px #74D8BE;
+  color: #74D8BE !important;
 }
 
-.el-button:hover,
-.el-button:focus {
+.el-button:hover {
   border: 1px solid #74D8BE;
-  box-shadow: 0 0px 0px #74D8BE;
+  box-shadow: 1px 2px 1px #74D8BE;
   background: #74D8BE !important;
   color: white !important;
 }
 
-.answer img {
-  width: 18px;
-  vertical-align: middle;
-  padding-right: 7px;
+.notOnComment {
+  border-radius: 20px;
+}
+
+.onComment {
+  border-radius: 0 20px 20px 0;
 }
 
 #answerButton {
-  position: absolute;
+  float: right;
   right: 50px
+}
+
+#submitButton {
+  float: right;
+  border-radius: 20px 0 0 20px;
+  transition: .3s linear;
+  border-right: 0;
+}
+
+.commentInput {
+  margin: 20px 20px 0px 40px;
+  display: flex;
+}
+
+.input {
+  margin-left: 10px;
+  font-size: 16px;
+  line-height: 20px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  background-color: #e1f4ef;
+  font-family: 微软雅黑;
+  color: #757588;
+  padding: 8px 20px 9px;
+  resize: none;
+  overflow: hidden;
+  outline-width: 0;
+  transition: .3s linear;
+}
+.input:focus{
+  border: 1px solid #74D8BE;
+  background-color: transparent;
 }
 </style>

@@ -125,7 +125,6 @@ export default {
 
 <style scoped>
 #form {
-  margin: 20px 30px;
   padding: 20px 30px 10px;
   min-height: 150px;
   border-radius: 12px;
@@ -134,7 +133,7 @@ export default {
 
 .input {
   font-size: 16px;
-  min-height: 100px;
+  min-height: 140px;
   line-height: 20px;
   border-radius: 12px;
   border: 0 solid #42b983;
@@ -150,21 +149,18 @@ export default {
   border: 1px solid #74D8BE;
 }
 
-.footer {
-  margin-top: 10px;
-}
+
 
 .pictureButton {
   border-radius: 50%;
   border: 0px;
   height: 30px;
   width: 30px;
-  padding: 0;
+  padding: 1px 0 0;
   color: #74D8BE;
   background-color: white;
+  font-size: 22px;
   line-height: 30px;
-  font-size: 20px;
-  font-weight: bold;
 }
 
 .pictureButton:hover,
@@ -174,6 +170,7 @@ export default {
 }
 
 .pictureWall {
+  margin-top: 0;
 }
 
 .clearfix:before,
@@ -196,7 +193,7 @@ export default {
   height: 90px;
   float: left;
   border-radius: 8px;
-  margin-right: 7px;
+  margin-right: 10px;
   margin-top: 7px;
   background-position: center;
   background-repeat: no-repeat;
@@ -247,6 +244,12 @@ export default {
   color: #00ded4;
   border: 1px dashed #00ded4;
 }
+.footer{
+  text-align: left;
+  margin: 10px 0;
+  padding: 0;
+  line-height: 0;
+}
 
 .wordNum {
   display: inline-block;
@@ -254,6 +257,7 @@ export default {
   font-weight: bold;
   color: #74D8BE;
   margin-left: 20px;
+  transform: translateY(-2px);
 }
 
 .el-button {
@@ -262,11 +266,13 @@ export default {
   line-height: 30px;
   font-weight: bold;
   border: 0px solid #74D8BE;
+  box-shadow: 0 3px 2px #74D8BE;
   color: #74D8BE;
 }
 
 .el-button:hover,
 .el-button:focus {
+  box-shadow: 0 3px 2px #fff;
   color: #fff !important;
   background-color: #74D8BE !important;
 }

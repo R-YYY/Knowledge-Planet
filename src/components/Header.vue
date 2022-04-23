@@ -148,7 +148,6 @@ export default {
   width: 40px;
   margin-top: 5px;
 }
-
 #icon2 {
   background-image: url("../assets/icon/message.png");
 }

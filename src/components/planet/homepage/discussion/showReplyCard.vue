@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <el-button round icon="el-icon-edit" @click="dialogFormVisible=true">发起讨论</el-button>
+  <div id="reply">
+    <span class="replyNum" @click="dialogFormVisible=true">共{{ replyNum }}条回复</span>
     <el-dialog title="发起讨论" :visible.sync="dialogFormVisible">
-      <answerForm @cancel="dialogFormVisible=false"></answerForm>
+
     </el-dialog>
   </div>
 
@@ -11,25 +11,37 @@
 <script>
 import cos from "@/api/cos";
 import {uploadResource} from "@/api/planet/resource";
-import answerForm from "@/components/planet/homepage/discussion/answerForm";
 
 export default {
-  name: "uploadForm",
-  components: {
-    answerForm
-  },
+  name: "showReplyCard",
+  props:['replyNum'],
   data() {
     return {
-      dialogFormVisible: false,
+      dialogFormVisible:false
     }
   },
+  watch:{
+    dialogFormVisible(){
+
+    }
+  }
 
 
 }
 </script>
 
 <style scoped>
-
+#reply{
+  display: inline-block;
+}
+.replyNum {
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 20px;
+  font-size: 16px;
+  color: #8f8f8f;
+}
 
 .el-button {
   font-weight: bold;
@@ -61,7 +73,7 @@ export default {
   font-weight: bold;
 }
 
-/deep/.el-dialog__title {
+/deep/ .el-dialog__title {
   color: #74D8BE;
 }
 
