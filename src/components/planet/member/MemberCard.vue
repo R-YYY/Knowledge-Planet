@@ -75,7 +75,7 @@ export default {
 
 .delete{
   margin-left: 80px;
-  margin-top: 10px;
+  margin-top: 25px;
 }
 
 .el-button {

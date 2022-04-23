@@ -9,6 +9,7 @@ import Success from "@/views/login/SuccessView";
 import FindPasswordView from "@/views/login/FindPasswordView";
 import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
 import MemberView from "@/views/planet/member/MemberView";
+import CheckRscView from "@/views/planet/resource/CheckRscView";
 
 
 Vue.use(VueRouter)
@@ -42,6 +43,11 @@ const routes = [
         path: '/planet/resource',
         name: 'resource',
         component: ResourceView,
+    },
+    {
+        path: '/planet/resource/check',
+        name: 'checkResource',
+        component: CheckRscView,
     },
     {
         path: '/planet/resource/detail/:rid',
