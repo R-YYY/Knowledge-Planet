@@ -39,7 +39,7 @@
 
 <script>
 import {checkEmail, loginPost} from "@/api/login/login";
-import IdentifyCode from "@/components/IdentifyCode";
+import IdentifyCode from "@/components/login/IdentifyCode";
 
 export default {
   name: "LoginView",

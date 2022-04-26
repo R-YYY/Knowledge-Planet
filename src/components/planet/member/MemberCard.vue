@@ -32,8 +32,8 @@ export default {
 
 <style scoped>
 .member_card{
-  width: 500px;
-  padding-left: 70px;
+  width: 700px;
+  padding-left: 100px;
   display: flex;
 }
 
@@ -74,7 +74,7 @@ export default {
 }
 
 .delete{
-  margin-left: 80px;
+  margin-left: 280px;
   margin-top: 25px;
 }
 
