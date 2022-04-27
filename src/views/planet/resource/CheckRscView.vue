@@ -6,7 +6,7 @@
       <div style="display: flex">
         <CheckRscHeader @select="select"></CheckRscHeader>
         <div class="switch">
-          <span>管理员审核模式</span>
+          <span>星主审核模式</span>
           <el-switch
               v-model="check"
               @change="$router.push({name:'resource'})"
@@ -17,13 +17,13 @@
       </div>
       <div v-if="type==='unChecked'" class="content">
         <div class="card" v-for="item in resourceList" :key="item.resourceId"
-             v-show="item.status===0">
+             v-if="item.status===0">
           <CheckRscCard :resource="item"></CheckRscCard>
         </div>
       </div>
       <div v-else class="content">
         <div class="card" v-for="item in resourceList" :key="item.resourceId"
-             v-show="item.status===1 && (showAllChecked?true:item.isRecommended===isRecommended)">
+             v-if="item.status===1 && (showAllChecked?true:item.isRecommended===isRecommended)">
           <CheckRscCard :resource="item"></CheckRscCard>
         </div>
       </div>

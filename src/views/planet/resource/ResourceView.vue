@@ -6,7 +6,7 @@
       <div style="display: flex">
         <HeadBar @select="select"></HeadBar>
         <div v-if="isManager" class="switch">
-          <span>管理员审核模式</span>
+          <span>星主审核模式</span>
           <el-switch
               @change="$router.push({name:'checkResource'})"
               active-color="#74D8BE"
@@ -16,13 +16,13 @@
       </div>
       <div v-if="type==='all'||type==='recommend'" class="content">
         <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
-             v-show="isRecommended||item.isRecommended">
+             v-if="item.status===1 && (isRecommended || item.isRecommended)">
           <Card :resource="item"></Card>
         </div>
       </div>
       <div v-else class="content">
         <div class="card" v-for="(item,index) in resourceList" :key="item.resourceId"
-             v-if="index<11">
+             v-if="item.status===1 && index<11">
           <Card :resource="item"></Card>
         </div>
       </div>

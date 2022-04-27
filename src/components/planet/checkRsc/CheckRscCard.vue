@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="footer">
-      <div class="footer_left" @click="successOrRecommend">
+      <div class="footer_left" @click="resource.status===1?recommend():success()">
         <span ref="like" class="text">{{resource.status===1?(resource.isRecommended?"取消推荐":"推荐"):"通过"}}</span>
       </div>
-      <div class="footer_center" @click="failOrDelete">
-        <span ref="collect" class="text">{{resource.status===1?"下架":"删除"}}</span>
+      <div class="footer_center" @click="fail">
+        <span ref="collect" class="text">{{resource.status===1?"下架":"不通过"}}</span>
       </div>
       <div class="footer_right" @click="enter">
         <img src="@/assets/icon/enter2.png" class="icon" alt="正在加载">
@@ -37,6 +37,7 @@
 
 <script>
 import CheckRscDetail from "@/components/planet/checkRsc/CheckRscDetail";
+import {changeRecommendStatus, checkResource} from "@/api/planet/checkResource";
 
 export default {
   name: "CheckRscCard",
@@ -58,26 +59,54 @@ export default {
       this.detailVisible=true
     },
 
-    successOrRecommend(){
-      //pass success
-      if(this.resource.status === 0){
-        this.resource.status = 1;
-      }
-      //recommend or unRecommend
-      else this.resource.isRecommended = !this.resource.isRecommended;
+    recommend(){
+      let data = new FormData
+      data.append("resourceId",this.resource.resourceId)
+      data.append("resourceStatus",this.resource.isRecommended?"0":"1")
+      changeRecommendStatus(data).then((res)=>{
+        console.log(res)
+        this.$message({type: 'success', message: res.data.message});
+        this.resource.isRecommended = !this.resource.isRecommended
+      }).catch(()=>{
+        this.$message({type: 'info', message: '系统错误'});
+      })
     },
 
-    failOrDelete(){
-      //delete
-      if(this.resource.status === 0){
-        this.openBox("删除").then(( value ) => {
-          this.$message({type: 'info', message: '删除的原因为: ' + value.value});
-        }).catch(() => {});
-      }
-      //pass fail
-      else this.openBox("下架").then((value)=>{
-            this.resource.status = 0;this.$message({type: 'info', message: '删除的原因为: ' + value.value});
-          })
+    success(){
+      console.log(this.resource)
+      let data = JSON.stringify({
+        "resourceId": this.resource.resourceId,
+        "resourceName": this.resource.resourceName,
+        "checkResult": 1,
+        "checkInfo": "通过",
+        "uploaderId": this.resource.uploaderId,
+      })
+      checkResource(data).then((res)=>{
+        console.log(res)
+        this.$message({type: 'success', message: res.data.message});
+        this.resource.status = 1;
+      }).catch(()=>{
+        this.$message({type: 'info', message: '系统错误'});
+      })
+    },
+
+    fail(){
+      this.openBox("下架").then((value)=>{
+        let data = JSON.stringify({
+          "resourceId": this.resource.resourceId,
+          "resourceName": this.resource.resourceName,
+          "checkResult": 2,
+          "checkInfo": value.value,
+          "uploaderId": this.resource.uploaderId,
+        })
+        checkResource(data).then((res)=>{
+          console.log(res)
+          this.$message({type: 'success', message: res.data.message});
+          this.resource.status = 2;
+        }).catch(()=>{
+          this.$message({type: 'info', message: '系统错误'});
+        })
+      })
     },
 
     openBox(operation){
@@ -88,7 +117,6 @@ export default {
         inputErrorMessage: '请填写原因'
       })
     }
-
   },
 }
 </script>

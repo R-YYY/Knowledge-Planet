@@ -12,7 +12,7 @@
         </li>
       </ul>
     </div>
-    <el-checkbox-group class="recommend" v-model="checkList" v-if="used" @change="change">
+    <el-checkbox-group class="recommend" min="1" v-model="checkList" v-if="used" @change="change">
       <el-checkbox label="已推荐" name="recommend"></el-checkbox>
       <el-checkbox label="未推荐" name="unRecommend"></el-checkbox>
     </el-checkbox-group>
