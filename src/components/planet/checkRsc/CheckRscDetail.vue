@@ -61,8 +61,10 @@ export default {
       data.append("resourceStatus",this.resource.isRecommended?"0":"1")
       changeRecommendStatus(data).then((res)=>{
         console.log(res)
-        this.$message({type: 'success', message: res.data.message});
-        this.resource.isRecommended = !this.resource.isRecommended
+        this.$message({type: res.data.success?'success':'error', message: res.data.message});
+        if(res.data.success) {
+          this.resource.isRecommended = !this.resource.isRecommended
+        }
       }).catch(()=>{
         this.$message({type: 'info', message: '系统错误'});
       })
@@ -79,8 +81,10 @@ export default {
       })
       checkResource(data).then((res)=>{
         console.log(res)
-        this.$message({type: 'success', message: res.data.message});
-        this.resource.status = 1;
+        this.$message({type: res.data.success?'success':'error', message: res.data.message});
+        if(res.data.success) {
+          this.resource.status = 1;
+        }
       }).catch(()=>{
         this.$message({type: 'info', message: '系统错误'});
       })
@@ -97,8 +101,10 @@ export default {
         })
         checkResource(data).then((res)=>{
           console.log(res)
-          this.$message({type: 'success', message: res.data.message});
-          this.resource.status = 2;
+          this.$message({type: res.data.success?'success':'error', message: res.data.message});
+          if(res.data.success) {
+            this.resource.status = 2;
+          }
         }).catch(()=>{
           this.$message({type: 'info', message: '系统错误'});
         })

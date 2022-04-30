@@ -5,7 +5,7 @@
     </div>
     <div v-for="item in showMember">
       <div style="display: flex">
-        <MemberCard :member="item"></MemberCard>
+        <MemberCard :member="item" @deleteMember="deleteMember"></MemberCard>
       </div>
       <hr class="line">
     </div>
@@ -26,12 +26,13 @@
 
 <script>
 import MemberCard from "@/components/planet/member/MemberCard";
+import {getMember} from "@/api/planet/member";
 export default {
   name: "MemberManage",
   components: {MemberCard},
   data(){
     return{
-      total:50,
+      total:0,
       pageSize:20,
       currentPage:1,
       member:[],
@@ -40,26 +41,44 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
+      this.pageSize = val;
       this.showMember = this.member.slice((this.currentPage-1)*val,this.currentPage*val)
       console.log(`每页 ${val} 条`);
     },
+
     handleCurrentChange(val) {
+      this.currentPage = val;
       this.showMember = this.member.slice((val-1)*this.pageSize,val*this.pageSize)
       console.log(`当前页: ${val}`);
+    },
+
+    deleteMember(userId){
+      this.total--;
+      this.member = this.member.filter(item => item.userId !== userId)
+      this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
     }
   },
   mounted() {
-    this.total = 43;
-    for (let i = 0; i < this.total; i++) {
-      this.member.push({
-        name:i+"的名字在哪里？",
-        role:"普通成员",
-        imgUrl: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-        topicNum:12,
-        answerNum:23
-      })
-    }
-    this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+    getMember("23").then((res)=>{
+      this.member = JSON.parse(JSON.stringify(res.data.data.result))
+      this.total = this.member.length
+      this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+    }).catch(()=>{
+      this.$message({message: "系统错误，成员列表加载失败", type: 'error'})
+    })
+
+    // this.total = 43;
+    // for (let i = 0; i < this.total; i++) {
+    //   this.member.push({
+    //     userId:i,
+    //     userName:i+"的名字在哪里？",
+    //     role:"普通成员",
+    //     avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+    //     topicNum:12,
+    //     answerNum:23
+    //   })
+    // }
+    // this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
   }
 }
 </script>

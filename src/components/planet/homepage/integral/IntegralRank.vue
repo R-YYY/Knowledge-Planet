@@ -55,26 +55,23 @@ export default {
     }
   },
   created() {
-    // getLeaderboard("1").then((res)=>{
-      // console.log(res.data.data.result.userList)
-      // console.log(res.data.data.result.rank)
-      // console.log(res.data.data.result.integral)
-    //   this.me.rank = res.data.data.result.rank
-    //   this.me.integral = res.data.data.result.integral
-    //   this.users = res.data.data.result.userList
-    // }).catch(()=> {
-    //   this.$message({message: "系统错误，排行榜加载失败", type: 'error'})
-    // })
+    getLeaderboard("23").then((res)=>{
+      this.me.rank = res.data.data.result.rank
+      this.me.integral = res.data.data.result.integral
+      this.users = JSON.parse(JSON.stringify(res.data.data.result.userList))
+    }).catch(()=> {
+      this.$message({message: "系统错误，排行榜加载失败", type: 'error'})
+    })
 
-    this.users = []
-    for (let i = 0; i < 50; i++) {
-      this.users.push({
-        rank:i+1,
-        userName:"第"+(i+1)+"的名字呢？",
-        integral:100-i,
-        avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-      });
-    }
+    // this.users = []
+    // for (let i = 0; i < 50; i++) {
+    //   this.users.push({
+    //     rank:i+1,
+    //     userName:"第"+(i+1)+"的名字呢？",
+    //     integral:100-i,
+    //     avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+    //   });
+    // }
 
   }
 }
