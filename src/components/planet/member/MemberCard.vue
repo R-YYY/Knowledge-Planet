@@ -1,32 +1,41 @@
 <template>
   <div class="member_card">
     <div>
-      <img class="img" :src="member.imgUrl" alt="">
+      <img class="img" :src="member.avatar" alt="">
     </div>
     <div>
-      <div class="name">{{ member.name }}</div>
-      <div class="role">{{member.role}}</div>
+      <div class="name">{{ member.userName }}</div>
+      <div class="role">普通成员</div>
       <div class="info">
-        <span>{{member.topicNum}}讨论</span>
+        <span>12讨论</span>
         <b>·</b>
-        <span>{{member.answerNum}}回答</span>
+        <span>23回答</span>
       </div>
     </div>
     <div class="delete">
-      <el-button round>踢出星球</el-button>
+      <el-button round @click="deleteMe">踢出星球</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import {deleteMember} from "@/api/planet/member";
+
 export default {
   name: "MemberCard",
   props:["member"],
-  data(){
-    return{
-
+  methods:{
+    deleteMe() {
+      deleteMember("23",this.member.userId).then((res)=>{
+        this.$message({message: res.data.message, type: res.data.success?'success':'error'})
+        if(res.data.success){
+          this.$emit('deleteMember',this.member.userId)
+        }
+      }).catch(()=>{
+        this.$message({message: "系统错误，操作失败", type: 'error'})
+      })
     }
-  },
+  }
 }
 </script>
 

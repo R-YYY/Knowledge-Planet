@@ -30,11 +30,11 @@
       </div>
     </div>
     <div id="footer">
-      <div class="footer_left">
-        <span ref="like" class="text">通过</span>
+      <div class="footer_left" @click="resource.status===1?recommend():success()">
+        <span ref="like" class="text">{{resource.status===1?(resource.isRecommended?"取消推荐":"推荐"):"通过"}}</span>
       </div>
-      <div class="footer_center">
-        <span ref="collect" class="text">不通过</span>
+      <div class="footer_center" @click="fail">
+        <span ref="collect" class="text">{{resource.status===1?"下架":"不通过"}}</span>
       </div>
       <div class="footer_right" @click="enter">
         <img src="@/assets/icon/enter2.png" class="icon" alt="">
@@ -45,18 +45,80 @@
 </template>
 
 <script>
+import {changeRecommendStatus, checkResource} from "@/api/planet/checkResource";
+
 export default {
   name: "CheckRscDetail",
   props:["resource"],
-  data() {
-    return {
-
-    }
-  },
   methods:{
     enter() {
       window.open(this.resource.link);
     },
+
+    recommend(){
+      let data = new FormData
+      data.append("resourceId",this.resource.resourceId)
+      data.append("resourceStatus",this.resource.isRecommended?"0":"1")
+      changeRecommendStatus(data).then((res)=>{
+        console.log(res)
+        this.$message({type: res.data.success?'success':'error', message: res.data.message});
+        if(res.data.success) {
+          this.resource.isRecommended = !this.resource.isRecommended
+        }
+      }).catch(()=>{
+        this.$message({type: 'info', message: '系统错误'});
+      })
+    },
+
+    success(){
+      console.log(this.resource)
+      let data = JSON.stringify({
+        "resourceId": this.resource.resourceId,
+        "resourceName": this.resource.resourceName,
+        "checkResult": 1,
+        "checkInfo": "通过",
+        "uploaderId": this.resource.uploaderId,
+      })
+      checkResource(data).then((res)=>{
+        console.log(res)
+        this.$message({type: res.data.success?'success':'error', message: res.data.message});
+        if(res.data.success) {
+          this.resource.status = 1;
+        }
+      }).catch(()=>{
+        this.$message({type: 'info', message: '系统错误'});
+      })
+    },
+
+    fail(){
+      this.openBox("下架").then((value)=>{
+        let data = JSON.stringify({
+          "resourceId": this.resource.resourceId,
+          "resourceName": this.resource.resourceName,
+          "checkResult": 2,
+          "checkInfo": value.value,
+          "uploaderId": this.resource.uploaderId,
+        })
+        checkResource(data).then((res)=>{
+          console.log(res)
+          this.$message({type: res.data.success?'success':'error', message: res.data.message});
+          if(res.data.success) {
+            this.resource.status = 2;
+          }
+        }).catch(()=>{
+          this.$message({type: 'info', message: '系统错误'});
+        })
+      })
+    },
+
+    openBox(operation){
+      return this.$prompt('请输入'+operation+'的原因', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\s]+[\s]*.*$/,
+        inputErrorMessage: '请填写原因'
+      })
+    }
   }
 }
 </script>

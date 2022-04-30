@@ -1,14 +1,14 @@
 <template>
   <div style="display: flex">
     <div>
-      <b class="ranking">{{item.placing}}</b>
+      <b class="ranking">{{item.rank}}</b>
     </div>
     <div class="info">
-      <div class="name">{{item.name}}</div>
-      <div class="desc">已经参加了{{item.nums}}场比赛</div>
+      <div class="name">{{item.userName}}</div>
+      <div class="desc">已经获得了{{item.integral}}分</div>
     </div>
     <div>
-      <img class="img" :src="item.imgUrl" alt="">
+      <img class="img" :src="item.avatar" alt="">
     </div>
   </div>
 </template>

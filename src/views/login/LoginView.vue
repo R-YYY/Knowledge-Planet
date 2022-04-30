@@ -69,10 +69,14 @@ export default {
         return;
       }
       loginPost(this.email,this.$md5(this.password)).then((res)=>{
+        console.log(res)
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
           window.sessionStorage.setItem("email",this.email);
           window.sessionStorage.setItem("token",res.data.data.token);
+          window.sessionStorage.setItem("userId",res.data.data.user.userId);
+          window.sessionStorage.setItem("avatar",res.data.data.user.avatar);
+          window.sessionStorage.setItem("userName",res.data.data.user.userName);
           this.$router.push({name:'homepage'});
         }
       }).catch(()=>{
