@@ -1,55 +1,60 @@
 <template>
   <div class="desc">
     <div class="questionerInfo">
-      <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
-      <span class="questionerName">{{ name }}</span>
+      <span class="avatar" :style="{backgroundImage: 'url('+topic.avatar+')'}"></span>
+      <span class="questionerName">{{ topic.name }}</span>
     </div>
     <div class="main">
       <div class="text">
         <span class="content"
-              @click="contentVisible = !contentVisible">{{ contentVisible ? topic.content : topic.shortContent }}</span>
+              @click="contentVisible = !contentVisible">{{
+            contentVisible ? topic.content : topic.shortContent
+          }}</span>
         <span class="showButton" @click="contentVisible = !contentVisible">
           {{ !contentVisible ? '显示全部' : '收起' }}
           <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
         </span>
-        <div v-if="pictureList.length!==0" class="pictureList">
+        <div v-if="topic.pictureList.length!==0" class="pictureList">
           <div class="pictureWall clearfix">
-            <div v-for="(picture,index) in pictureList"
+            <div v-for="(picture,index) in topic.pictureList"
                  :style="{backgroundImage:'url('+picture+')'}"
                  class="picture">
             </div>
           </div>
         </div>
-        <div class="time">发布于{{ time }}</div>
+        <div class="time">发布于{{ topic.time }}</div>
       </div>
     </div>
     <div class="footer">
-      <div class="opt" @click="commentAreaVisible=!commentAreaVisible">
+      <div class="opt" @click="showComment">
         <img src="@/assets/icon/comment.png" alt="">
-        <span>{{ topic.comment_num > 99 ? "99+" : topic.comment_num }}</span>
+        <span>{{ topic.commentCount > 99 ? "99+" : topic.commentCount }}</span>
       </div>
       <div class="opt">
         <img src="@/assets/icon/thumb.png" alt="">
-        <span>{{ topic.thumb_num > 99 ? "99+" : topic.thumb_num }}</span>
+        <span>{{ topic.praiseCount > 99 ? "99+" : topic.praiseCount }}</span>
       </div>
       <el-button id="answerButton"
                  :class="commentBarVisible?'onComment':'notOnComment'"
                  @click="commentBarVisible=!commentBarVisible">
         {{ !commentBarVisible ? '评论' : '取消' }}
       </el-button>
-      <el-button id="submitButton" v-show="commentBarVisible">发送</el-button>
+      <el-button id="submitButton" v-show="commentBarVisible" @click="sendComment">发送</el-button>
     </div>
     <transition name="el-zoom-in-center">
       <div v-show="commentBarVisible" class="commentInput">
-        <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
+        <span class="avatar" :style="{backgroundImage: 'url('+myAvatar+')'}"></span>
+
         <textarea rows="1"
-                  v-model="commentContent"
+                  v-model="myComment"
                   @input="autoTextAreaHeight"
                   placeholder="发布你的评论"
                   class="input"></textarea>
+
+
       </div>
     </transition>
-    <commentArea v-show="commentAreaVisible"></commentArea>
+    <commentArea v-if="commentData" :isShow="commentAreaVisible" :topicId="topic.topicId"></commentArea>
     <hr class="line">
   </div>
 </template>
@@ -57,6 +62,8 @@
 <script>
 import answerForm from "@/components/planet/homepage/discussion/answerForm";
 import commentArea from "@/components/planet/homepage/discussion/commentArea";
+import {addComment} from "@/api/planet/topic";
+
 export default {
   name: "discussCard",
   props: ['topic'],
@@ -66,19 +73,13 @@ export default {
   },
   data() {
     return {
+      contentShort: false,
       contentVisible: false,
-      avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff6%2Fc9%2Ff6%2Ff6c9f647a533782026c0609ac5d550df.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1653216789&t=5a8da6e8d7dd650e0f696a7bf3a480b5',
-      name: '小刘',
-      time: '2012-12-32 12:30',
       commentBarVisible: false,
       commentAreaVisible: false,
-      commentContent: '',
-      pictureList: ['https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
-        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
-        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
-        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
-        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg',
-        'https://wx3.sinaimg.cn/orj360/0083hug4ly1h1jew829qbj30u0140tq2.jpg'],
+      commentData:false,
+      myAvatar: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.P3NSGTdAYdyqy5zJpb5QXQHaEo?pid=ImgDet&rs=1',
+      myComment: ''
     }
   },
   created() {
@@ -88,6 +89,7 @@ export default {
     let l = 0
     if (content.length <= 140) {
       this.topic.shortContent = content
+      this.contentShort = true
     } else {
       for (let i = 0; i < content.length; i++) {
         this.topic.shortContent += content.charAt(i)
@@ -100,6 +102,26 @@ export default {
     }
   },
   methods: {
+    showComment(){
+      this.commentAreaVisible = !this.commentAreaVisible
+      if(!this.commentData){
+        this.commentData = true
+      }
+    },
+    sendComment(){
+      let that = this
+      addComment(this.topic.topicId,null,this.myComment,1).then((res)=>{
+        if(res.data.success){
+          that.$message.success("添加成功")
+          that.myComment = ''
+        }
+        else{
+          that.$message.success("添加失败")
+        }
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
     autoTextAreaHeight(e) {
       e.target.style.height = 'auto'
       e.target.style.height = e.target.scrollTop + e.target.scrollHeight + "px"
@@ -290,6 +312,7 @@ export default {
 }
 
 .input {
+  flex: 1;
   margin-left: 10px;
   font-size: 16px;
   line-height: 20px;
@@ -299,13 +322,14 @@ export default {
   background-color: #e1f4ef;
   font-family: 微软雅黑;
   color: #757588;
-  padding: 8px 20px 9px;
+  padding: 8px 15px 9px;
   resize: none;
   overflow: hidden;
   outline-width: 0;
   transition: .3s linear;
 }
-.input:focus{
+
+.input:focus {
   border: 1px solid #74D8BE;
   background-color: transparent;
 }

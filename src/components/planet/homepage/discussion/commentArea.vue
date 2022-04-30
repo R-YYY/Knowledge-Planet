@@ -1,5 +1,5 @@
 <template>
-  <div class="commentArea">
+  <div class="commentArea" v-show="isShow">
     <div class="head">
       <span class="commentNum">{{ commentList.length }}&nbsp条评论</span>
       <span class="el-icon-sort sort" @click="sortMethod=!sortMethod">
@@ -24,7 +24,7 @@
                   :class="item.isLike?'likeCountActive':''">
             {{ item.likeCount }}
           </button>
-          <showReplyCard :replyNum="item.replyNum"></showReplyCard>
+          <showReplyCard :comment="item"></showReplyCard>
           <transition name="el-fade-in-linear">
             <button @click="reply"
                     class="icon replyIcon"
@@ -37,18 +37,17 @@
             </button>
           </transition>
         </div>
-        <div v-show="item.showInput" class="replyBar"
-             @blur="item.submitButton=false">
+        <transition name="el-zoom-in-center">
+          <div v-show="item.showInput" class="replyBar"
+               @blur="item.submitButton=false">
           <textarea rows="1"
-                    v-model="item.replyContent"
+                    v-model="item.myReplyContent"
                     @input="autoTextAreaHeight"
                     placeholder="发布你的评论"
                     class="input"></textarea>
-          <transition name="el-zoom-in-center">
-            <button class="submitButton" @click="reply">发布
-            </button>
-          </transition>
-        </div>
+            <button class="submitButton" @click="reply(item)">发布</button>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -57,46 +56,48 @@
 <script>
 import throttle from "@/utils/throttle";
 import showReplyCard from "@/components/planet/homepage/discussion/showReplyCard";
+import {getFirstComment, addComment} from "@/api/planet/topic";
+
 export default {
   name: "commentArea",
-  components:{
+  components: {
     showReplyCard
   },
+  props: ['isShow', 'topicId'],
   data() {
     return {
-      commentList: [{
-        id: 1,
-        avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff6%2Fc9%2Ff6%2Ff6c9f647a533782026c0609ac5d550df.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1653216789&t=5a8da6e8d7dd650e0f696a7bf3a480b5',
-        name: "小刘",
-        content: '是的，基本上多数打科兴疫苗的都是老年或慢性病患者（也就是不适宜打摩迪纳和辉瑞疫苗的人群），以这个作为统计基础，实在是缺乏对比依据。通俗点说，就是年青且身体健康的人群重症率和病死率比较低。',
-        time: '2021-12-21 03:12',
-        replyNum: 5,
-        isLike: false,
-        likeCount: 5,
-        showButton: false,
-        showInput: false,
-        replyContent: '',
-        submitButton: false,
-      }, {
-        id: 2,
-        avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff6%2Fc9%2Ff6%2Ff6c9f647a533782026c0609ac5d550df.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1653216789&t=5a8da6e8d7dd650e0f696a7bf3a480b5',
-        name: "小刘",
-        content: '是的，基本上多数打科兴疫苗的都是老年或慢性病患者（也就是不适宜打摩迪纳和辉瑞疫苗的人群），以这个作为统计基础，实在是缺乏对比依据。通俗点说，就是年青且身体健康的人群重症率和病死率比较低。',
-        time: '2021-12-21 03:12',
-        replyNum: 2,
-        isLike: false,
-        likeCount: 5,
-        showButton: false,
-        showInput: false,
-        replyContent: '',
-        submitButton: false,
-      }],
-      dialogFormVisible:false,
+      commentList: [],
+      dialogFormVisible: false,
       sortMethod: true,
     }
   },
   created() {
     this.throttleLike = throttle(this.like, 1000)
+    console.log(123)
+    getFirstComment(this.topicId).then((res) => {
+      this.commentList = []
+      let commentList = res.data.data.result.commentList
+      console.log(commentList)
+      for (let item of commentList) {
+        this.commentList.push({
+          topicId: item.comment.topicId,
+          commentId: item.comment.commentId,
+          avatar: item.avatar,
+          name: item.userName,
+          content: item.comment.content,
+          time: item.comment.time,
+          replyCount: item.replyList.length,
+          isLike: false,
+          likeCount: item.comment.praiseCount,
+          showButton: false,
+          showInput: false,
+          myReplyContent: '',
+          submitButton: false,
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
   },
   methods: {
     like(e, item) {
@@ -128,8 +129,18 @@ export default {
       // }
 
     },
-    reply() {
-      this.$message("你好")
+    reply(comment) {
+      let that = this
+      addComment(comment.topicId, comment.commentId, comment.myReplyContent, 0).then((res) => {
+        if (res.data.success) {
+          that.$message.success("回复成功")
+          comment.myReplyContent = ''
+        } else {
+          that.$message.success("回复失败")
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     autoTextAreaHeight(e) {
       e.target.style.height = 'auto'
@@ -142,12 +153,13 @@ export default {
 <style scoped>
 
 .commentArea {
-  margin: 0 20px 20px 40px;
-  padding: 20px 0;
+  margin: 0 20px 0 40px;
+  padding: 20px 0 0;
 }
 
 .head {
   margin-bottom: 10px;
+  line-height: 20px;
 }
 
 .commentNum {
@@ -156,12 +168,16 @@ export default {
 }
 
 .sort {
+  vertical-align: middle;
+  line-height: 20px;
+  font-size: 16px;
   float: right;
   cursor: pointer;
 }
 
-
 .questionerInfo {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f1f1;
   margin-bottom: 10px;
   line-height: 30px;
 }
@@ -200,6 +216,7 @@ export default {
 }
 
 .commentFooter {
+  margin-top: 5px;
   vertical-align: middle;
   height: 20px;
   justify-content: center;
@@ -300,6 +317,7 @@ export default {
   color: #74D8BE;
   font-weight: bold;
 }
+
 .submitButton:hover {
   box-shadow: 0 2px 2px #90debb;
 

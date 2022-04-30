@@ -6,14 +6,15 @@
       </div>
       <div id="center">
         <slot></slot>
-        <div class="searchBar" v-show="searchVisible">
+        <div class="searchBar"
+             v-show="searchVisible">
           <input type="text"
                  placeholder="请输入你想搜索的内容..."
                  v-model="searchContent"
                  @keyup.enter="search">
           <i class="el-icon-search"
              :style="'color:'+color"
-             @click="search"
+             @mousedown="search"
              @mouseover="color = '#74D8BE'"
              @mouseleave="color = '#E4E7ED'"></i>
         </div>
@@ -51,6 +52,7 @@ export default {
   },
   methods: {
     search(e) {
+      e.preventDefault()
       console.log(e)
     },
     screenChange() {

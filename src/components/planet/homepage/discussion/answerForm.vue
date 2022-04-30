@@ -14,18 +14,18 @@
                class="picture">
             <div class="deleteButton" @click="removePicture(index)"></div>
           </div>
-          <div class="upload-plus" @click="uploadClick"><i class="el-icon-plus"></i></div>
+          <div class="upload-plus" @click="uploadPictureClick"><i class="el-icon-plus"></i></div>
         </div>
       </div>
     </transition>
     <div class="footer">
-      <button class="pictureButton" @click="uploadClick">
+      <button class="pictureButton" @click="uploadPictureClick">
         <i class="el-icon-picture-outline-round"></i>
       </button>
       <input type="file" multiple id="file" @change="uploadPicture" style="display: none">
       <span class="wordNum">{{ content.length }}字</span>
 
-      <el-button class="submitButton" round>发送
+      <el-button class="submitButton" round @click="submit">发送
       </el-button>
       <el-button class="submitButton" round @click="cancelAnswer">取消
       </el-button>
@@ -35,6 +35,7 @@
 
 <script>
 import cos from "@/api/cos";
+import {insertTopic} from "@/api/planet/topic";
 
 export default {
   name: "answerForm",
@@ -49,9 +50,9 @@ export default {
   methods: {
     autoTextAreaHeight(e) {
       e.target.style.height = 'auto'
-      e.target.style.height =e.target.scrollTop + e.target.scrollHeight + "px"
+      e.target.style.height = e.target.scrollTop + e.target.scrollHeight + "px"
     },
-    uploadClick() {
+    uploadPictureClick() {
       document.querySelector('#file').click();
     },
     uploadPicture(e) {
@@ -118,6 +119,31 @@ export default {
     },
     cancelAnswer() {
       this.$emit("cancel")
+    },
+    submit() {
+      let picture = ''
+      for (let p of this.pictureList) {
+        picture += p + ','
+      }
+      picture -=','
+      console.log(picture)
+      let data = JSON.stringify({
+        "planetCode": 23,
+        "content": this.content,
+        "picture": picture
+      })
+      let that = this
+      insertTopic(data).then((res) => {
+        console.log(res)
+        if (res.data.success) {
+          that.$message.success("发帖成功")
+          this.$emit("cancel")
+        } else {
+          that.$message.success("发帖失败")
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }
@@ -148,7 +174,6 @@ export default {
   outline-width: 0;
   border: 1px solid #74D8BE;
 }
-
 
 
 .pictureButton {
@@ -244,7 +269,8 @@ export default {
   color: #00ded4;
   border: 1px dashed #00ded4;
 }
-.footer{
+
+.footer {
   text-align: left;
   margin: 10px 0;
   padding: 0;

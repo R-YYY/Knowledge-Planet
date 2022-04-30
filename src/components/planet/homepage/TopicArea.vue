@@ -26,8 +26,10 @@
 </template>
 
 <script>
-import CreateDiscuss from "./discussion/createDiscssFrom"
-import Card from "./discussion/discussCard"
+import CreateDiscuss from "./discussion/createTopicFrom"
+import Card from "./discussion/topicCard"
+import {getAllTopic} from "@/api/planet/topic";
+
 export default {
   name: "TopicArea",
   components: {
@@ -62,14 +64,28 @@ export default {
     },
   },
   created() {
-    for (let i = 0; i < 10; i++) {
-      this.topics.push({
-        name: "哈哈哈嗝，Are you kidding me?",
-        content: "发安慰你发安慰你发安慰你发安慰你发安慰你发安发安慰安慰你发安慰你发安慰你发安慰你发安慰你发安发安慰安慰你发安慰你发安慰你发安慰你发安慰你发安发安慰你发安慰你发安慰你发安慰你发安慰你发安发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发安慰你发",
-        comment_num: 100 - i,
-        thumb_num: 100 - i,
-      })
-    }
+    getAllTopic(23).then((res)=>{
+      console.log(res)
+      let data = res.data.data.topicList
+      this.topics = []
+      for(let item of data){
+        let pictureList = []
+        if(item.topic.picture)
+          pictureList = item.topic.picture.split(',')
+        this.topics.push({
+          topicId:item.topic.topicId,
+          praiseCount:item.topic.praiseCount,
+          content:item.topic.content,
+          avatar: item.avatar,
+          name: item.userName,
+          time: item.topic.time,
+          commentCount: item.topic.commentCount,
+          pictureList: pictureList
+        })
+      }
+    }).catch((err)=>{
+      console.log(err)
+    })
   }
 }
 </script>
@@ -79,7 +95,6 @@ export default {
   position: relative;
   text-align: left;
   width: 800px;
-  min-height: 500px;
   margin: 30px 30px 0;
   background-color: white;
   border-radius: 20px;
