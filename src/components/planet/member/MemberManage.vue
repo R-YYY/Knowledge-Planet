@@ -1,25 +1,30 @@
 <template>
   <div class="members_card">
-    <div class="search">
-      <el-input placeholder="请输入星球人员名称或邮箱"></el-input>
+    <div v-if="total===0" class="empty">
+      <span class="no">星球暂无成员</span>
     </div>
-    <div v-for="item in showMember">
-      <div style="display: flex">
-        <MemberCard :member="item" @deleteMember="deleteMember"></MemberCard>
+    <div v-else>
+      <div class="search">
+        <el-input placeholder="请输入星球人员名称或邮箱"></el-input>
       </div>
-      <hr class="line">
-    </div>
-    <div>
-      <el-pagination
-          class="page"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[20, 50, 100]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-      </el-pagination>
+      <div v-for="item in showMember">
+        <div style="display: flex">
+          <MemberCard :member="item" @deleteMember="deleteMember"></MemberCard>
+        </div>
+        <hr class="line">
+      </div>
+      <div>
+        <el-pagination
+            class="page"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[20, 50, 100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -60,11 +65,12 @@ export default {
   },
   mounted() {
     getMember("23").then((res)=>{
+      if(res.data.data.result === undefined){
+        return
+      }
       this.member = JSON.parse(JSON.stringify(res.data.data.result))
       this.total = this.member.length
       this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
-    }).catch(()=>{
-      this.$message({message: "系统错误，成员列表加载失败", type: 'error'})
     })
 
     // this.total = 43;
@@ -114,5 +120,24 @@ export default {
   margin: 15px 50px;
   border-top:1px dotted #C1C0C0;
   border-bottom: 0;
+}
+.empty {
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  height: 500px;
+  width: 100%;
+  background-image: url("../../../assets/picture/empty.png");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.no{
+  color: #cccccc;
+  font-weight: bold;
+  font-size: 20px;
+  position: absolute;
+  top: 75%;
+  left: 43%;
 }
 </style>

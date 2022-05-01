@@ -56,6 +56,7 @@ export default {
   },
   created() {
     getLeaderboard("23").then((res)=>{
+      console.log(res)
       this.me.rank = res.data.data.result.rank
       this.me.integral = res.data.data.result.integral
       this.users = JSON.parse(JSON.stringify(res.data.data.result.userList))
