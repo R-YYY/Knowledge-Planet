@@ -84,6 +84,13 @@ export default {
       })
     },
 
+    //回车登录
+    keyDown(e) {
+      if (e.keyCode === 13) {
+        this.login();
+      }
+    },
+
     //生成随机数
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
@@ -105,6 +112,9 @@ export default {
     this.identifyCode = "";
     this.makeCode(this.identifyCodes, 4);
   },
+  created() {
+    window.addEventListener('keydown', this.keyDown);
+  }
 }
 </script>
 
