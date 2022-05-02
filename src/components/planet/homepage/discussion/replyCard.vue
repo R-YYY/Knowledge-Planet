@@ -13,11 +13,11 @@
           <div class="commentFooter">
             <button @click="throttleLike($event,comment)"
                     class="icon"
-                    :class="comment.isLike?'likeIconActive':'likeIcon'"></button>
+                    :class="comment.isLiked?'likeIconActive':'likeIcon'"></button>
             <button @click="throttleLike($event,comment)"
                     class="textButton"
-                    :class="comment.isLike?'likeCountActive':''">
-              {{ comment.likeCount }}
+                    :class="comment.isLiked?'likeCountActive':''">
+              {{ comment.praiseCount }}
             </button>
             <transition name="el-fade-in-linear">
               <button @click="reply"
@@ -48,7 +48,7 @@
       <div class="card replyCard">
         <div class="cardHeader">共{{ replyList.length }}&nbsp条回复</div>
         <div v-for="(item,index) in replyList"
-             :key="item.id"
+             :key="item.commentId"
              class="questionerInfo"
              @mouseover="item.showButton=true"
              @mouseleave="item.showButton=false">
@@ -59,11 +59,11 @@
           <div class="commentFooter">
             <button @click="throttleLike($event,item)"
                     class="icon"
-                    :class="item.isLike?'likeIconActive':'likeIcon'"></button>
+                    :class="item.isLiked?'likeIconActive':'likeIcon'"></button>
             <button @click="throttleLike($event,item)"
                     class="textButton"
-                    :class="item.isLike?'likeCountActive':''">
-              {{ item.likeCount }}
+                    :class="item.isLiked?'likeCountActive':''">
+              {{ item.praiseCount }}
             </button>
             <transition name="el-fade-in-linear">
               <button @click="reply"
@@ -100,7 +100,8 @@
 import cos from "@/api/cos";
 import {uploadResource} from "@/api/planet/resource";
 import throttle from "@/utils/throttle";
-import {addComment, getAllReply} from "@/api/planet/topic";
+import {addComment, getAllReply, praise, unPraise} from "@/api/planet/topic";
+import eventBus from "@/utils/eventBus";
 
 export default {
   name: "showReplyCard",
@@ -108,50 +109,52 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      firstTag:true,
+      firstTag: true,
       replyList: []
     }
   },
   created() {
     this.comment.showButton = false
     this.throttleLike = throttle(this.like, 1000)
+    eventBus.$on("addMyReply", (val) => {
+      if(val === this.comment.commentId)
+        this.getReply(true)
+    })
   },
   methods: {
     like(e, item) {
-      item.isLike = !item.isLike
-      // if (!this.message.liked) {
-      // praise(this.message.resourceId).then((res) => {
-      //   if (res.data.success === true) {
-      //     this.message.liked = !this.message.liked
-      //     this.message.likeCount++;
-      //     this.likeTag++;
-      //     span.className = "text active"
-      //   } else {
-      //     this.$message({message: "点赞失败，系统错误", type: 'error'});
-      //   }
-      // }).catch(() => {
-      //   this.$message({message: "点赞失败，系统错误", type: 'error'});
-      // })
-      // } else {
-      //   unPraise(this.message.resourceId).then((res) => {
-      //     if (res.data.success === true) {
-      //       this.message.liked = !this.message.liked
-      //       this.message.likeCount--;
-      //       this.span.className = "text"
-      //     }
-      //   }).catch(() => {
-      //     this.$message({message: "取消点赞失败，系统错误", type: 'error'});
-      //   })
-
-      // }
-
+      let that = this
+      if (!item.isLiked) {
+        praise(item.commentId, 0).then((res) => {
+          if (res.data.success === true) {
+            item.isLiked = true
+            item.praiseCount++
+          } else {
+            this.$message({message: "点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "点赞失败，系统错误", type: 'error'});
+        })
+      } else {
+        unPraise(item.commentId, 0).then((res) => {
+          if (res.data.success === true) {
+            item.isLiked = false
+            item.praiseCount--
+          } else {
+            this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+        })
+      }
     },
     reply(comment) {
       let that = this
-      addComment(comment.topicId, comment.commentId, comment.myReplyContent, 0).then((res) => {
+      addComment(comment.topicId, comment.commentId, this.comment.commentId, comment.myReplyContent, 0).then((res) => {
         if (res.data.success) {
           that.$message.success("回复成功")
           comment.myReplyContent = ''
+          eventBus.$emit("addMyReply",this.comment.commentId)
         } else {
           that.$message.success("回复失败")
         }
@@ -159,26 +162,26 @@ export default {
         console.log(err)
       })
     },
-    getReply(){
-      this.dialogFormVisible=true
-      if(this.firstTag === false)
+    getReply(flag = false) {
+      this.dialogFormVisible = true
+      if (this.firstTag === false && flag === false)
         return
       this.firstTag = false
       getAllReply(this.comment.commentId).then((res) => {
-        console.log(res.data.data.replyList)
+        this.replyList = []
         let replyList = res.data.data.replyList
         console.log(replyList)
         for (let item of replyList) {
           this.replyList.push({
-            topicId:item.comment.topicId,
+            topicId: item.comment.topicId,
             commentId: item.comment.commentId,
             avatar: item.author.avatar,
             name: item.author.userName,
             replyName: item.replyToUser.userName,
             content: item.comment.content,
             time: item.comment.time,
-            likeCount: item.comment.praiseCount,
-            isLike: false,
+            praiseCount: item.comment.praiseCount,
+            isLike: item.liked,
             showButton: false,
             showInput: false,
             myReplyContent: '',

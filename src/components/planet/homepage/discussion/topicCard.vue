@@ -30,9 +30,11 @@
         <img src="@/assets/icon/comment.png" alt="">
         <span>{{ topic.commentCount > 99 ? "99+" : topic.commentCount }}</span>
       </div>
-      <div class="opt">
-        <img src="@/assets/icon/thumb.png" alt="">
-        <span>{{ topic.praiseCount > 99 ? "99+" : topic.praiseCount }}</span>
+      <div class="opt" @click="throttleLike()">
+        <img :src="require('@/assets/icon/thumb'+(topic.isLiked?'ed':'')+'.png')" alt="">
+        <span :style="{color:(topic.isLiked?'#74D8BE':'#999898')}">{{
+            topic.praiseCount > 99 ? "99+" : topic.praiseCount
+          }}</span>
       </div>
       <el-button id="answerButton"
                  :class="commentBarVisible?'onComment':'notOnComment'"
@@ -62,8 +64,9 @@
 <script>
 import answerForm from "@/components/planet/homepage/discussion/answerForm";
 import commentArea from "@/components/planet/homepage/discussion/commentArea";
-import {addComment} from "@/api/planet/topic";
-
+import {addComment, praise, unPraise} from "@/api/planet/topic";
+import throttle from "@/utils/throttle";
+import eventBus from "@/utils/eventBus";
 export default {
   name: "discussCard",
   props: ['topic'],
@@ -77,7 +80,7 @@ export default {
       contentVisible: false,
       commentBarVisible: false,
       commentAreaVisible: false,
-      commentData:false,
+      commentData: false,
       myAvatar: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.P3NSGTdAYdyqy5zJpb5QXQHaEo?pid=ImgDet&rs=1',
       myComment: ''
     }
@@ -100,25 +103,56 @@ export default {
       }
       this.topic.shortContent += '...'
     }
+    this.throttleLike = throttle(this.like,1000)
   },
   methods: {
-    showComment(){
+    like() {
+      let that = this
+      if (!this.topic.isLiked) {
+        praise(this.topic.topicId, 1).then((res) => {
+          if (res.data.success === true) {
+            that.topic.isLiked = true
+            that.topic.praiseCount++
+          } else {
+            this.$message({message: "点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "点赞失败，系统错误", type: 'error'});
+        })
+      } else {
+        console.log(2)
+        unPraise(this.topic.topicId, 1).then((res) => {
+          if (res.data.success === true) {
+            that.topic.isLiked = false
+            that.topic.praiseCount--
+          } else {
+            this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+        })
+
+      }
+
+    },
+    showComment() {
       this.commentAreaVisible = !this.commentAreaVisible
-      if(!this.commentData){
+      if (!this.commentData) {
         this.commentData = true
       }
     },
-    sendComment(){
+    sendComment() {
       let that = this
-      addComment(this.topic.topicId,null,this.myComment,1).then((res)=>{
-        if(res.data.success){
+      addComment(this.topic.topicId, null, null, this.myComment, 1).then((res) => {
+        if (res.data.success) {
           that.$message.success("添加成功")
           that.myComment = ''
-        }
-        else{
+          that.$emit('update')
+          eventBus.$emit('addMyComment')
+        } else {
           that.$message.success("添加失败")
         }
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err)
       })
     },

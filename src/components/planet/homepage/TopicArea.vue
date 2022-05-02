@@ -18,8 +18,8 @@
     </div>
     <div v-if="topics.length===0" class="empty"></div>
     <div v-else style="margin-bottom: 100px">
-      <div v-for="(item,index) in topics" :key="item.id">
-        <Card :topic="item"></Card>
+      <div v-for="(item,index) in topics" :key="item.topicId">
+        <Card :topic="item" @update="updateTopic"></Card>
       </div>
     </div>
   </div>
@@ -29,6 +29,7 @@
 import CreateDiscuss from "./discussion/createTopicFrom"
 import Card from "./discussion/topicCard"
 import {getAllTopic} from "@/api/planet/topic";
+import eventBus from "@/utils/eventBus";
 
 export default {
   name: "TopicArea",
@@ -62,29 +63,40 @@ export default {
         }
       }
     },
+    updateTopic(){
+      getAllTopic(23).then((res)=>{
+        console.log(res)
+        let data = res.data.data.topicList
+        this.topics = []
+        for(let item of data){
+          let pictureList = []
+          if(item.topic.picture)
+            pictureList = item.topic.picture.split(',')
+          console.log(item)
+          this.topics.push({
+            topicId:item.topic.topicId,
+            praiseCount:item.topic.praiseCount,
+            content:item.topic.content,
+            avatar: item.avatar,
+            name: item.userName,
+            time: item.topic.time,
+            commentCount: item.topic.commentCount,
+            pictureList: pictureList,
+            isLiked:item.liked,
+          })
+        }
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
   },
   created() {
-    getAllTopic(23).then((res)=>{
-      console.log(res)
-      let data = res.data.data.topicList
-      this.topics = []
-      for(let item of data){
-        let pictureList = []
-        if(item.topic.picture)
-          pictureList = item.topic.picture.split(',')
-        this.topics.push({
-          topicId:item.topic.topicId,
-          praiseCount:item.topic.praiseCount,
-          content:item.topic.content,
-          avatar: item.avatar,
-          name: item.userName,
-          time: item.topic.time,
-          commentCount: item.topic.commentCount,
-          pictureList: pictureList
-        })
-      }
-    }).catch((err)=>{
-      console.log(err)
+   this.updateTopic()
+    eventBus.$on('addMyTopic',()=>{
+      this.updateTopic()
+    })
+    eventBus.$on('addMyReply',()=>{
+      this.updateTopic()
     })
   }
 }

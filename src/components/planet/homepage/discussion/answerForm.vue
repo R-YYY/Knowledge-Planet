@@ -36,6 +36,7 @@
 <script>
 import cos from "@/api/cos";
 import {insertTopic} from "@/api/planet/topic";
+import eventBus from "@/utils/eventBus";
 
 export default {
   name: "answerForm",
@@ -122,11 +123,11 @@ export default {
     },
     submit() {
       let picture = ''
+      console.log(this.pictureList)
       for (let p of this.pictureList) {
         picture += p + ','
       }
-      picture -=','
-      console.log(picture)
+      picture = picture.substr(0,picture.length - 1)
       let data = JSON.stringify({
         "planetCode": 23,
         "content": this.content,
@@ -138,6 +139,7 @@ export default {
         if (res.data.success) {
           that.$message.success("发帖成功")
           this.$emit("cancel")
+          eventBus.$emit('addMyTopic')
         } else {
           that.$message.success("发帖失败")
         }

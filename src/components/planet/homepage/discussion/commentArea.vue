@@ -7,7 +7,7 @@
     </div>
     <div>
       <div v-for="(item,index) in commentList"
-           :key="item.id"
+           :key="item.commentId"
            class="questionerInfo"
            @mouseover="item.showButton=true"
            @mouseleave="item.showButton=false">
@@ -18,11 +18,11 @@
         <div class="commentFooter">
           <button @click="throttleLike($event,item)"
                   class="icon"
-                  :class="item.isLike?'likeIconActive':'likeIcon'"></button>
+                  :class="item.isLiked?'likeIconActive':'likeIcon'"></button>
           <button @click="throttleLike($event,item)"
                   class="textButton"
-                  :class="item.isLike?'likeCountActive':''">
-            {{ item.likeCount }}
+                  :class="item.isLiked?'likeCountActive':''">
+            {{ item.praiseCount }}
           </button>
           <showReplyCard :comment="item"></showReplyCard>
           <transition name="el-fade-in-linear">
@@ -55,9 +55,9 @@
 
 <script>
 import throttle from "@/utils/throttle";
-import showReplyCard from "@/components/planet/homepage/discussion/showReplyCard";
-import {getFirstComment, addComment} from "@/api/planet/topic";
-
+import showReplyCard from "@/components/planet/homepage/discussion/replyCard";
+import {getFirstComment, addComment,praise,unPraise} from "@/api/planet/topic";
+import eventBus from "@/utils/eventBus";
 export default {
   name: "commentArea",
   components: {
@@ -73,68 +73,76 @@ export default {
   },
   created() {
     this.throttleLike = throttle(this.like, 1000)
-    console.log(123)
-    getFirstComment(this.topicId).then((res) => {
-      this.commentList = []
-      let commentList = res.data.data.result.commentList
-      console.log(commentList)
-      for (let item of commentList) {
-        this.commentList.push({
-          topicId: item.comment.topicId,
-          commentId: item.comment.commentId,
-          avatar: item.avatar,
-          name: item.userName,
-          content: item.comment.content,
-          time: item.comment.time,
-          replyCount: item.replyList.length,
-          isLike: false,
-          likeCount: item.comment.praiseCount,
-          showButton: false,
-          showInput: false,
-          myReplyContent: '',
-          submitButton: false,
-        })
-      }
-    }).catch((err) => {
-      console.log(err)
+    this.updateComment()
+    eventBus.$on('addMyComment',()=>{
+      this.updateComment()
+    })
+    eventBus.$on("addMyReply",(val)=>{
+      this.updateComment()
     })
   },
   methods: {
     like(e, item) {
-      item.isLike = !item.isLike
-      // if (!this.message.liked) {
-      // praise(this.message.resourceId).then((res) => {
-      //   if (res.data.success === true) {
-      //     this.message.liked = !this.message.liked
-      //     this.message.likeCount++;
-      //     this.likeTag++;
-      //     span.className = "text active"
-      //   } else {
-      //     this.$message({message: "点赞失败，系统错误", type: 'error'});
-      //   }
-      // }).catch(() => {
-      //   this.$message({message: "点赞失败，系统错误", type: 'error'});
-      // })
-      // } else {
-      //   unPraise(this.message.resourceId).then((res) => {
-      //     if (res.data.success === true) {
-      //       this.message.liked = !this.message.liked
-      //       this.message.likeCount--;
-      //       this.span.className = "text"
-      //     }
-      //   }).catch(() => {
-      //     this.$message({message: "取消点赞失败，系统错误", type: 'error'});
-      //   })
+      let that = this
+      if (!item.isLiked) {
+        praise(item.commentId, 0).then((res) => {
+          if (res.data.success === true) {
+            item.isLiked = true
+            item.praiseCount++
+          } else {
+            this.$message({message: "点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "点赞失败，系统错误", type: 'error'});
+        })
+      } else {
+        unPraise(item.commentId, 0).then((res) => {
+          if (res.data.success === true) {
+            item.isLiked = false
+            item.praiseCount--
+          } else {
+            this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+          }
+        }).catch(() => {
+          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
+        })
 
-      // }
+      }
 
+    },
+    updateComment(){
+      getFirstComment(this.topicId).then((res) => {
+        this.commentList = []
+        let commentList = res.data.data.result.commentList
+        console.log(commentList)
+        for (let item of commentList) {
+          this.commentList.push({
+            topicId: item.comment.topicId,
+            commentId: item.comment.commentId,
+            avatar: item.avatar,
+            name: item.userName,
+            content: item.comment.content,
+            time: item.comment.time,
+            replyCount: item.replyList.length,
+            isLiked: item.liked,
+            praiseCount: item.comment.praiseCount,
+            showButton: false,
+            showInput: false,
+            myReplyContent: '',
+            submitButton: false,
+          })
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     reply(comment) {
       let that = this
-      addComment(comment.topicId, comment.commentId, comment.myReplyContent, 0).then((res) => {
+      addComment(comment.topicId, comment.commentId, comment.commentId, comment.myReplyContent, 0).then((res) => {
         if (res.data.success) {
           that.$message.success("回复成功")
           comment.myReplyContent = ''
+          eventBus.$emit("addMyReply")
         } else {
           that.$message.success("回复失败")
         }
