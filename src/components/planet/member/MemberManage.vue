@@ -1,30 +1,33 @@
 <template>
   <div class="members_card">
+    <div class="search">
+      <el-input placeholder="请输入星球人员名称或邮箱" v-model="input" @input="search" clearable></el-input>
+    </div>
     <div v-if="member.length===0" class="empty">
       <span class="no">星球暂无成员</span>
     </div>
-    <div v-else>
-      <div class="search">
-        <el-input placeholder="请输入星球人员名称或邮箱" v-model="input" @input="search"></el-input>
-      </div>
+    <div v-else-if="showMember.length===0" class="empty">
+      <span class="no">星球没有这个成员</span>
+    </div>
+    <div v-else style="min-height: 430px">
       <div v-for="item in showMember.slice((currentPage-1)*pageSize,currentPage*pageSize)">
         <div>
           <MemberCard :member="item" @deleteMember="deleteMember"></MemberCard>
         </div>
         <hr class="line">
       </div>
-      <div style="text-align: center">
-        <el-pagination
-            class="page"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[20, 50, 100]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="showTotal">
-        </el-pagination>
-      </div>
+    </div>
+    <div class="page">
+      <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[20, 50, 100]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="showTotal">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -48,12 +51,10 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.pageSize = val;
-      console.log(`每页 ${val} 条`);
     },
 
     handleCurrentChange(val) {
       this.currentPage = val;
-      console.log(`当前页: ${val}`);
     },
 
     deleteMember(userId){
@@ -79,27 +80,27 @@ export default {
     }
   },
   mounted() {
-    getMember("23").then((res)=>{
-      if(res.data.data.result === undefined){
-        return
-      }
-      this.member = JSON.parse(JSON.stringify(res.data.data.result))
-      this.showMember = this.member
-      this.showTotal = this.showMember.length
-    })
+    // getMember("23").then((res)=>{
+    //   if(res.data.data.result === undefined){
+    //     return
+    //   }
+    //   this.member = JSON.parse(JSON.stringify(res.data.data.result))
+    //   this.showMember = this.member
+    //   this.showTotal = this.showMember.length
+    // })
 
-    // this.showTotal = 43;
-    // for (let i = 0; i < this.showTotal; i++) {
-    //   this.member.push({
-    //     userId:i,
-    //     userName:i+"的名字在哪里？",
-    //     role:"普通成员",
-    //     avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-    //     email:i+"qq.com"
-    //   })
-    // }
-    // this.showMember = this.member
-    // this.showTotal = this.showMember.length
+    this.showTotal = 122;
+    for (let i = 0; i < this.showTotal; i++) {
+      this.member.push({
+        userId:i,
+        userName:i+"的名字在哪里？",
+        role:"普通成员",
+        avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+        email:i+"qq.com"
+      })
+    }
+    this.showMember = this.member
+    this.showTotal = this.showMember.length
   }
 }
 </script>
@@ -119,15 +120,17 @@ export default {
 }
 
 .page{
+  text-align: center;
   padding-top: 30px;
   padding-bottom: 20px;
 }
 
 .search{
+  display: flex;
   margin-left: 100px;
   padding-top: 40px;
   padding-bottom: 30px;
-  width: 400px;
+  width: 300px;
 }
 
 .line{
@@ -136,9 +139,8 @@ export default {
   border-bottom: 0;
 }
 .empty {
-  border-radius: 0 0 20px 20px;
   position: relative;
-  height: 500px;
+  height: 430px;
   width: 100%;
   background-image: url("../../../assets/picture/empty.png");
   background-size: auto;
@@ -152,6 +154,7 @@ export default {
   font-size: 20px;
   position: absolute;
   top: 75%;
-  left: 43%;
+  width: 100%;
+  text-align: center;
 }
 </style>

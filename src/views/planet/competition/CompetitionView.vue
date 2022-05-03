@@ -7,7 +7,7 @@
       <div style="display: flex">
         <div class="left">
           <CompetitionHeader></CompetitionHeader>
-          <IntegralRank style="margin-left: 60px;margin-top: 50px" rank-name="竞赛排行榜"></IntegralRank>
+          <IntegralRank style="margin-left: 40px;margin-top: 50px" rank-name="竞赛排行榜"></IntegralRank>
         </div>
         <div class="right">
           <CompetitionList></CompetitionList>

@@ -33,7 +33,8 @@ export default {
 }
 
 .info{
-  width: 190px;
+  margin-left: 5px;
+  width: 170px;
   height: 50px;
 }
 

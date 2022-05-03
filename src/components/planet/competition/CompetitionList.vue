@@ -7,9 +7,21 @@
       <div class="time">时长</div>
     </div>
     <hr class="line">
-    <div v-for="item in competitionList">
-      <CompetitionCard :competition="item"></CompetitionCard>
-      <hr class="line">
+    <div v-if="competitionList.length===0" class="empty"></div>
+    <div v-else style="height: 610px">
+      <div v-for="item in competitionList.slice((currentPage-1)*10,currentPage*10)">
+        <CompetitionCard :competition="item"></CompetitionCard>
+        <hr class="line">
+      </div>
+    </div>
+    <div class="page">
+      <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="competitionList.length"
+          :current-page="currentPage"
+          @current-change="handleCurrentChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -25,14 +37,20 @@ export default {
         name:"",
         time:"",
         duration:"",
-      }]
+      }],
+      currentPage:1,
+    }
+  },
+  methods:{
+    handleCurrentChange(val){
+      this.currentPage = val
     }
   },
   created() {
     this.competitionList=[]
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 77; i++) {
       this.competitionList.push({
-        name:"竞赛"+i+"的名字",
+        name:"竞赛"+(i+1)+"的名字",
         time:"2022-4-27 15:00",
         duration:"50分钟",
       })
@@ -43,7 +61,7 @@ export default {
 
 <style scoped>
 .competition_list{
-  width: 550px;
+  width: 580px;
   height: 790px;
   background: rgba(255,255,255,0.8);
   border-radius: 20px;
@@ -73,5 +91,20 @@ export default {
 
 .time{
   line-height: 30px;
+}
+
+.page{
+  text-align: center;
+  padding-top: 15px;
+}
+
+.empty{
+  position: relative;
+  height: 610px;
+  width: 100%;
+  background-image: url("../../../assets/picture/empty.png");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 </style>

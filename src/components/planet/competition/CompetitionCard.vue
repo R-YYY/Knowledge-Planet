@@ -8,6 +8,7 @@
       <div class="duration">{{competition.duration}}</div>
     </div>
     <div class="btn">参加</div>
+
   </div>
 </template>
 
@@ -41,7 +42,7 @@ export default {
 }
 
 .duration{
-  width: 130px;
+  width: 150px;
   height: 60px;
   line-height: 60px;
 }

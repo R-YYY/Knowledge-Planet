@@ -23,7 +23,7 @@
                 <img style="height: 20px;" src="../../../assets/icon/my.png" alt="">
               </div>
             </el-image>
-<!--            <span style="width: 25px"></span>-->
+            <span style="width: 25px"></span>
             {{ resource.uploaderName }}
           </el-descriptions-item>
         </el-descriptions>
@@ -190,5 +190,12 @@ export default {
   /*margin-top: 6px;*/
   transform: translateY(3px);
   height: 20px;
+}
+
+.miniIcon{
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  position: absolute
 }
 </style>

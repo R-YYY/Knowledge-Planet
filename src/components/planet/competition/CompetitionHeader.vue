@@ -3,7 +3,7 @@
     <h1 class="name">星球竞赛</h1>
     <el-divider direction="vertical"></el-divider>
     <div class="history">参赛记录</div>
-    <div class="button">
+    <div>
       <CreateCompetition></CreateCompetition>
     </div>
   </div>
@@ -22,7 +22,7 @@ export default {
   position: relative;
   display: flex;
   height: 50px;
-  width: 420px;
+  width: 390px;
   line-height: 50px;
   border-radius: 50px;
   box-shadow: 0 0 12px #dadada;
@@ -57,9 +57,5 @@ export default {
   margin-right: 30px;
   line-height: 50px;
   height: 35px;
-}
-
-.button{
-  margin-left: 10px;
 }
 </style>
