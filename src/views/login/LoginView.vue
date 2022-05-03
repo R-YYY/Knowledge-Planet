@@ -114,7 +114,11 @@ export default {
   },
   created() {
     window.addEventListener('keydown', this.keyDown);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.keyDown)
   }
+
 }
 </script>
 

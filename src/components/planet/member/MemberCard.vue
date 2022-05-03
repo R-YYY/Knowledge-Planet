@@ -7,9 +7,7 @@
       <div class="name">{{ member.userName }}</div>
       <div class="role">普通成员</div>
       <div class="info">
-        <span>12讨论</span>
-        <b>·</b>
-        <span>23回答</span>
+        邮箱：{{member.email}}
       </div>
     </div>
     <div class="delete">
@@ -71,19 +69,15 @@ export default {
 
 .info{
   color: #8590a6;
+  width: 250px;
   height: 20px;
   line-height: 20px;
   margin-left: 10px;
   font-size: 15px;
 }
 
-.info b{
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
 .delete{
-  margin-left: 280px;
+  margin-left: 180px;
   margin-top: 25px;
 }
 

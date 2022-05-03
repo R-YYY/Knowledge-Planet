@@ -5,7 +5,7 @@
     </div>
     <div class="info">
       <div class="name">{{item.userName}}</div>
-      <div class="desc">已经获得了{{item.integral}}分</div>
+      <div class="desc">{{item.desc}}</div>
     </div>
     <div>
       <img class="img" :src="item.avatar" alt="">

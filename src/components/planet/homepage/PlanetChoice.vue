@@ -16,7 +16,7 @@
         <span>活动拼团</span>
       </div>
       <hr class="line">
-      <div class="choice">
+      <div class="choice" @click="$router.push('/planet/competition')">
         <img src="../../../assets/icon/competition.png" alt="">
         <span>知识竞赛</span>
       </div>

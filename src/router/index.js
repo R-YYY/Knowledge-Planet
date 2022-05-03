@@ -10,6 +10,7 @@ import FindPasswordView from "@/views/login/FindPasswordView";
 import PlanetHomePageView from "@/views/planet/PlanetHomePageView";
 import MemberView from "@/views/planet/member/MemberView";
 import CheckRscView from "@/views/planet/resource/CheckRscView";
+import CompetitionView from "@/views/planet/competition/CompetitionView";
 
 
 Vue.use(VueRouter)
@@ -68,7 +69,12 @@ const routes = [
         path: '/planet/member',
         name:'member',
         component: MemberView,
-    }
+    },
+    {
+        path: '/planet/competition',
+        name:'competition',
+        component: CompetitionView,
+    },
 ]
 
 const router = new VueRouter({

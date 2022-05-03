@@ -1,19 +1,19 @@
 <template>
   <div class="members_card">
-    <div v-if="total===0" class="empty">
+    <div v-if="member.length===0" class="empty">
       <span class="no">星球暂无成员</span>
     </div>
     <div v-else>
       <div class="search">
-        <el-input placeholder="请输入星球人员名称或邮箱"></el-input>
+        <el-input placeholder="请输入星球人员名称或邮箱" v-model="input" @input="search"></el-input>
       </div>
-      <div v-for="item in showMember">
-        <div style="display: flex">
+      <div v-for="item in showMember.slice((currentPage-1)*pageSize,currentPage*pageSize)">
+        <div>
           <MemberCard :member="item" @deleteMember="deleteMember"></MemberCard>
         </div>
         <hr class="line">
       </div>
-      <div>
+      <div style="text-align: center">
         <el-pagination
             class="page"
             @size-change="handleSizeChange"
@@ -22,7 +22,7 @@
             :page-sizes="[20, 50, 100]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
+            :total="showTotal">
         </el-pagination>
       </div>
     </div>
@@ -37,30 +37,45 @@ export default {
   components: {MemberCard},
   data(){
     return{
-      total:0,
-      pageSize:20,
-      currentPage:1,
+      showTotal:0,
       member:[],
       showMember:[],
+      pageSize:20,
+      currentPage:1,
+      input:"",
     }
   },
   methods: {
     handleSizeChange(val) {
       this.pageSize = val;
-      this.showMember = this.member.slice((this.currentPage-1)*val,this.currentPage*val)
       console.log(`每页 ${val} 条`);
     },
 
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.showMember = this.member.slice((val-1)*this.pageSize,val*this.pageSize)
       console.log(`当前页: ${val}`);
     },
 
     deleteMember(userId){
-      this.total--;
       this.member = this.member.filter(item => item.userId !== userId)
-      this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+      this.showMember = this.member
+      this.showTotal = this.showMember.length
+    },
+
+    search(){
+      if(this.input.stripe === ""){
+        this.showMember = this.member
+        this.showTotal = this.showMember.length
+        return
+      }
+      this.showMember = []
+      for (let i = 0; i < this.member.length; i++) {
+        let item = this.member[i]
+        if(item.userName.includes(this.input) || item.email.includes(this.input)){
+          this.showMember.push(item)
+        }
+      }
+      this.showTotal = this.showMember.length
     }
   },
   mounted() {
@@ -69,22 +84,22 @@ export default {
         return
       }
       this.member = JSON.parse(JSON.stringify(res.data.data.result))
-      this.total = this.member.length
-      this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+      this.showMember = this.member
+      this.showTotal = this.showMember.length
     })
 
-    // this.total = 43;
-    // for (let i = 0; i < this.total; i++) {
+    // this.showTotal = 43;
+    // for (let i = 0; i < this.showTotal; i++) {
     //   this.member.push({
     //     userId:i,
     //     userName:i+"的名字在哪里？",
     //     role:"普通成员",
     //     avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-    //     topicNum:12,
-    //     answerNum:23
+    //     email:i+"qq.com"
     //   })
     // }
-    // this.showMember = this.member.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+    // this.showMember = this.member
+    // this.showTotal = this.showMember.length
   }
 }
 </script>
@@ -106,7 +121,6 @@ export default {
 .page{
   padding-top: 30px;
   padding-bottom: 20px;
-  margin-left: 60px;
 }
 
 .search{

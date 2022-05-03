@@ -1,8 +1,10 @@
 <template>
   <div class="integral_rank_card">
     <div class="header">
-      <img class="planet" src="../../../../assets/icon/planet.png" alt="">
-      <b class="rank_name">积分活跃排行榜</b>
+      <div>
+        <img class="planet" src="../../../../assets/icon/planet.png" alt="">
+      </div>
+      <div class="rank_name">{{rankName}}</div>
     </div>
     <div>
       <Avatar class="first" :placing="users[0].rank" :name="users[0].userName" :img-url="users[0].avatar"></Avatar>
@@ -24,11 +26,10 @@
     <div v-if="users.length>10" class="more">
       <b @click="show=!show">{{show?"收起":"显示更多"}}</b><br>
     </div>
-    <div class="me">
+    <div v-if="rankName==='积分活跃排行榜'" class="me">
       <div>你的排名：{{me.rank}}</div>
       <div>你的积分：{{me.integral}}</div>
     </div>
-
   </div>
 </template>
 
@@ -39,6 +40,7 @@ import {getLeaderboard} from "@/api/planet/member";
 export default {
   name: "IntegralRank",
   components: {IntegralCard, Avatar},
+  props:["rankName"],
   data(){
     return{
       users:[{
@@ -54,26 +56,59 @@ export default {
       }
     }
   },
+  methods:{
+    loadIntegralRank(){
+      getLeaderboard("23").then((res)=>{
+        let list = JSON.parse(JSON.stringify(res.data.data.result.userList))
+        this.users = []
+        for (let i = 0; i < list.length; i++) {
+          this.users.push({
+            rank:list[i].rank,
+            userName:list[i].userName,
+            desc:"已经获得"+list[i].integral+"积分",
+            avatar: list[i].avatar
+          });
+        }
+        this.me.rank = res.data.data.result.rank
+        this.me.integral = res.data.data.result.integral
+      }).catch(()=> {
+        this.$message({message: "系统错误，排行榜加载失败", type: 'error'})
+      })
+
+      // this.users = []
+      // for (let i = 0; i < 50; i++) {
+      //   this.users.push({
+      //     rank:i+1,
+      //     userName:"第"+(i+1)+"的名字呢？",
+      //     desc:"已经获得"+(100-i)+"积分",
+      //     avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+      //   });
+      // }
+    },
+
+    loadCompetitionRank(){
+      this.users = []
+      for (let i = 0; i < 50; i++) {
+        this.users.push({
+          rank:i+1,
+          userName:"第"+(i+1)+"的名字呢？",
+          desc:"已经参加竞赛"+(100-i)+"次",
+          avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+        });
+      }
+    }
+  },
   created() {
-    getLeaderboard("23").then((res)=>{
-      console.log(res)
-      this.me.rank = res.data.data.result.rank
-      this.me.integral = res.data.data.result.integral
-      this.users = JSON.parse(JSON.stringify(res.data.data.result.userList))
-    }).catch(()=> {
-      this.$message({message: "系统错误，排行榜加载失败", type: 'error'})
-    })
-
-    // this.users = []
-    // for (let i = 0; i < 50; i++) {
-    //   this.users.push({
-    //     rank:i+1,
-    //     userName:"第"+(i+1)+"的名字呢？",
-    //     integral:100-i,
-    //     avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-    //   });
-    // }
-
+    switch (this.rankName) {
+      case "积分活跃排行榜":
+        this.loadIntegralRank()
+        break
+      case "竞赛排行榜":
+        this.loadCompetitionRank()
+        break
+      default:
+        break
+    }
   }
 }
 </script>
@@ -92,6 +127,7 @@ export default {
 .header{
   height: 50px;
   line-height: 50px;
+  display: flex;
 }
 
 .planet{
@@ -101,7 +137,9 @@ export default {
 }
 
 .rank_name{
-  padding-left: 48px;
+  width: 210px;
+  text-align: center;
+  font-weight: bold;
   color: #8c939d;
 }
 
