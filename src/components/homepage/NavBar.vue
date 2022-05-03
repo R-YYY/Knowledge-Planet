@@ -6,14 +6,14 @@
         trigger="click">
       <div class="planets">
         <div class="joinplanet">
-          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我参加的星球</h>
+          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我加入的星球</h>
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-20px;">
             <el-tag
                 v-for="item in joinplanets"
                 effect="dark"
                 style="margin-left:30px;margin-top:30px;"
                 type="success"
-            >{{ item }}</el-tag>
+            >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
         <div class="createplanet" style="margin-top:30px;">
@@ -24,7 +24,7 @@
                 effect="dark"
                 type="danger"
                 style="margin-left:30px;margin-top:20px;"
-            >{{ item }}</el-tag>
+            >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
       </div>
@@ -105,6 +105,9 @@
 import cos from "@/api/cos";
 import {createPlanet} from "@/api/homepage/planet";
 import {getAllNotice} from "@/api/homepage/planet";
+import {getCreatePlanet} from "@/api/homepage/planet";
+import {getJoinPlanet} from "@/api/homepage/planet";
+
 export default{
   data(){
     return{
@@ -115,12 +118,12 @@ export default{
       planetform:{
         avatar:'',
         name:'',
-        // createtime:'',
+        createtime:'',
         description:'',
         coverage:{}
       },
-      joinplanets:["你的名字","灿烂天空","昨日青空","你的名字","你的名字","你的名字"],
-      createplanets:["你的名字", "你的名字","你的名字","你的名字","你的名字"]
+      joinplanets:[],
+      createplanets:[]
     }
   },
   methods:{
@@ -152,7 +155,6 @@ export default{
             that.$router.push("planet")
           })
         }
-
       })
       this.showCreatePlanet = false
     },
@@ -174,7 +176,21 @@ export default{
         }
         this.noticePage = true
       }
-    })
+    }),
+        getCreatePlanet().then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.planetList
+            console.log(data)
+            this.createplanets=data
+          }
+        }),
+        getJoinPlanet().then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.planetList
+            console.log(data)
+            this.joinplanets=data
+          }
+        })
   }
 
 }

@@ -6,22 +6,24 @@
         <el-popover
             placement="right-start"
             trigger="hover"
-            content="为你推荐最感兴趣的星球">
+            content="根据兴趣爱好为你推荐星球">
             <img src="../../assets/homepageimg/hint.png" class="hintpng" slot="reference">
         </el-popover>
       </div>
 
       <div class="rpcontent" v-for="(item,index) in recommendplanet" :key="index">
         <div class="content">
-          <img src="../../assets/homepageimg/1.jpg" class="planet_img">
+          <img :src="item.planet.planetAvatar" class="planet_img">
           <div class="ptitle">{{ item.planet.planetName }}</div>
           <div class="pintro">{{ item.planet.planetDescription}}</div>
           <div class="goin">
-            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center">加入</el-button>
+            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planetCode)">加入</el-button>
           </div>
           <div class="other">
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
-            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：{{item.uploaderName}}</span>
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：</span>
+            <img src="../../assets/homepageimg/1.jpg" class="cp_avatar">
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:35px;">{{item.uploaderName}}</span>
           </div>
           <div class="divide">
             <el-divider></el-divider>
@@ -34,6 +36,7 @@
 
 <script>
 import { getRecommendPlanet} from "@/api/homepage/planet";
+import {joinPlanet} from "@/api/homepage/planet"
 
 export default{
   data(){
@@ -42,7 +45,23 @@ export default{
     }
   },
   methods:{
-
+    joinplanet(planetcode) {
+      this.$confirm('您确定加入该星球吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'primary'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '加入成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消加入'
+        });
+      });
+    }
   },
   mounted(){
     getRecommendPlanet().then((res)=>{
@@ -68,9 +87,7 @@ export default{
   margin-top:30px;
 }
 .rep{
-  /*position: relative;*/
   width:780px;
-  /*height:600px;*/
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
 }
@@ -114,6 +131,7 @@ export default{
 }
 .other{
   margin-top:36px;
+  height:20px;
 }
 .divide{
   width:740px;
@@ -127,5 +145,13 @@ export default{
 .hint{
   margin-left:130px;
   margin-top:-5px;
+}
+.cp_avatar{
+  position:absolute;
+  margin-top:-3px;
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  margin-left:5px;
 }
 </style>

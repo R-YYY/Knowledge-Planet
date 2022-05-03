@@ -104,7 +104,7 @@ export default{
   /*box-sizing: border-box;*/
   padding-left:1px;
   padding-top:10px;
-  font-size:8px;
+  font-size:12px;
   width: 50px;
   height: 30px;
   border-radius: 16px!important;

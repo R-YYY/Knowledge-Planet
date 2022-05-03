@@ -1,12 +1,5 @@
 import axios from "../index.js";
 
-// export function getPlanetRank(){
-//     return axios({
-//         method:"GET",
-//         url:"/planet/getHotPlanet/",
-//     })
-// }
-
 export function getAllNotice(){
     return axios({
         method:"GET",
@@ -56,3 +49,46 @@ export function getHotPlanet(){
         url:'/planet/getHotPlanet',
     })
 }
+
+export function getMessage(){
+    return axios({
+        method:"GET",
+        url:'/system/getMessage'
+    })
+}
+
+export function setMessageStatus(mId,sta){
+    let data = new FormData();
+    data.append("messageId",mId);
+    data.append("status",sta);
+    return axios({
+        method:"POST",
+        url:"/system/setMessageStatus",
+        data:data
+    })
+}
+
+export function joinPlanet(planetCode){
+    let data = new FormData();
+    data.append("planetCode",planetCode);
+    return axios({
+        method:"POST",
+        url:"/planet/joinPlanet",
+        data:data
+    })
+}
+
+export function getCreatePlanet(){
+    return axios({
+        method:"GET",
+        url:'/planet/getPlanet/1'
+    })
+}
+
+export function getJoinPlanet(){
+    return axios({
+        method:"GET",
+        url:'/planet/getPlanet/2'
+    })
+}
+

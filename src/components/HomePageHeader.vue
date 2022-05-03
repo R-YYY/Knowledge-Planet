@@ -22,11 +22,12 @@
       </div>
       <div id="right">
         <div id="icon1" class="icon"></div>
-        <div id="icon2" class="icon"></div>
-        <div class="noticeicon" @click="showNotice()">
-          <div id="icon3" class="icon"></div>
-          <el-badge value="New" class="noticenumber" v-show="isShowNoticeNumber"></el-badge>
-        </div>
+        <div id="icon2" class="icon" @click="showMessage"></div>
+        <div id="icon3" class="icon" @click="showNotice"></div>
+        <span>
+        <el-badge :value="notices.length" class="messagenumber" v-show="isShowMessageNumber"></el-badge>
+        </span>
+
       </div>
     </div>
     <div class="placeholder">
@@ -35,10 +36,32 @@
         style="margin-top:50px;"
         :visible.sync="isShowNoticeDrawer"
         z-index="2">
-      <h style="font-family: 'Microsoft YaHei';font-size:20px;font-weight: bold;margin-left:20px;">系统通知</h>
+      <h style="font-family: 'Microsoft YaHei';font-size:20px;font-weight: bold;margin-left:20px;">所有公告</h>
       <div class="allnotice" v-for="item in notices" >
         <p style="font-weight: bold;font-family: 'Microsoft YaHei';margin-left: 20px;">{{item.title}}</p>
         <p style="font-family: 'Microsoft YaHei';margin-left: 20px;">{{item.content}}</p>
+        <el-divider></el-divider>
+      </div>
+    </el-drawer>
+
+    <el-drawer
+        style="margin-top:50px;"
+        :visible.sync="isShowMessageDrawer"
+        z-index="2">
+      <h style="font-family: 'Microsoft YaHei';font-size:20px;font-weight: bold;margin-left:20px;">系统通知</h>
+      <div class="allmessage" v-for="item in messages" >
+        <p style="font-family: 'Microsoft YaHei';margin-left: 20px;">{{item.content}}</p>
+        <el-switch
+            class="readmessage"
+            style="display: block"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="已读"
+            inactive-text="未读"
+            v-model="item.status"
+            @change="readmessage(item.messageId,item.status)"
+        >
+        </el-switch>
         <el-divider></el-divider>
       </div>
     </el-drawer>
@@ -49,16 +72,22 @@
 <script>
 import {getSearchPlanet} from "@/api/homepage/planet"
 import {getAllNotice} from "@/api/homepage/planet"
+import {getMessage} from "@/api/homepage/planet"
+import {setMessageStatus} from "@/api/homepage/planet";
+
 export default {
   name: "HomePageHeader",
   data() {
     return {
       searchContent: '',
-      isShowNoticeNumber:true,
+      isShowMessageNumber:true,
       isShowResult:false,
       planetResult:[],
       notices:[],
-      isShowNoticeDrawer:false
+      isShowNoticeDrawer:false,
+      isShowMessageDrawer:false,
+      messages:[],
+      isRead:false
     }
   },
   methods:{
@@ -75,22 +104,43 @@ export default {
       })
     },
     showNotice(){
+      this.isShowMessageDrawer=false
       this.isShowNoticeDrawer=!this.isShowNoticeDrawer
-      this.isShowNoticeNumber=false
-      getAllNotice().then((res)=>{
-        if(res.data.success === true){
-          let data = res.data.data.notices
-          console.log(data)
-          console.log(222222)
-          this.notices=data
-          console.log(this.notices)
-        }
+    },
+    showMessage(){
+      this.isShowNoticeDrawer=false
+      this.isShowMessageDrawer=!this.isShowMessageDrawer
+      this.isShowMessageNumber=false
+    },
+    readmessage(messageId,status){
+      console.log(999999999)
+      let mId=messageId
+      let sta=status
+      console.log(mId)
+      console.log(sta)
+      setMessageStatus(mId,sta).then((res)=>{
+        console.log(888888)
+        console.log(res)
       })
     }
-
   },
   mounted(){
-
+    getMessage().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data.messageList
+        console.log(data)
+        this.messages=data
+        console.log(this.messages)
+      }
+    }),
+        getAllNotice().then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.notices
+            console.log(data)
+            this.notices=data
+            console.log(this.notices)
+          }
+        })
   }
 }
 </script>
@@ -170,7 +220,7 @@ export default {
   background-image: url("../assets/icon/message.png");
 }
 #icon3 {
-  background-image: url("../assets/icon/alert.png");
+  background-image: url("../assets/icon/notice2.png");
 }
 .searchResult{
   width:505px;
@@ -181,8 +231,11 @@ export default {
   background-color:whitesmoke;
   position:absolute;
 }
-.noticenumber{
-  margin-left:75px;
-  margin-top:-65px;
+.messagenumber{
+  margin-left:125px;
+  margin-top:-85px;
+}
+.readmessage{
+  margin-left: 300px;
 }
 </style>
