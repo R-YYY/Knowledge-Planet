@@ -52,8 +52,6 @@
                   @input="autoTextAreaHeight"
                   placeholder="发布你的评论"
                   class="input"></textarea>
-
-
       </div>
     </transition>
     <commentArea v-if="commentData" :isShow="commentAreaVisible" :topicId="topic.topicId"></commentArea>
@@ -126,6 +124,10 @@ export default {
       }
     },
     sendComment() {
+      if(!this.myComment){
+        this.$message.error("内容不能为空")
+        return
+      }
       let that = this
       addComment(this.topic.topicId, null, null, this.myComment, 1).then((res) => {
         if (res.data.success) {

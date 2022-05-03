@@ -149,6 +149,10 @@ export default {
       }
     },
     reply(comment) {
+      if(!comment.myReplyContent){
+        this.$message.error("内容不能为空")
+        return
+      }
       let that = this
       addComment(comment.topicId, comment.commentId, this.comment.commentId, comment.myReplyContent, 0).then((res) => {
         if (res.data.success) {

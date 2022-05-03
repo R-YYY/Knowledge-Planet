@@ -1,28 +1,28 @@
 <template>
   <div>
     <div class="choice_card">
-      <div class="choice" @click="$router.push('/planet')">
+      <div class="choice" @click="goto('topic')">
         <img src="../../../assets/icon/resources.png" alt="">
         <span>星球讨论</span>
       </div>
       <hr class="line">
-      <div class="choice" @click="resource">
+      <div class="choice" @click="goto('resource')">
         <img src="../../../assets/icon/resources.png" alt="">
         <span>星球资源</span>
       </div>
       <hr class="line">
-      <div class="choice">
+      <div class="choice" @click="goto('activity')">
         <img src="../../../assets/icon/activity.png" alt="">
         <span>活动拼团</span>
       </div>
       <hr class="line">
-      <div class="choice" @click="$router.push('/planet/competition')">
+      <div class="choice" @click="goto('competition')">
         <img src="../../../assets/icon/competition.png" alt="">
         <span>知识竞赛</span>
       </div>
     </div>
     <div class="choice_card">
-      <div class="choice" @click="$router.push('/planet/member')">
+      <div class="choice" @click="goto('member')">
         <img src="../../../assets/icon/member.png" alt="">
         <span>成员管理</span>
       </div>
@@ -34,8 +34,25 @@
 export default {
   name: "PlanetChoice",
   methods:{
-    resource(){
-      this.$router.push("/planet/resource")
+    goto(path){
+      switch(path){
+        case 'resource':
+          this.$router.push("/planet/resource")
+          break;
+        case 'activity':
+          this.$router.push("/planet/activity")
+          break;
+        case 'competition':
+          this.$router.push("/planet/competition")
+          break;
+        case 'member':
+          this.$router.push("/planet/member")
+          break;
+        case 'topic':
+          this.$router.push("/planet")
+          break;
+      }
+
     }
   }
 }

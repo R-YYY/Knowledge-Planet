@@ -106,6 +106,7 @@ export default{
   width:120px;
   height:120px;
   margin-left:30px;
+
 }
 .ptitle{
   margin-left:225px;
