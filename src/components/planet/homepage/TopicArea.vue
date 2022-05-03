@@ -11,7 +11,6 @@
           </li>
         </ul>
       </div>
-
       <div class="button">
         <CreateDiscuss></CreateDiscuss>
       </div>
@@ -63,20 +62,40 @@ export default {
         }
       }
     },
+    analyseContent(content) {
+      let shortContent = ''
+      let reg = /[^\x00-\xff]/
+      let l = 0
+      if (content.length <= 140) {
+        return true
+      } else {
+        for (let i = 0; i < content.length; i++) {
+          shortContent += content.charAt(i)
+          l = (l + (reg.test(content.charAt(i)) ? 2 : 1))
+          if (l >= 280) {
+            break
+          }
+        }
+        shortContent += '...'
+        return shortContent
+      }
+    },
     updateTopic(){
       getAllTopic(23).then((res)=>{
-        console.log(res)
         let data = res.data.data.topicList
         this.topics = []
         for(let item of data){
           let pictureList = []
           if(item.topic.picture)
             pictureList = item.topic.picture.split(',')
-          console.log(item)
+          let shortContent = this.analyseContent(item.topic.content)
+          console.log(shortContent)
           this.topics.push({
             topicId:item.topic.topicId,
             praiseCount:item.topic.praiseCount,
             content:item.topic.content,
+            isShort: shortContent === true,
+            shortContent: shortContent === true ? null : shortContent,
             avatar: item.avatar,
             name: item.userName,
             time: item.topic.time,

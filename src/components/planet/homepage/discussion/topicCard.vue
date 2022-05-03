@@ -10,7 +10,7 @@
               @click="contentVisible = !contentVisible">{{
             contentVisible ? topic.content : topic.shortContent
           }}</span>
-        <span class="showButton" @click="contentVisible = !contentVisible">
+        <span v-if="!topic.isShort" class="showButton" @click="contentVisible = !contentVisible">
           {{ !contentVisible ? '显示全部' : '收起' }}
           <i :class="contentVisible?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
         </span>
@@ -76,34 +76,18 @@ export default {
   },
   data() {
     return {
-      contentShort: false,
       contentVisible: false,
       commentBarVisible: false,
       commentAreaVisible: false,
       commentData: false,
-      myAvatar: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.P3NSGTdAYdyqy5zJpb5QXQHaEo?pid=ImgDet&rs=1',
+      myAvatar: window.sessionStorage.getItem('avatar'),
       myComment: ''
     }
   },
   created() {
-    let content = this.topic.content
-    this.topic.shortContent = ''
-    let reg = /[^\x00-\xff]/
-    let l = 0
-    if (content.length <= 140) {
-      this.topic.shortContent = content
-      this.contentShort = true
-    } else {
-      for (let i = 0; i < content.length; i++) {
-        this.topic.shortContent += content.charAt(i)
-        l = (l + (reg.test(content.charAt(i)) ? 2 : 1))
-        if (l >= 280) {
-          break
-        }
-      }
-      this.topic.shortContent += '...'
-    }
     this.throttleLike = throttle(this.like,1000)
+    console.log(this.topic)
+    this.contentVisible = this.topic.isShort
   },
   methods: {
     like() {

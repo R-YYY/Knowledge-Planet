@@ -56,8 +56,10 @@
 <script>
 import throttle from "@/utils/throttle";
 import showReplyCard from "@/components/planet/homepage/discussion/replyCard";
-import {getFirstComment, addComment,praise,unPraise} from "@/api/planet/topic";
+import {getFirstComment, addComment, praise, unPraise} from "@/api/planet/topic";
 import eventBus from "@/utils/eventBus";
+import {loginPost} from "@/api/login/login";
+
 export default {
   name: "commentArea",
   components: {
@@ -73,11 +75,12 @@ export default {
   },
   created() {
     this.throttleLike = throttle(this.like, 1000)
+    console.log(1)
     this.updateComment()
-    eventBus.$on('addMyComment',()=>{
+    eventBus.$on('addMyComment', () => {
       this.updateComment()
     })
-    eventBus.$on("addMyReply",(val)=>{
+    eventBus.$on("addMyReply", (val) => {
       this.updateComment()
     })
   },
@@ -110,18 +113,22 @@ export default {
       }
 
     },
-    updateComment(){
+    updateComment() {
       getFirstComment(this.topicId).then((res) => {
         this.commentList = []
         let commentList = res.data.data.result.commentList
-        console.log(commentList)
         for (let item of commentList) {
+          console.log(1)
+          let shortContent = this.analyseContent(item.comment.content)
+          console.log(shortContent)
           this.commentList.push({
             topicId: item.comment.topicId,
             commentId: item.comment.commentId,
             avatar: item.avatar,
             name: item.userName,
             content: item.comment.content,
+            isShort: shortContent === true,
+            shortContent: shortContent === true ? null : shortContent,
             time: item.comment.time,
             replyCount: item.replyList.length,
             isLiked: item.liked,
@@ -154,6 +161,25 @@ export default {
       e.target.style.height = 'auto'
       e.target.style.height = e.target.scrollTop + e.target.scrollHeight + "px"
     },
+    analyseContent(content) {
+      console.log(1)
+      let shortContent = ''
+      let reg = /[^\x00-\xff]/
+      let l = 0
+      if (content.length <= 140) {
+        return true
+      } else {
+        for (let i = 0; i < content.length; i++) {
+          shortContent += content.charAt(i)
+          l = (l + (reg.test(content.charAt(i)) ? 2 : 1))
+          if (l >= 280) {
+            break
+          }
+        }
+        shortContent += '...'
+        return shortContent
+      }
+    }
   }
 }
 </script>
