@@ -234,7 +234,10 @@ p {
   margin-left: 30px;
 }
 .miniIcon{
-  height: 20px;position: absolute
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  position: absolute
 }
 .demo-table-expand {
   font-size: 0;

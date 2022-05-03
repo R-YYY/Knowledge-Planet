@@ -16,7 +16,7 @@
         <TopicArea></TopicArea>
       </div>
       <div>
-        <IntegralRank></IntegralRank>
+        <IntegralRank rank-name="积分活跃排行榜"></IntegralRank>
       </div>
     </div>
   </div>
