@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getRecommendPlanet} from "@/api/homepage/planet";
+import {createPlanet, getRecommendPlanet} from "@/api/homepage/planet";
 import {joinPlanet} from "@/api/homepage/planet"
 
 export default{
@@ -55,6 +55,10 @@ export default{
           type: 'success',
           message: '加入成功!'
         });
+        joinPlanet(planetcode).then((res)=>{
+          console.log(res)
+
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
