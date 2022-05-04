@@ -1,14 +1,27 @@
 <template>
   <div class="card">
     <div>
-      <div class="name">{{competition.name}}</div>
+      <div class="name">{{competition.title}}</div>
       <div class="time">{{competition.time}}</div>
     </div>
     <div>
       <div class="duration">{{competition.duration}}</div>
     </div>
-    <div class="btn">参加</div>
-
+    <div class="btn" @click="dialogVisible=true">参加</div>
+    <el-dialog :visible.sync="dialogVisible" width="30%" center>
+      <div class="join">
+        <img class="img" src="../../../assets/competition/wenhao.png" alt="">
+        <div>请确认是否参加竞赛</div>
+      </div>
+      <ul>
+        <li>竞赛名称：{{competition.title}}</li>
+        <li>开始时间：{{competition.time}}</li>
+        <li>竞赛时长：{{competition.duration}}</li>
+      </ul>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -16,6 +29,11 @@
 export default {
   name: "CompetitionCard",
   props:["competition"],
+  data(){
+    return{
+      dialogVisible:false,
+    }
+  }
 }
 </script>
 
@@ -60,5 +78,26 @@ export default {
   cursor: pointer;
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.join{
+  color: black;
+  text-align: center;
+  font-size: 20px;
+}
+
+.img{
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+ul{
+  color: black;
+  list-style: none;
+  margin-top: 50px;
+  margin-left: 30px;
+  font-size: 15px;
+  line-height: 30px;
 }
 </style>
