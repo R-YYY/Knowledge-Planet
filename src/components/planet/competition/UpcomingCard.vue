@@ -1,16 +1,32 @@
 <template>
   <div class="upcoming_card">
     <div class="left_card">
-      <div class="com_name">{{competition[0].name}}</div>
+      <div class="com_name">{{competition[0].title}}</div>
       <div class="com_time">时间：{{competition[0].time}}</div>
       <div class="com_des">{{competition[0].des}}</div>
-      <div class="btn">参加</div>
+      <div class="btn" @click="dialogVisible=true;choose=0">参加</div>
     </div>
     <div class="right_card">
-      <div class="com_name">{{competition[1].name}}</div>
+      <div class="com_name">{{competition[1].title}}</div>
       <div class="com_time">时间：{{competition[1].time}}</div>
       <div class="com_des">{{competition[1].des}}</div>
-      <div class="btn">参加</div>
+      <div class="btn" @click="dialogVisible=true;choose=1">参加</div>
+    </div>
+    <div>
+      <el-dialog :visible.sync="dialogVisible" width="30%" center>
+        <div class="join">
+          <img class="img" src="../../../assets/competition/wenhao.png" alt="">
+          <div>请确认是否参加竞赛</div>
+        </div>
+        <ul>
+          <li>竞赛名称：{{competition[choose].title}}</li>
+          <li>开始时间：{{competition[choose].time}}</li>
+          <li>竞赛时长：{{competition[choose].duration}}</li>
+        </ul>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -22,16 +38,20 @@ export default {
     return{
       competition:[
         {
-          name:"前端星第一届全能知识大赛",
+          title:"前端星第一届全能知识大赛",
           time:"2022-04-20   08:00~24:00",
           des:"前端星的球友们，这是一次检测自我能力的绝佳机会，如果你想知道自己对于前端知识的掌握程度，还不点进来测测？",
+          duration:"50分钟",
         },
         {
-          name:"前端星第18场周赛",
+          title:"前端星第18场周赛",
           time:"2022-04-20   08:00~24:00",
           des:"给每一个热带前端的小伙伴一次提升自己的机会！还等啥，快来参加~",
+          duration:"50分钟",
         }
-      ]
+      ],
+      dialogVisible:false,
+      choose:0,
     }
   }
 }
@@ -102,5 +122,26 @@ export default {
   background-color: #f7aa22;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.join{
+  color: black;
+  text-align: center;
+  font-size: 20px;
+}
+
+.img{
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+ul{
+  color: black;
+  list-style: none;
+  margin-top: 50px;
+  margin-left: 30px;
+  font-size: 15px;
+  line-height: 30px;
 }
 </style>
