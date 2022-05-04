@@ -14,7 +14,7 @@
           <span class="endTime">截止日期 {{ activity.endTime }}</span>
         </div>
         <div class="other">
-          <el-tooltip  effect="light" :content="activity.address" placement="top">
+          <el-tooltip effect="light" :content="activity.address" placement="top">
             <span class="address">{{ activity.address }} </span>
           </el-tooltip>
           <span class="peopleNum">当前人数 <span
@@ -24,8 +24,8 @@
       </div>
     </div>
     <div id="footer">
-      <span class="avatar" :style="{backgroundImage:'url('+activity.organizerAvatar+')'}"></span>
-      <span class="name">{{ activity.organizerName }}</span>
+      <span class="organizerAvatar" :style="{backgroundImage:'url('+activity.organizerAvatar+')'}"></span>
+      <span class="organizerName">{{ activity.organizerName }}</span>
       <el-button id="answerButton"
                  :disabled="isFull&&activity.status"
                  :class="buttonStyle"
@@ -182,7 +182,7 @@ export default {
 }
 
 
-.avatar {
+.organizerAvatar {
   vertical-align: middle;
   display: inline-block;
   border-radius: 50%;
@@ -194,10 +194,11 @@ export default {
   cursor: pointer;
 }
 
-.name {
+.organizerName {
   line-height: 30px;
   margin-left: 10px;
   color: #00c8bf;
+  background-color: white;
   font-size: 16px;
   font-weight: bold;
 }

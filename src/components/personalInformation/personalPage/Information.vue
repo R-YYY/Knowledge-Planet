@@ -14,19 +14,19 @@
         <p class="avatar_text">头像:</p>
         <img src="../../../assets/homepageimg/1.jpg" class="avatar_jpg">
         <div class="name">
-          <span>昵称：</span><span>{{information.name}}</span>
+          <span>昵称：</span><span>{{ information.name }}</span>
         </div>
         <div class="region">
-          <span>居住地：</span><span>{{information.region}}</span>
+          <span>居住地：</span><span>{{ information.region }}</span>
         </div>
         <div class="birthday">
-          <span>生日：</span><span>{{information.birthday}}</span>
+          <span>生日：</span><span>{{ information.birthday }}</span>
         </div>
         <div class="telephone">
-          <span>电话：</span><span>{{information.telephone}}</span>
+          <span>电话：</span><span>{{ information.telephone }}</span>
         </div>
         <div class="id">
-          <span>ID：</span><span>{{information.id}}</span>
+          <span>ID：</span><span>{{ information.id }}</span>
         </div>
       </div>
 
@@ -43,7 +43,8 @@
                   :auto-upload="false"
                   action="string"
                   :on-change="handlePicturePreview">
-                <div v-if="information.avatar" :style="{backgroundImage:'url('+information.avatar+')'}" class="picture"></div>
+                <div v-if="information.avatar" :style="{backgroundImage:'url('+information.avatar+')'}"
+                     class="picture"></div>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -92,8 +93,8 @@
 
           </el-form>
           <div slot="footer" class="dialog_footer">
-            <el-button @click="showChangeInformation = false" >取 消</el-button>
-            <el-button @click="upload" >确 定</el-button>
+            <el-button @click="showChangeInformation = false">取 消</el-button>
+            <el-button @click="upload">确 定</el-button>
           </div>
         </el-dialog>
       </div>
@@ -104,148 +105,163 @@
 
 <script>
 
-export default{
-  data(){
-    return{
+export default {
+  data() {
+    return {
       information: {
-        avatar:'',
+        avatar: '',
         name: '11',
         region: '上海',
         birthday: '2002',
-        telephone:'15130721316',
-        id:'1952455',
-        coverge:{}
+        telephone: '15130721316',
+        id: '1952455',
+        coverge: {}
       },
-      showChangeInformation:false,
+      showChangeInformation: false,
       informationformLabelWidth: '3em',
     }
   },
-  methods:{
+  methods: {
     handlePicturePreview(file) {
       this.information.coverage = file.raw
       this.information.avatar = URL.createObjectURL(file.raw);
     },
   },
-  mounted(){
+  mounted() {
 
   }
 
 }
 </script>
-<style socped>
-.personaldata{
-  position:absolute;
-  width:700px;
-  height:560px;
+
+<style scoped>
+.personaldata {
+  position: absolute;
+  width: 700px;
+  height: 560px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
   background-color: #e5ffff;
 }
-.header{
-  margin-top:10px;
-  position:absolute;
+
+.header {
+  margin-top: 10px;
+  position: absolute;
 }
-.information_png{
+
+.information_png {
   display: inline-block;
-  width:30px;
-  height:30px;
+  width: 30px;
+  height: 30px;
   vertical-align: middle;
   margin-left: 40px;
 }
-.information_text{
+
+.information_text {
   vertical-align: middle;
-  margin-left:15px;
+  margin-left: 15px;
   font-size: 23px;
   font-family: "Microsoft YaHei";
 }
-.infordivide{
-  width:700px;
+
+.infordivide {
+  width: 700px;
 }
-.avatar_text{
+
+.avatar_text {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-top:80px;
-  margin-left:40px;
+  margin-top: 80px;
+  margin-left: 40px;
 }
-.avatar_jpg{
+
+.avatar_jpg {
   border-radius: 50%;
-  width:100px;
-  height:100px;
-  margin-left:100px;
-  margin-top:-40px;
+  width: 100px;
+  height: 100px;
+  margin-left: 100px;
+  margin-top: -40px;
 }
-.name{
+
+.name {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-left:40px;
-  margin-top:20px;
+  margin-left: 40px;
+  margin-top: 20px;
   background-color: #99ffff;
   box-shadow: 0 0 10px #dcdcdc;
-  width:375px;
-  height:35px;
+  width: 375px;
+  height: 35px;
   border-radius: 5px;
   line-height: 35px;
-  padding-left:5px;
+  padding-left: 5px;
 }
-.region{
+
+.region {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-left:40px;
-  margin-top:20px;
+  margin-left: 40px;
+  margin-top: 20px;
   background-color: #99ffff;
   box-shadow: 0 0 10px #dcdcdc;
-  width:375px;
-  height:35px;
+  width: 375px;
+  height: 35px;
   border-radius: 5px;
   line-height: 35px;
-  padding-left:5px;
+  padding-left: 5px;
 }
-.birthday{
+
+.birthday {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-left:40px;
-  margin-top:20px;
+  margin-left: 40px;
+  margin-top: 20px;
   background-color: #99ffff;
   box-shadow: 0 0 10px #dcdcdc;
-  width:375px;
-  height:35px;
+  width: 375px;
+  height: 35px;
   border-radius: 5px;
   line-height: 35px;
-  padding-left:5px;
+  padding-left: 5px;
 }
-.telephone{
+
+.telephone {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-left:40px;
-  margin-top:20px;
+  margin-left: 40px;
+  margin-top: 20px;
   background-color: #99ffff;
   box-shadow: 0 0 10px #dcdcdc;
-  width:375px;
-  height:35px;
+  width: 375px;
+  height: 35px;
   border-radius: 5px;
   line-height: 35px;
-  padding-left:5px;
+  padding-left: 5px;
 }
-.id{
+
+.id {
   font-family: "Microsoft YaHei";
   font-size: 20px;
-  margin-left:40px;
-  margin-top:20px;
+  margin-left: 40px;
+  margin-top: 20px;
   background-color: #99ffff;
   box-shadow: 0 0 10px #dcdcdc;
-  width:375px;
-  height:35px;
+  width: 375px;
+  height: 35px;
   border-radius: 5px;
   line-height: 35px;
-  padding-left:5px;
+  padding-left: 5px;
 }
-.changebutton{
-  margin-left:40px;
-  margin-top:30px;
+
+.changebutton {
+  margin-left: 40px;
+  margin-top: 30px;
 }
+
 .informationform {
   margin-left: 10%;
 }
+
 .dialog_footer {
   text-align: center;
 }

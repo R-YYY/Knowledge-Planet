@@ -3,7 +3,7 @@
     <div id="content">
       <div id="myInfo">
         <div id="container">
-          <span class="avatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
+          <span class="myAvatar" :style="{backgroundImage: 'url('+avatar+')'}"></span>
         </div>
         <div id="name">{{ username }}</div>
       </div>
@@ -60,7 +60,7 @@ export default {
   text-align: center;
 }
 
-.avatar {
+.myAvatar {
   margin-top: 15px;
   display: inline-block;
   border-radius: 50%;

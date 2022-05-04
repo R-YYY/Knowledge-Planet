@@ -17,7 +17,7 @@
           <div class="ptitle">{{ item.planet.planetName }}</div>
           <div class="pintro">{{ item.planet.planetDescription}}</div>
           <div class="goin">
-            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planetCode)">加入</el-button>
+            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planet.planetCode)">加入</el-button>
           </div>
           <div class="other">
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
@@ -45,7 +45,8 @@ export default{
     }
   },
   methods:{
-    joinplanet(planetcode) {
+    joinplanet(planetCode) {
+      console.log(planetCode)
       this.$confirm('您确定加入该星球吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -55,9 +56,12 @@ export default{
           type: 'success',
           message: '加入成功!'
         });
-        joinPlanet(planetcode).then((res)=>{
+        joinPlanet(planetCode).then((res)=>{
           console.log(res)
-
+          if(res.data.success){
+            window.sessionStorage.setItem("planetCode",planetCode)
+            this.$router.push('/planet')
+          }
         })
       }).catch(() => {
         this.$message({
@@ -69,7 +73,8 @@ export default{
   },
   mounted(){
     getRecommendPlanet().then((res)=>{
-      if(res.data.success === true){
+      if(res.data.success){
+        console.log(res)
         let data = res.data.data.planetList
         this.recommendplanet=data
       }
