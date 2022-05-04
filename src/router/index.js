@@ -13,6 +13,7 @@ import CheckRscView from "@/views/planet/resource/CheckRscView";
 import CompetitionView from "@/views/planet/competition/CompetitionView";
 import ActivityView from "@/views/planet/activity/ActivityView";
 import PersonalInformationView from "@/views/personal/PersonalInformationView";
+import PersonalFavoriteView from "@/views/personal/PersonalFavoriteView";
 
 Vue.use(VueRouter)
 
@@ -85,6 +86,11 @@ const routes = [
         path:'/personal',
         name:'personalInformation',
         component:PersonalInformationView
+    },
+    {
+        path:'/personal/favorite',
+        name:'personalFavorite',
+        component: PersonalFavoriteView
     }
 ]
 

@@ -31,7 +31,7 @@ export default{
 
 }
 </script>
-<style socped>
+<style scoped>
 .bottombar{
   width:320px;
   height:250px;
