@@ -34,7 +34,7 @@ export default {
   data(){
     return{
       competitionList:[{
-        name:"",
+        title:"",
         time:"",
         duration:"",
       }],
@@ -50,7 +50,7 @@ export default {
     this.competitionList=[]
     for (let i = 0; i < 77; i++) {
       this.competitionList.push({
-        name:"竞赛"+(i+1)+"的名字",
+        title:"竞赛"+(i+1)+"的名字",
         time:"2022-4-27 15:00",
         duration:"50分钟",
       })
@@ -63,7 +63,7 @@ export default {
 .competition_list{
   width: 580px;
   height: 790px;
-  background: rgba(255,255,255,0.8);
+  background: white;
   border-radius: 20px;
   box-shadow: 0 0 15px #cdcdcd;
 }

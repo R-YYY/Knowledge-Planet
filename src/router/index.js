@@ -12,6 +12,7 @@ import MemberView from "@/views/planet/member/MemberView";
 import CheckRscView from "@/views/planet/resource/CheckRscView";
 import CompetitionView from "@/views/planet/competition/CompetitionView";
 import ActivityView from "@/views/planet/activity/ActivityView";
+import PersonalInformationView from "@/views/personal/PersonalInformationView";
 
 Vue.use(VueRouter)
 
@@ -79,6 +80,11 @@ const routes = [
         path: '/planet/activity',
         name:'activity',
         component: ActivityView,
+    },
+    {
+        path:'/personal',
+        name:'personalInformation',
+        component:PersonalInformationView
     }
 ]
 
