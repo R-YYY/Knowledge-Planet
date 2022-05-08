@@ -80,27 +80,27 @@ export default {
     }
   },
   mounted() {
-    // getMember("23").then((res)=>{
-    //   if(res.data.data.result === undefined){
-    //     return
-    //   }
-    //   this.member = JSON.parse(JSON.stringify(res.data.data.result))
-    //   this.showMember = this.member
-    //   this.showTotal = this.showMember.length
-    // })
+    getMember("23").then((res)=>{
+      if(res.data.data.result === undefined){
+        return
+      }
+      this.member = JSON.parse(JSON.stringify(res.data.data.result))
+      this.showMember = this.member
+      this.showTotal = this.showMember.length
+    })
 
-    this.showTotal = 122;
-    for (let i = 0; i < this.showTotal; i++) {
-      this.member.push({
-        userId:i,
-        userName:i+"的名字在哪里？",
-        role:"普通成员",
-        avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-        email:i+"qq.com"
-      })
-    }
-    this.showMember = this.member
-    this.showTotal = this.showMember.length
+    // this.showTotal = 122;
+    // for (let i = 0; i < this.showTotal; i++) {
+    //   this.member.push({
+    //     userId:i,
+    //     userName:i+"的名字在哪里？",
+    //     role:"普通成员",
+    //     avatar: "https://img1.baidu.com/it/u=1919046953,770482211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+    //     email:i+"qq.com"
+    //   })
+    // }
+    // this.showMember = this.member
+    // this.showTotal = this.showMember.length
   }
 }
 </script>
