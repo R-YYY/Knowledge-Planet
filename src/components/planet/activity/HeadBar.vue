@@ -5,14 +5,14 @@
     </div>
     <div id="center">
       <div id="selectors">
-        <div class="select">
+        <div class="select" v-show="!checkMode">
           <ul @click="select">
             <li><span class="selectItem selectedItem">全部</span></li>
             <li><span class="selectItem">我参与的</span></li>
             <li><span class="selectItem">我发布的</span></li>
           </ul>
         </div>
-        <div class="select">
+        <div class="select" v-show="!checkMode">
           <ul @click="select">
             <li><span class="selectItem selectedItem">全部</span></li>
             <li><span class="selectItem">组队中</span></li>
@@ -31,7 +31,7 @@
 
     </div>
     <div id="right">
-      <uploadForm></uploadForm>
+      <uploadForm @update="update"></uploadForm>
     </div>
   </div>
 </template>
@@ -41,6 +41,7 @@ import uploadForm from "@/components/planet/activity/UploadForm";
 
 export default {
   name: "headBar",
+  props:['checkMode'],
   components: {
     uploadForm
   },
@@ -60,6 +61,9 @@ export default {
         }
         this.$emit("select",selectors)
       }
+    },
+    update(){
+      this.$emit('update')
     }
   }
 }

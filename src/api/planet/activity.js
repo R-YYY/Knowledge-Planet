@@ -26,3 +26,21 @@ export function checkActivity(activityId,checkInfo,checkResult) {
         data:formData
     })
 }
+
+export function getActivityNum() {
+    return axios({
+        method: 'GET',
+        url: '/activity/getActivityNum',
+    })
+}
+
+export function joinOrQuitActivity(activityId,type) {
+    let formData = new FormData()
+    formData.append('activityId',activityId)
+    formData.append('type',type)
+    return axios({
+        method: 'POST',
+        url: '/activity/joinOrQuitActivity',
+        data:formData
+    })
+}

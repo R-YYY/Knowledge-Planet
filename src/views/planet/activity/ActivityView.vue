@@ -3,12 +3,18 @@
     <Header></Header>
     <div id="main">
       <div id="head">
-        <HeadBar class="left" @select="select"></HeadBar>
-        <InfoCard class="right"></InfoCard>
+        <HeadBar class="left" @select="select" @update="updateActivity" :checkMode="checkMode"></HeadBar>
+        <InfoCard class="center"></InfoCard>
+        <div class="right">
+          <el-button  class="checkButton" @click="checkMode=!checkMode" >{{checkMode?'正常模式':'审核模式'}}</el-button>
+        </div>
       </div>
       <div id="content">
-        <div class="card" v-show="item.isShow" v-for="(item, index) in activityList" :key="item.activityId">
-          <ActivityCard :activity="item"></ActivityCard>
+        <div v-if="!checkMode" class="card" v-show="item.isShow" v-for="(item, index) in activityList" :key="item.activityId">
+          <ActivityCard :activity="item" @quit="item.isShow=false"></ActivityCard>
+        </div>
+        <div v-if="checkMode" class="card" v-show="item.isShow" v-for="(item, index) in noCheckActivityList" :key="item.activityId">
+          <ActivityCard :activity="item" @update="updateActivity"></ActivityCard>
         </div>
       </div>
     </div>
@@ -20,6 +26,7 @@ import HeadBar from "@/components/planet/activity/HeadBar";
 import InfoCard from "@/components/planet/activity/InfoCard"
 import ActivityCard from "@/components/planet/activity/ActivityCard";
 import {getActivity} from "@/api/planet/activity";
+import {compareByAsc, compareByDesc} from "@/utils/compare";
 
 export default {
   name: "ActivityView",
@@ -32,42 +39,75 @@ export default {
     return {
       planetId: 23,
       activityList: [],
+      noCheckActivityList:[],
       showRelate: '全部',
       showNumber: '全部',
       showTag: '全部',
+      checkMode:false,
     }
   },
   created() {
-    getActivity(23).then((res) => {
-      console.log(res)
-      this.activityList = []
-      let activityList = res.data.data.activityList
-      for (let item of activityList) {
-        this.activityList.push({
-          organizerAvatar: item.organizerAvatar,
-          organizerId: item.organizerId,
-          organizerName: item.organizerName,
-          activityId: item.activity.activityId,
-          createTime: item.activity.createTime,
-          curNumber: item.activity.curNumber,
-          address: item.activity.address,
-          description: item.activity.description,
-          endTime: item.activity.endTime,
-          maxNumber: item.activity.maxNumber,
-          startTime: item.activity.startTime,
-          status: item.activity.status,
-          tag: item.activity.tag,
-          title: item.activity.title,
-          role:item.role,
-          isShow: true
-        })
-      }
-    }).catch((err) => {
-      console.log(err)
-    })
+    this.updateActivity()
   },
   methods: {
-    select(selectors){
+    updateActivity(){
+      getActivity(23).then((res) => {
+        console.log(res)
+        if (res.data.success) {
+          this.activityList = []
+          this.noCheckActivityList = []
+          let activityList = res.data.data.activityList
+          for (let item of activityList) {
+            if (item.activity.status === 1) {
+              this.activityList.push({
+                organizerAvatar: item.organizerAvatar,
+                organizerId: item.organizerId,
+                organizerName: item.organizerName,
+                activityId: item.activity.activityId,
+                createTime: item.activity.createTime,
+                curNumber: item.activity.curNumber,
+                address: item.activity.address,
+                description: item.activity.description,
+                endTime: item.activity.endTime,
+                maxNumber: item.activity.maxNumber,
+                startTime: item.activity.startTime,
+                status: item.activity.status,
+                tag: item.activity.tag,
+                title: item.activity.title,
+                role: item.role,
+                isShow: true
+              })
+            }else if(item.activity.status=== 0){
+              this.noCheckActivityList.push({
+                organizerAvatar: item.organizerAvatar,
+                organizerId: item.organizerId,
+                organizerName: item.organizerName,
+                activityId: item.activity.activityId,
+                createTime: item.activity.createTime,
+                curNumber: item.activity.curNumber,
+                address: item.activity.address,
+                description: item.activity.description,
+                endTime: item.activity.endTime,
+                maxNumber: item.activity.maxNumber,
+                startTime: item.activity.startTime,
+                status: item.activity.status,
+                tag: item.activity.tag,
+                title: item.activity.title,
+                role: item.role,
+                isShow: true
+              })
+            }
+          }
+          this.sort()
+        } else {
+          this.$message.error("系统错误")
+        }
+
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    select(selectors) {
       this.showRelate = selectors[0]
       this.showNumber = selectors[1]
       this.showTag = selectors[2]
@@ -95,6 +135,9 @@ export default {
         }
       }
     },
+    sort() {
+      this.activityList.sort(compareByAsc("endTime"))
+    },
   },
 
 
@@ -112,7 +155,7 @@ export default {
   margin-right: 20px;
   height: 120px;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .left {
@@ -122,12 +165,35 @@ export default {
 
 }
 
-.right {
+.center {
   flex: 1;
   max-width: 300px;
-  margin: 0;
+  margin: 0 40px;
 }
 
+.right {
+  flex: 1;
+  height: 120px;
+  line-height: 120px;
+  width: 200px;
+}
+
+.checkButton {
+  margin-top: 40px;
+  margin-left: 20px;
+  height: 40px;
+  width: 80px;
+  border-radius: 8px;
+  padding: 0px!important;
+  background-color: #fff;
+  color: #00DED4;
+  border: 1px solid #00DED4;
+  font-weight: bold;
+}
+.checkButton :hover{
+  background-color: #00DED4;
+  color: white;
+}
 #content {
   margin-left: 20px;
   margin-right: 20px;

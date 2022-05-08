@@ -10,8 +10,8 @@
       <div id="data">
         <span class="font">截止目前，您已</span>
         <span class="mainData">
-          <span class="text"><span style="color: #4be8a1">发布</span>了2个活动</span>
-          <span class="text"><span style="color: #6393ea">参与</span>了3个活动</span>
+          <span class="text"><span style="color: #4be8a1">发布</span>了{{createNum}}个活动</span>
+          <span class="text"><span style="color: #6393ea">参与</span>了{{joinNum}}个活动</span>
         </span>
       </div>
     </div>
@@ -20,13 +20,25 @@
 </template>
 
 <script>
+import {getActivityNum} from "@/api/planet/activity";
+
 export default {
   name: "InfoCard",
   data() {
     return {
         avatar: window.sessionStorage.getItem('avatar'),
-        username:window.sessionStorage.getItem('userName')
+        username:window.sessionStorage.getItem('userName'),
+        createNum:0,
+        joinNum:0,
     }
+  },
+  created() {
+    getActivityNum().then((res)=>{
+      this.createNum = res.data.data.createNum
+      this.joinNum = res.data.data.joinNum
+    }).catch((err)=>{
+      console.log(err)
+    })
   }
 }
 </script>

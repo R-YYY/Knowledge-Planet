@@ -118,6 +118,7 @@ export default {
         if (res.data.success) {
           this.dialogFormVisible = false
           this.$message.success("发布成功！")
+          this.$emit('update')
         } else {
           this.$message.error("发布失败!")
         }

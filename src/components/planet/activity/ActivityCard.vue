@@ -14,7 +14,7 @@
           <span class="endTime">截止日期 {{ activity.endTime }}</span>
         </div>
         <div class="other">
-          <el-tooltip effect="light" :content="activity.address" placement="top">
+          <el-tooltip effect="light" :content="'地址:'+activity.address" placement="top">
             <span class="address">{{ activity.address }} </span>
           </el-tooltip>
           <span class="peopleNum">当前人数 <span
@@ -26,36 +26,50 @@
     <div id="footer">
       <span class="organizerAvatar" :style="{backgroundImage:'url('+activity.organizerAvatar+')'}"></span>
       <span class="organizerName">{{ activity.organizerName }}</span>
-      <el-button id="answerButton"
-                 :disabled="isFull&&activity.status"
+      <el-button class="answerButton"
+                 v-if="this.activity.status===1"
+                 :disabled="isFull&&!activity.role"
                  :class="buttonStyle"
-                 @click="">
+                 @click="throttleJoin()">
         {{ buttonTag }}
+      </el-button>
+      <el-button class="exit rightCheckButton answerButton"
+                 v-show="this.activity.status===0"
+                 @click="check(2)">不通过
+      </el-button>
+      <el-button class="leftCheckButton answerButton"
+                 v-if="this.activity.status===0"
+                 @click="check(1)">通过
       </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {praise, unPraise, collect, unCollect} from "@/api/planet/resource";
+
+import {joinOrQuitActivity,checkActivity} from "@/api/planet/activity";
 import throttle from "@/utils/throttle";
-import {addActivity} from "@/api/planet/activity";
+import {loginPost} from "@/api/login/login";
 
 export default {
   name: "ActivityCard",
   props: ['activity'],
   data() {
-    return {}
+    return {
+    }
   },
   created() {
+    this.throttleJoin = throttle(this.joinActivity, 1000)
   },
   computed: {
     isFull() {
       return this.activity.curNumber >= this.activity.maxNumber
     },
     buttonTag() {
-      if (this.status === 1) {
+      if (this.activity.role === 0) {
         return '退出'
+      } else if (this.activity.role === 1) {
+        return '撤销'
       } else if (this.isFull) {
         return '已满'
       } else {
@@ -63,7 +77,7 @@ export default {
       }
     },
     buttonStyle() {
-      if (this.status === 1) {
+      if (this.activity.role === 1 || this.activity.role === 0) {
         return 'exit'
       } else if (this.isFull) {
         return 'full'
@@ -74,12 +88,62 @@ export default {
   },
   methods: {
     joinActivity() {
-
-      addActivity().then((res) => {
-
+      let type = this.activity.role === null ? 1 : 0
+      console.log(type)
+      joinOrQuitActivity(this.activity.activityId, type).then((res) => {
+        console.log(res)
+        if (res.data.success) {
+          this.$message.success("操作成功！")
+          if (this.activity.role === null) {
+            this.activity.role = 0
+            this.activity.curNumber++
+          } else if (this.activity.role === 1) {
+            this.$emit('quit')
+          } else {
+            this.activity.role = null
+            this.activity.curNumber--
+          }
+        } else {
+          this.$message.error("操作失败！")
+        }
       }).catch((err) => {
         console.log(err)
       })
+
+    },
+    check(index) {
+      if (index === 2) {
+        this.$prompt('请输入拒绝原因', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          }).then((res) => {
+          checkActivity(this.activity.activityId,res.value,index).then((res)=>{
+            if(res.data.success){
+              console.log(res)
+              this.$message.success("操作成功！")
+              this.$emit("update")
+            }
+          }).catch((err)=>{
+            console.log(err)
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消拒绝'
+          });
+        });
+      }else{
+        checkActivity(this.activity.activityId,'通过',index).then((res)=>{
+          if(res.data.success){
+            console.log(res)
+            this.$message.success("操作成功！")
+            this.$emit("update")
+          }
+        }).catch((err)=> {
+          console.log(err)
+        })
+      }
+
     }
   }
 }
@@ -223,13 +287,26 @@ export default {
 }
 
 .exit {
-  color: red !important;
-  border-color: red;
+  color: #f54b4b !important;
+  border-color: #f54b4b;
+  background-color: white !important;
+}
+
+.exit:hover {
+  color: #fff !important;
+  border-color: #fff;
+  background-color: #f54b4b !important;
 }
 
 .join {
   color: #74D8BE !important;
   border-color: #74D8BE;
+}
+
+.join.hover {
+  color: #fff !important;
+  border-color: #fff;
+  background-color: #74D8BE !important;
 }
 
 .full,
@@ -240,8 +317,12 @@ export default {
 
 }
 
-#answerButton {
+.answerButton {
   float: right;
   margin-top: 0px;
+}
+
+.leftCheckButton {
+  margin-right: 10px;
 }
 </style>
