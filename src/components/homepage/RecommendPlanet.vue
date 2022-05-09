@@ -22,7 +22,7 @@
           <div class="other">
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：</span>
-            <img src="../../assets/homepageimg/1.jpg" class="cp_avatar">
+            <img :src="item.uploaderAvatar" class="cp_avatar">
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:35px;">{{item.uploaderName}}</span>
           </div>
           <div class="divide">
@@ -74,6 +74,7 @@ export default{
   mounted(){
     getRecommendPlanet().then((res)=>{
       if(res.data.success){
+        console.log(9988776655)
         console.log(res)
         let data = res.data.data.planetList
         this.recommendplanet=data

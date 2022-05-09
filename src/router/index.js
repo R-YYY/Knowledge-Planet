@@ -14,8 +14,7 @@ import CompetitionView from "@/views/planet/competition/CompetitionView";
 import ActivityView from "@/views/planet/activity/ActivityView";
 import PersonalInformationView from "@/views/personal/PersonalInformationView";
 import PersonalFavoriteView from "@/views/personal/PersonalFavoriteView";
-import ComRecordView from "@/views/planet/competition/ComRecordView";
-import CreateComView from "@/views/planet/competition/CreateComView";
+import PersonalCompeteRecordView from "@/views/personal/PersonalCompeteRecordView";
 
 Vue.use(VueRouter)
 
@@ -80,16 +79,6 @@ const routes = [
         component: CompetitionView,
     },
     {
-        path: '/planet/competition/create',
-        name:'createCompetition',
-        component: CreateComView,
-    },
-    {
-        path: '/planet/competition/record',
-        name:'competitionRecord',
-        component: ComRecordView,
-    },
-    {
         path: '/planet/activity',
         name:'activity',
         component: ActivityView,
@@ -103,7 +92,13 @@ const routes = [
         path:'/personal/favorite',
         name:'personalFavorite',
         component: PersonalFavoriteView
+    },
+    {
+        path:'/personal/competerecord',
+        name:'personalCompeteRecord',
+        component: PersonalCompeteRecordView
     }
+
 ]
 
 const router = new VueRouter({

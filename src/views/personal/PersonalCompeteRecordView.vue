@@ -1,5 +1,5 @@
 <template>
-  <div id="personalInformation">
+  <div id="personalCompeteRecord">
     <HomePageHeader></HomePageHeader>
     <div id="main">
       <Option class="left"></Option>
@@ -10,14 +10,14 @@
 
 <script>
 import HomePageHeader from "@/components/HomePageHeader";
-import Option from "@/components/personalInformation/collectPage/Option";
-import CollectResource from "@/components/personalInformation/collectPage/CollectResource"
+import Option from "@/components/personalInformation/competeRecordPage/Option";
+import CompeteRecord from "@/components/personalInformation/competeRecordPage/CompeteRecord"
 export default{
-  name:"PersonalFavoriteView",
+  name:"PersonalCompeteRecordView",
   components:{
     HomePageHeader,
     Option,
-    CollectResource
+    CompeteRecord
   },
   data(){
     return{
