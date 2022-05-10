@@ -1,5 +1,5 @@
 <template>
-  <div id="card">
+  <div id="favoriteresourcecard">
     <div id="content" @click="getDetail">
       <div class="content_left">
         <img :src="message.coverage" alt="正在显示" class="logo">
@@ -15,6 +15,14 @@
       </div>
     </div>
     <div id="footer">
+      <div class="footer_left" @click="throttleLike($event)">
+        <img :src="require('@/assets/icon/'+iconList[likeTag])" class="icon">
+        <span ref="like" class="text">{{ message.likeCount }}</span>
+      </div>
+      <div class="footer_center" @click="throttleStar($event)">
+        <img :src="require('@/assets/icon/'+iconList[starTag])" class="icon">
+        <span ref="collect" class="text">{{ message.collectCount }}</span>
+      </div>
       <div class="footer_right" @click="enter">
         <img src="@/assets/icon/enter2.png" class="icon">
         <span class="text">访问</span>
@@ -154,7 +162,7 @@ export default {
 </script>
 
 <style scoped>
-#card {
+#favoriteresourcecard {
   height: 220px;
   width: 350px;
   border-radius: 16px;

@@ -13,6 +13,7 @@
                 effect="dark"
                 style="margin-left:30px;margin-top:30px;"
                 type="success"
+                @click="goToJoinPlanet(item.planet.planetCode)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -24,6 +25,7 @@
                 effect="dark"
                 type="danger"
                 style="margin-left:30px;margin-top:20px;"
+                @click="goToCreatePlanet(item.planet.planetCode)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -162,6 +164,14 @@ export default{
       this.planetform.coverage = file.raw
       this.planetform.avatar = URL.createObjectURL(file.raw);
     },
+    goToJoinPlanet(planetCode){
+      window.sessionStorage.setItem("planetCode",planetCode)
+      this.$router.push('/planet')
+    },
+    goToCreatePlanet(planetCode){
+      window.sessionStorage.setItem("planetCode",planetCode)
+      this.$router.push('/planet')
+    }
   },
   mounted(){
     getAllNotice().then((res)=>{

@@ -3,7 +3,7 @@
     <HomePageHeader></HomePageHeader>
     <div id="main">
       <Option class="left"></Option>
-      <CollectResource class="right"></CollectResource>
+      <CompeteRecord class="right"></CompeteRecord>
     </div>
   </div>
 </template>

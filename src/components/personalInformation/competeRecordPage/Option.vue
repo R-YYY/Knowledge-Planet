@@ -3,21 +3,20 @@
     <div class="leftbar">
       <img src="../../../assets/homepageimg/1.jpg" class="avatar">
       <el-divider></el-divider>
-      <div class="personalpage">
+      <div class="personalpage" @click="goToPersonalPage">
         <img src="../../../assets/homepageimg/personalpage.png" class="personalpage_png">
         <span class="personalpage_text">个人主页</span>
       </div>
       <el-divider></el-divider>
-      <div class="collect">
+      <div class="collect" @click="goToPersonalFavorite">
         <img src="../../../assets/homepageimg/collect.png" class="collect_png">
         <span class="collect_text">收藏夹</span>
       </div>
       <el-divider></el-divider>
-      <div class="competerecord">
+      <div class="competerecord" @click="goToPersonalCompeteRecord">
         <img src="../../../assets/homepageimg/competerecord.png" class="competerecord_png">
         <span class="competerecord_text">竞赛记录</span>
       </div>
-      <el-divider></el-divider>
     </div>
 
   </div>
@@ -32,6 +31,15 @@ export default{
     }
   },
   methods:{
+    goToPersonalPage(){
+      this.$router.push('/personal')
+    },
+    goToPersonalFavorite(){
+      this.$router.push('/personal/favorite')
+    },
+    goToPersonalCompeteRecord(){
+      this.$router.push('personal/competerecord')
+    }
 
   },
   mounted(){
@@ -40,6 +48,7 @@ export default{
 
 }
 </script>
+
 <style scoped>
 .leftbar{
   width:250px;
@@ -54,6 +63,8 @@ export default{
   margin-top:20px;
 }
 .personalpage_png{
+  margin-top: 24px;
+  margin-bottom: 24px;
   display: inline-block;
   width:30px;
   height:30px;
@@ -61,12 +72,16 @@ export default{
   margin-left: 40px;
 }
 .personalpage_text{
+  margin-top: 24px;
+  margin-bottom: 24px;
   vertical-align: middle;
   margin-left: 35px;
   font-size:23px;
   font-family: "Microsoft YaHei";
 }
 .collect_png{
+  margin-top: 24px;
+  margin-bottom: 24px;
   display: inline-block;
   width:30px;
   height:30px;
@@ -80,6 +95,8 @@ export default{
   font-family: "Microsoft YaHei";
 }
 .competerecord_png{
+  margin-top: 24px;
+  margin-bottom: 24px;
   display: inline-block;
   width:30px;
   height:30px;
@@ -91,5 +108,12 @@ export default{
   margin-left:35px;
   font-size: 23px;
   font-family: "Microsoft YaHei";
+}
+.competerecord{
+  background-color: #e5ffff;
+}
+/deep/ .el-divider--horizontal{
+  margin-top:0px;
+  margin-bottom: 0px;
 }
 </style>

@@ -9,24 +9,45 @@
         <div class="joindivide">
           <el-divider></el-divider>
         </div>
+        <div class="planets">
+          <el-tag
+              v-for="item in joinplanets"
+              effect="dark"
+              style="margin-left:30px;margin-top:10px;"
+              type="success"
+              @click="goToJoinPlanet(item.planet.planetCode)"
+          >{{ item.planet.planetName }}</el-tag>
+        </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import {getJoinPlanet} from "@/api/homepage/planet";
 
 export default{
   data(){
     return{
-
+      joinplanets:[],
     }
   },
   methods:{
+    goToJoinPlanet(planetCode) {
+      window.sessionStorage.setItem("planetCode",planetCode)
+      this.$router.push('/planet')
+    }
 
   },
   mounted(){
-
+    getJoinPlanet().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data.planetList
+        console.log(data)
+        this.joinplanets=data
+      }
+    })
   }
 
 }
@@ -58,5 +79,8 @@ export default{
 }
 .joindivide{
   width:320px;
+}
+.el-divider--horizontal{
+  margin-bottom: 10px;
 }
 </style>

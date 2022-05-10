@@ -9,30 +9,51 @@
         <div class="createdivide">
           <el-divider></el-divider>
         </div>
+        <div class="planets">
+          <el-tag
+              v-for="item in createplanets"
+              effect="dark"
+              type="danger"
+              style="margin-left:30px;margin-top:10px;"
+              @click="goToCreatePlanet(item.planet.planetCode)"
+          >{{ item.planet.planetName }}</el-tag>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {getCreatePlanet} from "@/api/homepage/planet";
 
 export default{
   data(){
     return{
-
+      createplanets:[]
     }
   },
   methods:{
+    goToCreatePlanet(planetCode) {
+      window.sessionStorage.setItem("planetCode",planetCode)
+      this.$router.push('/planet')
+    }
 
   },
   mounted(){
-
+    getCreatePlanet().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data.planetList
+        console.log(data)
+        this.createplanets=data
+      }
+    })
   }
 
 }
 </script>
 <style scoped>
 .bottombar{
+  position: relative;
   width:320px;
   height:250px;
   border-radius: 16px;
@@ -58,5 +79,8 @@ export default{
 }
 .createdivide{
   width:320px;
+}
+.el-divider--horizontal{
+  margin-bottom: 10px;
 }
 </style>

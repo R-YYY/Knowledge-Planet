@@ -16,14 +16,8 @@
         <div class="name">
           <span>昵称：</span><span>{{ information.name }}</span>
         </div>
-        <div class="region">
-          <span>居住地：</span><span>{{ information.region }}</span>
-        </div>
-        <div class="birthday">
-          <span>生日：</span><span>{{ information.birthday }}</span>
-        </div>
-        <div class="telephone">
-          <span>电话：</span><span>{{ information.telephone }}</span>
+        <div class="mail">
+          <span>邮箱：</span><span>{{ information.mail }}</span>
         </div>
         <div class="id">
           <span>ID：</span><span>{{ information.id }}</span>
@@ -53,41 +47,15 @@
                 <el-input class="input" v-model="information.name" autocomplete="off"></el-input>
               </el-col>
             </el-form-item>
-            <el-form-item label="住址" :label-width="informationformLabelWidth">
-              <el-col :span="18">
-                <el-input class="input" v-model="information.region" autocomplete="off"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="生日" :label-width="informationformLabelWidth">
-              <el-col :span="18">
-                <el-input class="input" v-model="information.birthday" autocomplete="off"></el-input>
-              </el-col>
-            </el-form-item>
 
-
-            <el-form-item label="生日" :label-width="informationformLabelWidth">
-              <el-col :span="4">
-                <el-input class="input" v-model="information.birthday" autocomplete="off"></el-input>
-              </el-col>
-              <el-col class="line" :span="1">年</el-col>
-              <el-col :span="4">
-                <el-input class="input" v-model="information.birthday" autocomplete="off"></el-input>
-              </el-col>
-              <el-col class="line" :span="1">月</el-col>
-              <el-col :span="4">
-                <el-input class="input" v-model="information.birthday" autocomplete="off"></el-input>
-              </el-col>
-              <el-col class="line" :span="1">日</el-col>
-            </el-form-item>
-
-            <el-form-item label="电话" :label-width="informationformLabelWidth">
+            <el-form-item label="邮箱" :label-width="informationformLabelWidth">
               <el-col :span="18">
-                <el-input class="input" v-model="information.telephone" autocomplete="off"></el-input>
+                <el-input class="input" v-model="information.mail" autocomplete="off" disabled="true"></el-input>
               </el-col>
             </el-form-item>
             <el-form-item label="ID" :label-width="informationformLabelWidth">
               <el-col :span="18">
-                <el-input class="input" v-model="information.id" autocomplete="off"></el-input>
+                <el-input class="input" v-model="information.id" autocomplete="off" disabled="true"></el-input>
               </el-col>
             </el-form-item>
 
@@ -111,14 +79,12 @@ export default {
       information: {
         avatar: '',
         name: '11',
-        region: '上海',
-        birthday: '2002',
-        telephone: '15130721316',
+        mail:'2926204175@qq.com',
         id: '1952455',
         coverge: {}
       },
       showChangeInformation: false,
-      informationformLabelWidth: '3em',
+      informationformLabelWidth: '3em'
     }
   },
   methods: {
@@ -197,35 +163,9 @@ export default {
   padding-left: 5px;
 }
 
-.region {
-  font-family: "Microsoft YaHei";
-  font-size: 20px;
-  margin-left: 40px;
-  margin-top: 20px;
-  background-color: #99ffff;
-  box-shadow: 0 0 10px #dcdcdc;
-  width: 375px;
-  height: 35px;
-  border-radius: 5px;
-  line-height: 35px;
-  padding-left: 5px;
-}
 
-.birthday {
-  font-family: "Microsoft YaHei";
-  font-size: 20px;
-  margin-left: 40px;
-  margin-top: 20px;
-  background-color: #99ffff;
-  box-shadow: 0 0 10px #dcdcdc;
-  width: 375px;
-  height: 35px;
-  border-radius: 5px;
-  line-height: 35px;
-  padding-left: 5px;
-}
 
-.telephone {
+.mail {
   font-family: "Microsoft YaHei";
   font-size: 20px;
   margin-left: 40px;

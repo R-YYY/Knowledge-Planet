@@ -21,11 +21,11 @@
         </div>
       </div>
       <div id="right">
-        <div id="icon1" class="icon"></div>
+        <div id="icon1" class="icon" @click="goToPersonalPage"></div>
         <div id="icon2" class="icon" @click="showMessage"></div>
         <div id="icon3" class="icon" @click="showNotice"></div>
         <span>
-        <el-badge :value="notices.length" class="messagenumber" v-show="isShowMessageNumber"></el-badge>
+        <el-badge v-model="messages.length" class="messagenumber" v-show="isShowMessageNumber && messages.length>0"></el-badge>
         </span>
 
       </div>
@@ -59,7 +59,7 @@
             active-text="已读"
             inactive-text="未读"
             v-model="item.status"
-            @change="readmessage(item.messageId,item.status)"
+            @change="readnotice(item.messageId,item.status)"
         >
         </el-switch>
         <el-divider></el-divider>
@@ -94,11 +94,9 @@ export default {
     searchplanet(){
       this.isShowResult=!this.isShowResult
       getSearchPlanet(this.searchContent).then((res)=>{
-        console.log(1)
         if(res.data.success === true){
           let data = res.data.data.planetList
           console.log(data)
-          console.log(123456789)
           this.planetResult=data
         }
       })
@@ -112,19 +110,41 @@ export default {
       this.isShowMessageDrawer=!this.isShowMessageDrawer
       this.isShowMessageNumber=false
     },
-    readmessage(messageId,status){
-      console.log(999999999)
+    readnotice(messageId,status){
+      console.log(11223334444)
       let mId=messageId
-      let sta=status
+      let sta=0
       console.log(mId)
+      if(status==true){
+        sta=1
+      }
       console.log(sta)
       setMessageStatus(mId,sta).then((res)=>{
         console.log(888888)
         console.log(res)
+        getMessage().then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.messageList
+            console.log(data)
+            this.messages=data
+            console.log(this.messages)
+          }
+        })
       })
+    },
+    goToPersonalPage(){
+      this.$router.push('/personal')
     }
   },
   mounted(){
+    getAllNotice().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data.notices
+        console.log(data)
+        this.notices=data
+        console.log(this.notices)
+      }
+    }),
     getMessage().then((res)=>{
       if(res.data.success === true){
         let data = res.data.data.messageList
@@ -132,15 +152,7 @@ export default {
         this.messages=data
         console.log(this.messages)
       }
-    }),
-        getAllNotice().then((res)=>{
-          if(res.data.success === true){
-            let data = res.data.data.notices
-            console.log(data)
-            this.notices=data
-            console.log(this.notices)
-          }
-        })
+    })
   }
 }
 </script>

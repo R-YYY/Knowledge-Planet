@@ -5,42 +5,39 @@
         <p class="resource_text">我的收藏</p>
       </div>
       <div class="resource_content">
-        <el-collapse  v-for="item in activeNames">
-          <el-collapse-item  :title="item.name" :name="item.name">
-            <div class="content">
-              <div class="card">
-
-                <Card :resource="item"></Card>
-              </div>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
+        <div class="card" v-for="item in resourceList" :key="item.resourceId" >
+          <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import FavoriteResourceCard from "@/components/personalInformation/collectPage/FavoriteResourceCard";
+import {getCollectResource} from "@/api/personal/information";
 
 export default{
+  components: {
+    FavoriteResourceCard
+  },
   data(){
     return{
-      activeNames:[
-        {
-          name:'1',
-          content:'1'
-        },
-        {
-          name:'2',
-          content:'2'
-        },
-        {
-          name:'3',
-          content:'3'
-        }
-      ]
-
+      planetCode: "23",
+      resourceList: [],
     }
+  },
+  created() {
+    getCollectResource().then((res) => {
+      console.log(res)
+      console.log(1124987534)
+      let list = res.data.data.resourceList
+      for (let item of list) {
+        this.resourceList.push(item)
+      }
+    }).catch(() => {
+      this.$message({message: "系统错误", type: 'error'});
+    })
   },
   methods:{
 
@@ -75,13 +72,4 @@ export default{
   margin-top:50px;
   margin-left:20px;
 }
-/deep/ .el-collapse-item__header{
-  font-size: 18px;
-  color: #F56C6C;
-}
-
-/*/deep/ .el-collapse-item__wrap{*/
-/*  border-bottom:1px solid black;*/
-/*}*/
-
 </style>
