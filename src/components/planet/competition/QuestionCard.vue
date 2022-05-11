@@ -8,33 +8,46 @@
       <div class="id">{{question.id}}</div>
       <div class="des">{{question.description}}</div>
       <div class="score">{{question.score}}</div>
+      <div style="display: flex">
+        <div class="edit"  @click="drawer=true">
+          <el-tooltip effect="dark" content="编辑" placement="top">
+            <i class="el-icon-edit-outline"></i>
+          </el-tooltip>
+        </div>
+        <div class="delete">
+          <el-tooltip effect="dark" content="删除" placement="top">
+            <i class="el-icon-delete"></i>
+          </el-tooltip>
+        </div>
+      </div>
     </div>
     <div v-if="ifShow" class="info">
       <div class="description">
         {{question.description}}
       </div>
       <div class="choice">
-        <div>
-          <input type="radio"></input>选项A<span>(正确答案)</span>
-        </div>
-        <div>
-          <input type="radio"></input>选项B<span>(正确答案)</span>
-        </div>
-        <div>
-          <input type="radio"></input>选项C<span>(正确答案)</span>
+        <div v-for="item in question.choice">
+          <input type="radio"></input>{{item}}
+          <el-tag v-if="item===question.answer" type="success" size="mini">正确答案</el-tag>
         </div>
       </div>
     </div>
+    <el-drawer :visible.sync="drawer" direction="btt" :with-header="false" size="85%">
+      <AddQuestion :question="question"></AddQuestion>
+    </el-drawer>
   </div>
 </template>
 
 <script>
+import AddQuestion from "@/components/planet/competition/AddQuestion";
 export default {
   name: "QuestionCard",
+  components: {AddQuestion},
   props:["question","index"],
   data(){
     return{
       ifShow:false,
+      drawer:false,
     }
   },
   mounted() {
@@ -86,15 +99,21 @@ export default {
   margin-bottom: 10px;
 }
 
-.choice div span{
-  font-size: 12px;
-  color:red;
-}
-
 .info{
   color: black;
   padding-top: 20px;
   padding-bottom: 10px;
   padding-left: 50px;
+}
+
+.edit,.delete{
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 45px;
+}
+
+.delete{
+  margin-left: 40px;
+  color: red;
 }
 </style>
