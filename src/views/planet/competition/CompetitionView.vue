@@ -3,7 +3,7 @@
     <Header></Header>
     <div class="top"></div>
     <div class="bottom">
-      <UpcomingCard></UpcomingCard>
+      <UpcomingCompetition></UpcomingCompetition>
       <div style="display: flex">
         <div class="left">
           <CompetitionHeader></CompetitionHeader>
@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import UpcomingCard from "@/components/planet/competition/UpcomingCard";
+import UpcomingCompetition from "@/components/planet/competition/UpcomingCompetition";
 import IntegralRank from "@/components/planet/homepage/integral/IntegralRank";
 import CompetitionList from "@/components/planet/competition/CompetitionList";
 import CompetitionHeader from "@/components/planet/competition/CompetitionHeader";
 export default {
   name: "CompetitionView",
-  components: {CompetitionHeader, CompetitionList, IntegralRank, UpcomingCard},
+  components: {CompetitionHeader, CompetitionList, IntegralRank, UpcomingCompetition},
 }
 </script>
 
@@ -49,13 +49,13 @@ export default {
 
 .left{
   margin-left: 250px;
-  margin-top: 50px;
+  margin-top: 30px;
   padding-bottom: 100px;
 }
 
 .right{
   margin-left: 50px;
-  margin-top: 50px;
+  margin-top: 30px;
   padding-bottom: 100px;
 }
 </style>

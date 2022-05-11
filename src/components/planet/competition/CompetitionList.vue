@@ -1,16 +1,16 @@
 <template>
   <div class="competition_list">
-    <div class="header">其他竞赛</div>
+    <div class="header">全部竞赛</div>
     <hr class="line">
     <div style="display: flex">
-      <div class="name">竞赛</div>
-      <div class="time">时长</div>
+      <div class="name">竞赛信息</div>
+      <div class="opera">操作</div>
     </div>
     <hr class="line">
     <div v-if="competitionList.length===0" class="empty"></div>
     <div v-else style="height: 610px">
       <div v-for="item in competitionList.slice((currentPage-1)*10,currentPage*10)">
-        <CompetitionCard :competition="item"></CompetitionCard>
+        <CompetitionListItem :competition="item"></CompetitionListItem>
         <hr class="line">
       </div>
     </div>
@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import CompetitionCard from "@/components/planet/competition/CompetitionCard";
+import CompetitionListItem from "@/components/planet/competition/CompetitionListItem";
 export default {
   name: "CompetitionList",
-  components: {CompetitionCard},
+  components: {CompetitionListItem},
   data(){
     return{
       competitionList:[{
@@ -50,9 +50,11 @@ export default {
     this.competitionList=[]
     for (let i = 0; i < 77; i++) {
       this.competitionList.push({
+        id:i,
         title:"竞赛"+(i+1)+"的名字",
-        time:"2022-4-27 15:00",
-        duration:"50分钟",
+        picture:"https://img1.baidu.com/it/u=1269253414,843691233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=311",
+        startTime:"2022-5-11 15:00",
+        endTime:"2022-5-11 18:00",
       })
     }
   }
@@ -84,12 +86,12 @@ export default {
 }
 
 .name{
-  margin-left: 50px;
-  width: 250px;
+  margin-left: 55px;
+  width: 425px;
   line-height: 30px;
 }
 
-.time{
+.opera{
   line-height: 30px;
 }
 

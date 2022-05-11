@@ -12,8 +12,8 @@
         </div>
         <div class="table">
           <div class="header">
-            <img v-if="!ifShowAll" class="down" src="../../../assets/competition/down.png" alt="" @click="showAll">
-            <img v-if="ifShowAll" class="up" src="../../../assets/competition/up.png" alt="" @click="hideAll">
+            <img v-if="!ifShowAll" class="down" src="../../../../assets/competition/down.png" alt="" @click="showAll">
+            <img v-if="ifShowAll" class="up" src="../../../../assets/competition/up.png" alt="" @click="hideAll">
             <div class="question_id">题号</div>
             <div class="question_desc">题目</div>
             <div class="question_score">分数</div>
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import QuestionCard from "@/components/planet/competition/QuestionCard";
-import TotalQuestion from "@/components/planet/competition/TotalQuestion";
+import QuestionCard from "@/components/planet/competition/create/QuestionCard";
+import TotalQuestion from "@/components/planet/competition/create/TotalQuestion";
 
 export default {
   name: "CreateCompetition",

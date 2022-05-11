@@ -1,17 +1,19 @@
 <template>
   <div class="upcoming_card">
-    <div class="left_card">
-      <div class="com_name">{{competition[0].title}}</div>
-      <div class="com_time">时间：{{competition[0].time}}</div>
-      <div class="com_des">{{competition[0].des}}</div>
-      <div class="btn" @click="dialogVisible=true;choose=0">参加</div>
-    </div>
-    <div class="right_card">
-      <div class="com_name">{{competition[1].title}}</div>
-      <div class="com_time">时间：{{competition[1].time}}</div>
-      <div class="com_des">{{competition[1].des}}</div>
-      <div class="btn" @click="dialogVisible=true;choose=1">参加</div>
-    </div>
+    <el-carousel :interval="4000" type="card" height="290px">
+      <el-carousel-item v-if="competitionList.length===0" class="empty_card">
+        <img src="../../../assets/picture/empty.png" alt="">
+        <div class="empty_word">当前星球没有竞赛可以参加</div>
+      </el-carousel-item>
+      <el-carousel-item v-else v-for="item in competitionList" :key="item.id" class="item_card">
+        <div>
+          <div class="com_name">{{ item.title }}</div>
+          <div class="com_time">时间：{{ item.startTime }} ~ {{item.endTime}}</div>
+          <div class="com_des">{{ item.description }}</div>
+          <div class="btn" @click="dialogVisible=true;chooseCom=item">参加</div>
+        </div>
+      </el-carousel-item>
+    </el-carousel>
     <div>
       <el-dialog :visible.sync="dialogVisible" width="30%" center>
         <div class="join">
@@ -19,9 +21,9 @@
           <div>请确认是否参加竞赛</div>
         </div>
         <ul>
-          <li>竞赛名称：{{competition[choose].title}}</li>
-          <li>开始时间：{{competition[choose].time}}</li>
-          <li>竞赛时长：{{competition[choose].duration}}</li>
+          <li>竞赛名称：{{chooseCom.title}}</li>
+          <li>开始时间：{{chooseCom.startTime}}</li>
+          <li>结束时间：{{chooseCom.endTime}}</li>
         </ul>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">确 定</el-button>
@@ -33,25 +35,30 @@
 
 <script>
 export default {
-  name: "UpcomingCard",
+  name: "UpcomingCompetition",
   data(){
     return{
-      competition:[
-        {
-          title:"前端星第一届全能知识大赛",
-          time:"2022-04-20   08:00~24:00",
-          des:"前端星的球友们，这是一次检测自我能力的绝佳机会，如果你想知道自己对于前端知识的掌握程度，还不点进来测测？",
-          duration:"50分钟",
-        },
-        {
-          title:"前端星第18场周赛",
-          time:"2022-04-20   08:00~24:00",
-          des:"给每一个热带前端的小伙伴一次提升自己的机会！还等啥，快来参加~",
-          duration:"50分钟",
-        }
-      ],
       dialogVisible:false,
-      choose:0,
+      competitionList:[],
+      chooseCom:{
+        title:"",
+        startTime:"",
+        endTime:"",
+        description:"",
+      },
+    }
+  },
+  methods:{
+  },
+  mounted() {
+    for (let i = 0; i < 10; i++) {
+      this.competitionList.push({
+        id:i,
+        title:"前端星第"+(i+1)+"场周赛",
+        startTime:"2022-4-27 15:00",
+        endTime:"2022-4-27 17:00",
+        description:"给每一个热带前端的小伙伴一次提升自己的机会！还等啥，快来参加~",
+      })
     }
   }
 }
@@ -61,26 +68,27 @@ export default {
 .upcoming_card{
   width: 1020px;
   margin-left: 250px;
-  display: flex;
 }
 
-.left_card{
-  width: 550px;
+.item_card{
   height: 270px;
-  margin-top: 50px;
-  margin-right: 70px;
   background: url("../../../assets/competition/shan.png") no-repeat;
   background-size: 100% 100%;
   border-radius: 20px;
 }
 
-.right_card{
-  width: 400px;
+.empty_card{
+  text-align: center;
   height: 270px;
-  margin-top: 50px;
-  background: url("../../../assets/competition/yun.png") no-repeat;
-  background-size: 100% 100%;
-  border-radius: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #cdcdcd;
+}
+
+.empty_word{
+  margin-top: -15px;
+  font-weight: bold;
+  color: #909399;
 }
 
 .com_name{

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CreateCompetition from "@/components/planet/competition/CreateCompetition";
+import CreateCompetition from "@/components/planet/competition/create/CreateCompetition";
 export default {
   name: "CompetitionHeader",
   components: {CreateCompetition},

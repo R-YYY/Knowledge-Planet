@@ -8,23 +8,22 @@
     <div class="record">
       <div class="header">参赛记录</div>
       <div class="table">
-        <el-table :data="record.slice((currentPage-1)*10,currentPage*10)">
-          <el-table-column prop="title" label="竞赛名称" width="200">
-          </el-table-column>
-          <el-table-column prop="time" label="时间" width="350">
-          </el-table-column>
-          <el-table-column prop="grade" label="成绩" width="100">
-          </el-table-column>
-          <el-table-column width="100">
-            <el-button type="text">查看</el-button>
-          </el-table-column>
-        </el-table>
+        <div style="display: flex">
+          <div class="info">竞赛信息</div>
+          <div class="score">成绩</div>
+          <div class="opera">操作</div>
+        </div>
+        <hr>
+        <div v-for="item in recordList.slice((currentPage-1)*10,currentPage*10)">
+          <ComRecordItem :record="item"></ComRecordItem>
+          <hr class="line">
+        </div>
       </div>
       <div class="page">
         <el-pagination
             background
             layout="prev, pager, next"
-            :total="record.length"
+            :total="recordList.length"
             :current-page="currentPage"
             @current-change="handleCurrentChange">
         </el-pagination>
@@ -34,11 +33,13 @@
 </template>
 
 <script>
+import ComRecordItem from "@/components/planet/competition/record/ComRecordItem";
 export default {
   name: "ComRecordView",
+  components: {ComRecordItem},
   data(){
     return{
-      record:[],
+      recordList:[],
       currentPage:1,
     }
   },
@@ -53,10 +54,12 @@ export default {
   },
   mounted() {
     for (let i = 0; i < 11; i++) {
-      this.record.push({
+      this.recordList.push({
         title:"第"+(i+1)+"周周赛",
-        time:"2022-6-7 13:00 ~ 2022-6-7 15:00",
-        grade:i*10
+        picture:"https://img1.baidu.com/it/u=1269253414,843691233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=311",
+        startTime:"2022-4-27 15:00",
+        endTime:"2022-5-1 17:00",
+        score:i*10
       })
     }
   }
@@ -89,8 +92,22 @@ export default {
 }
 
 .table{
-  margin-left: 120px;
+  margin-left: 100px;
   min-height: 400px;
+  margin-right: 100px;
+}
+
+.info{
+  margin-left: 30px;
+  width: 600px;
+}
+
+.score{
+  width: 200px;
+}
+
+.opera{
+  width: 100px;
 }
 
 .header{
@@ -104,5 +121,10 @@ export default {
   padding-top: 30px;
   padding-bottom: 30px;
   text-align: center;
+}
+
+.line{
+  border-top:1px dotted #C1C0C0;
+  border-bottom: 0;
 }
 </style>

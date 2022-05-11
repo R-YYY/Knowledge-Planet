@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import AddQuestion from "@/components/planet/competition/AddQuestion";
+import AddQuestion from "@/components/planet/competition/create/AddQuestion";
 export default {
   name: "QuestionCard",
   components: {AddQuestion},

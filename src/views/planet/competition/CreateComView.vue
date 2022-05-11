@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import CreateCompetition from "@/components/planet/competition/CreateCompetition";
+import CreateCompetition from "@/components/planet/competition/create/CreateCompetition";
 export default {
   name: "CreateComView",
   components: {CreateCompetition},
