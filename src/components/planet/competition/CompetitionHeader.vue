@@ -4,23 +4,23 @@
     <el-divider direction="vertical"></el-divider>
     <div class="history" @click="toRecord">参赛记录</div>
     <div>
-      <el-button round icon="el-icon-upload" @click="toCreate">发布竞赛</el-button>
+      <el-button round icon="el-icon-upload" @click="toCreate">竞赛管理</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import CreateCompetition from "@/components/planet/competition/create/CreateCompetition";
+import EditCompetition from "@/components/planet/competition/create/EditCompetition";
 export default {
   name: "CompetitionHeader",
-  components: {CreateCompetition},
+  components: {EditCompetition},
   methods:{
     toRecord(){
       this.$router.push("/planet/competition/record")
     },
 
     toCreate(){
-      this.$router.push("/planet/competition/create")
+      this.$router.push("/planet/competition/manage")
     }
   }
 }

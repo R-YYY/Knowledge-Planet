@@ -1,21 +1,21 @@
 <template>
-  <div id="createCompetition">
+  <div id="manageCompetition">
     <Header></Header>
     <div class="back" @click="toCompetition">
       <i class="el-icon-arrow-left" style="font-weight: bold"></i>
       <span>返回竞赛主页</span>
     </div>
     <div>
-      <CreateCompetition></CreateCompetition>
+      <ManageComList></ManageComList>
     </div>
   </div>
 </template>
 
 <script>
-import CreateCompetition from "@/components/planet/competition/create/CreateCompetition";
+import ManageComList from "@/components/planet/competition/manage/ManageComList";
 export default {
-  name: "CreateComView",
-  components: {CreateCompetition},
+  name: "ManageComView",
+  components: {ManageComList},
   methods:{
     toCompetition(){
       this.$router.push("/planet/competition")
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style scoped>
-#createCompetition{
+#manageCompetition{
   background-color: #F7F4F4;
 }
 

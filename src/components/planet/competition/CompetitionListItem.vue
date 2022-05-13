@@ -3,9 +3,9 @@
     <img class="picture" :src="competition.picture" alt="加载失败">
     <div>
       <div class="name">{{competition.title}}
-        <el-tag v-if="status()===1" size="mini">未开始</el-tag>
+        <el-tag v-if="status()===1" type="danger" size="mini">未开始</el-tag>
         <el-tag v-else-if="status()===0" type="success" size="mini">进行中</el-tag>
-        <el-tag v-else type="danger" size="mini">已结束</el-tag>
+        <el-tag v-else type="info" size="mini">已结束</el-tag>
       </div>
       <div class="time">{{competition.startTime}} ~ {{competition.endTime}}</div>
     </div>

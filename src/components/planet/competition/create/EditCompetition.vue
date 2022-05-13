@@ -34,9 +34,10 @@
 <script>
 import QuestionCard from "@/components/planet/competition/create/QuestionCard";
 import TotalQuestion from "@/components/planet/competition/create/TotalQuestion";
+import {separator} from "@/api/planet/question";
 
 export default {
-  name: "CreateCompetition",
+  name: "EditCompetition",
   components: {TotalQuestion, QuestionCard},
   data() {
     return {
@@ -56,10 +57,13 @@ export default {
     },
   },
   mounted() {
+    let planetCode = "23"
+    let competitionId = this.$route.params.cid
+
     let word = "这是一道单选题哈哈哈，你觉得应该选什么呢？/**###选项AAA/**###选项BBB/**###选项CCC"
 
     for (let i = 0; i < 5; i++) {
-      let q = word.split("/**###")
+      let q = word.split(separator)
       this.questionList.push({
         id: i,
         description: q[0],

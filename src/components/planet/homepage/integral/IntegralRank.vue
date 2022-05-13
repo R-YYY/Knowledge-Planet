@@ -47,6 +47,7 @@
 import Avatar from "@/components/planet/Avatar";
 import IntegralCard from "@/components/planet/homepage/integral/IntegralCard";
 import {getLeaderboard} from "@/api/planet/member";
+import {getLeaderBoard} from "@/api/planet/competition";
 export default {
   name: "IntegralRank",
   components: {IntegralCard, Avatar},
@@ -80,20 +81,17 @@ export default {
       }).catch(()=> {
         this.$message({message: "系统错误，排行榜加载失败", type: 'error'})
       })
-
-      // this.users = []
-      // for (let i = 0; i < 0; i++) {
-      //   this.users.push({
-      //     rank:i+1,
-      //     userName:"第"+(i+1)+"的名字呢？",
-      //     desc:"已经获得"+(100-i)+"积分",
-      //     avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-      //   });
-      // }
     },
 
     loadCompetitionRank(){
       this.users = []
+
+      //TODO 竞赛排行榜加载
+      // getLeaderBoard("23").then((res)=>{
+      //   let list = res.data.data.result.leaderBoard
+      //
+      // })
+
       for (let i = 0; i < 47; i++) {
         this.users.push({
           rank:i+1,

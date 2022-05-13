@@ -28,16 +28,13 @@
 
 <script>
 import CompetitionListItem from "@/components/planet/competition/CompetitionListItem";
+import {getCompetitionByPlanet} from "@/api/planet/competition";
 export default {
   name: "CompetitionList",
   components: {CompetitionListItem},
   data(){
     return{
-      competitionList:[{
-        title:"",
-        time:"",
-        duration:"",
-      }],
+      competitionList:[],
       currentPage:1,
     }
   },
@@ -48,15 +45,12 @@ export default {
   },
   created() {
     this.competitionList=[]
-    for (let i = 0; i < 77; i++) {
-      this.competitionList.push({
-        id:i,
-        title:"竞赛"+(i+1)+"的名字",
-        picture:"https://img1.baidu.com/it/u=1269253414,843691233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=311",
-        startTime:"2022-5-11 15:00",
-        endTime:"2022-5-11 18:00",
-      })
-    }
+    getCompetitionByPlanet("23").then((res)=>{
+      let list = res.data.data.competitionList
+      for (let i = 0; i < list.length; i++) {
+        this.competitionList.push(list[i].competition)
+      }
+    })
   }
 }
 </script>
