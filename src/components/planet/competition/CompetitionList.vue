@@ -10,8 +10,10 @@
     <div v-if="competitionList.length===0" class="empty"></div>
     <div v-else style="height: 610px">
       <div v-for="item in competitionList.slice((currentPage-1)*10,currentPage*10)">
-        <CompetitionListItem :competition="item"></CompetitionListItem>
-        <hr class="line">
+        <div v-if="item.status===1">
+          <CompetitionListItem :competition="item"></CompetitionListItem>
+          <hr class="line">
+        </div>
       </div>
     </div>
     <div class="page">

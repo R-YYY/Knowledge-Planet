@@ -7,40 +7,36 @@
       </div>
       <div>
         <div class="top">总分</div>
-        <div class="num">{{totalScore()}}</div>
+        <div class="num">{{getTotalScore()}}</div>
       </div>
     </div>
-    <div class="add_question" @click="drawer=true">添加题目</div>
+    <div class="add_question" @click="$refs.child.show()">添加题目</div>
     <div style="display: flex">
       <div class="create">发布</div>
       <div class="cancel">取消</div>
     </div>
-    <el-drawer :visible.sync="drawer" direction="btt" :with-header="false" size="85%">
-      <AddQuestion :question="question"></AddQuestion>
-    </el-drawer>
+    <EditQuestion ref="child" :item="question"></EditQuestion>
   </div>
 </template>
 
 <script>
-import AddQuestion from "@/components/planet/competition/create/AddQuestion";
+import EditQuestion from "@/components/planet/competition/create/EditQuestion";
 export default {
   name: "TotalQuestion",
-  components: {AddQuestion},
+  components: {EditQuestion},
   props:["questionList"],
   data(){
     return{
-      drawer:false,
       question:{
         title:"",
-        description:"",
-        choice:["","",""],
+        content:"",
+        choices:["","",""],
         answer:null,
-        score:0,
       }
     }
   },
   methods:{
-    totalScore(){
+    getTotalScore(){
       let result = 0
       for (let i = 0; i < this.questionList.length; i++) {
         result += this.questionList[i].score

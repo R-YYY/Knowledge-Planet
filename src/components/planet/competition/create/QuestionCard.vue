@@ -2,14 +2,14 @@
   <div :class="index%2===0?'gray':'white'">
     <div style="display: flex">
       <i v-if="!ifShow" class="el-icon-arrow-right" @click="ifShow=true"
-         style="margin-right: 40px;cursor: pointer;line-height: 45px"></i>
+         style="margin-left: 20px;margin-right: 40px;cursor: pointer;line-height: 45px"></i>
       <i v-if="ifShow" class="el-icon-arrow-down" @click="ifShow=false"
-         style="margin-right: 40px;cursor: pointer;line-height: 45px"></i>
-      <div class="id">{{question.id}}</div>
-      <div class="des">{{question.description}}</div>
+         style="margin-left: 20px;margin-right: 40px;cursor: pointer;line-height: 45px"></i>
+      <div class="id">{{question.questionId}}</div>
+      <div class="des">{{question.content}}</div>
       <div class="score">{{question.score}}</div>
-      <div style="display: flex">
-        <div class="edit"  @click="drawer=true">
+      <div v-if="edit" style="display: flex">
+        <div class="edit" @click="$refs.child.show()">
           <el-tooltip effect="dark" content="编辑" placement="top">
             <i class="el-icon-edit-outline"></i>
           </el-tooltip>
@@ -23,31 +23,28 @@
     </div>
     <div v-if="ifShow" class="info">
       <div class="description">
-        {{question.description}}
+        {{question.content}}
       </div>
       <div class="choice">
-        <div v-for="item in question.choice">
+        <div v-for="(item,index) in question.choices">
           <input type="radio"></input>{{item}}
-          <el-tag v-if="item===question.answer" type="success" size="mini">正确答案</el-tag>
+          <el-tag v-if="index===question.answer" type="success" size="mini">正确答案</el-tag>
         </div>
       </div>
     </div>
-    <el-drawer :visible.sync="drawer" direction="btt" :with-header="false" size="85%">
-      <AddQuestion :question="question"></AddQuestion>
-    </el-drawer>
+    <EditQuestion ref="child" :item="question"></EditQuestion>
   </div>
 </template>
 
 <script>
-import AddQuestion from "@/components/planet/competition/create/AddQuestion";
+import EditQuestion from "@/components/planet/competition/create/EditQuestion";
 export default {
   name: "QuestionCard",
-  components: {AddQuestion},
-  props:["question","index"],
+  components: {EditQuestion},
+  props:["question","index","edit"],
   data(){
     return{
       ifShow:false,
-      drawer:false,
     }
   },
   mounted() {

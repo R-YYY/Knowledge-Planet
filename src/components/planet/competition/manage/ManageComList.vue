@@ -12,18 +12,26 @@
             height="450px"
             :row-style="{height:0+'px'}"
             :cell-style="{padding:7+'px'}">
-          <el-table-column fixed prop="title" label="竞赛名称" width="200">
+          <el-table-column fixed label="状态" width="250">
+            <template slot-scope="scope">
+              <span style="margin-right: 10px">{{scope.row.title}}</span>
+              <el-tag v-if="scope.row.status===0" type="danger" size="mini">未发布</el-tag>
+              <el-tag v-else-if="scope.row.status===1" type="success" size="mini">已发布</el-tag>
+              <el-tag v-else type="info" size="mini">已取消</el-tag>
+            </template>
           </el-table-column>
           <el-table-column label="描述" width="200">
             <template slot-scope="scope">
-              <div class="des">
-                {{scope.row.description}}
-              </div>
+              <el-tooltip :content="scope.row.description" placement="top">
+                <div class="des">
+                  {{scope.row.description}}
+                </div>
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column prop="questionNum" label="总题数" width="120" sortable>
           </el-table-column>
-          <el-table-column prop="score" label="总分" width="120" sortable>
+          <el-table-column prop="totalScore" label="总分" width="120" sortable>
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间" width="200" sortable>
           </el-table-column>
@@ -33,8 +41,10 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="120">
             <template slot-scope="scope">
-              <el-button type="text" size="small">查看</el-button>
-              <el-button type="text" size="small" @click="toEdit(scope.row)">编辑</el-button>
+              <div style="display:flex;">
+                <CompetitionDetail style="margin-right: 10px" :competition="scope.row"></CompetitionDetail>
+                <el-button type="text" size="small" @click="toEdit(scope.row)">编辑</el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -57,14 +67,28 @@
 
 <script>
 import AddCompetition from "@/components/planet/competition/create/AddCompetition";
+import {getCompetitionByPlanet} from "@/api/planet/competition";
+import CompetitionDetail from "@/components/planet/competition/manage/CompetitionDetail";
 export default {
   name: "ManageComList",
-  components: {AddCompetition},
+  components: {CompetitionDetail, AddCompetition},
   data(){
     return{
       competitionList:[],
       currentPage:1,
       pageSize:20,
+      chooseCom:{
+        competitionId:"",
+        title:"",
+        description:"",
+        picture:"",
+        createTime:"",
+        startTime:"",
+        endTime:"",
+        status:"",
+        questionNum:"",
+        totalScore:"",
+      }
     }
   },
   methods:{
@@ -83,22 +107,34 @@ export default {
           cid: competition.competitionId
         }
       })
+    },
+
+    seeDetail(competition){
+      this.chooseCom = competition
+      this.$refs.child.show()
     }
   },
   mounted() {
-    for (let i = 0; i < 41; i++) {
-      this.competitionList.push({
-        competitionId:i,
-        title:"第"+(i+1)+"周周赛的名字",
-        description:"描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述",
-        picture:"https://img1.baidu.com/it/u=1269253414,843691233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=311",
-        createTime:"2022-5-11 15:00",
-        startTime:"2022-5-12 15:00",
-        endTime:"2022-5-12 17:00",
-        questionNum:5,
-        score:100,
-      })
-    }
+    this.competitionList = []
+    getCompetitionByPlanet("23").then((res)=>{
+      console.log(res.data)
+      let list = res.data.data.competitionList
+      console.log(list)
+      for (let i = 0; i < list.length; i++) {
+        this.competitionList.push({
+          competitionId:list[i].competition.competitionId,
+          title:list[i].competition.title,
+          description:list[i].competition.description,
+          picture:list[i].competition.picture,
+          createTime:list[i].competition.createTime,
+          startTime:list[i].competition.startTime,
+          endTime:list[i].competition.endTime,
+          status:list[i].competition.status,
+          questionNum:list[i].questionNumber,
+          totalScore:list[i].totalScore,
+        })
+      }
+    })
   }
 }
 </script>

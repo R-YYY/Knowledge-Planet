@@ -2,14 +2,6 @@
   <div style="display: flex;">
     <div class="create_area">
       <div class="create_card">
-        <div class="input_name">
-          <el-input v-model="title" placeholder="请输入竞赛名称"></el-input>
-        </div>
-        <div class="input_des">
-          <el-input v-model="description" placeholder="请输入竞赛描述"
-                    size="small" type="textarea" :rows="1" autosize>
-          </el-input>
-        </div>
         <div class="table">
           <div class="header">
             <img v-if="!ifShowAll" class="down" src="../../../../assets/competition/down.png" alt="" @click="showAll">
@@ -19,8 +11,9 @@
             <div class="question_score">分数</div>
             <div class="question_opera">操作</div>
           </div>
+          <el-empty class="empty" v-if="questionList.length===0" description="当前竞赛没有题目"></el-empty>
           <div v-for="(item,index) in questionList">
-            <QuestionCard :question="item" :index="index"></QuestionCard>
+            <QuestionCard :question="item" :index="index" :edit="true"></QuestionCard>
           </div>
         </div>
       </div>
@@ -34,11 +27,12 @@
 <script>
 import QuestionCard from "@/components/planet/competition/create/QuestionCard";
 import TotalQuestion from "@/components/planet/competition/create/TotalQuestion";
-import {separator} from "@/api/planet/question";
+import {getQuestion, separator} from "@/api/planet/question";
+import AddCompetition from "@/components/planet/competition/create/AddCompetition";
 
 export default {
   name: "EditCompetition",
-  components: {TotalQuestion, QuestionCard},
+  components: {AddCompetition, TotalQuestion, QuestionCard},
   data() {
     return {
       title: "",
@@ -57,21 +51,20 @@ export default {
     },
   },
   mounted() {
-    let planetCode = "23"
     let competitionId = this.$route.params.cid
-
-    let word = "这是一道单选题哈哈哈，你觉得应该选什么呢？/**###选项AAA/**###选项BBB/**###选项CCC"
-
-    for (let i = 0; i < 5; i++) {
-      let q = word.split(separator)
-      this.questionList.push({
-        id: i,
-        description: q[0],
-        choice:q.splice(1,q.length),
-        answer:"选项AAA",
-        score: (i + 1) * 2,
-      })
-    }
+    getQuestion(competitionId).then((res)=>{
+      let list = res.data.data.question
+      for (let i = 0; i < list.length; i++) {
+        this.questionList.push({
+          competitionId:competitionId,
+          questionId:list[i].questionId,
+          content:list[i].content,
+          choices:list[i].items.split(separator),
+          answer: list[i].answer,
+          score:list[i].score
+        })
+      }
+    })
   }
 }
 </script>
@@ -114,7 +107,7 @@ export default {
 }
 
 .table {
-  min-height: 403px;
+  min-height: 540px;
   margin-top: 20px;
   margin-left: 50px;
   margin-right: 50px;
@@ -123,7 +116,7 @@ export default {
 
 .header {
   display: flex;
-  padding-top: 10px;
+  padding-top: 30px;
   padding-bottom: 10px;
 }
 
@@ -151,5 +144,10 @@ export default {
   width: 18px;
   cursor: pointer;
   margin-right: 40px;
+  margin-left: 20px;
+}
+
+.empty{
+  margin-top: 100px;
 }
 </style>

@@ -46,6 +46,7 @@
 
 <script>
 import cos from "@/api/cos";
+import {addCompetition} from "@/api/planet/competition";
 
 export default {
   name: "AddCompetition",
@@ -85,19 +86,29 @@ export default {
     create(){
       this.$refs.ruleForm.validate((valid)=>{
         if(valid){
-          this.dialogVisible = false
-          this.open()
+          addCompetition(this.competition,"23").then((res)=>{
+            console.log(res.data)
+            this.dialogVisible = false
+            this.open(res.data.data.competitionId)
+          }).catch((err)=>{
+            this.$message({type:"error",message:"系统错误，创建失败"})
+          })
         }
       })
     },
 
-    open() {
+    open(competitionId) {
       this.$confirm('竞赛已创建成功，是否立即添加竞赛题目?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'info'
       }).then(() => {
-        this.$router.push("/planet/competition/create")
+        this.$router.push({
+          name: 'editCompetition',
+          params: {
+            cid: competitionId
+          }
+        })
       }).catch(() => {
 
       });
