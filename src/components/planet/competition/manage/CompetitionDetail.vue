@@ -8,7 +8,7 @@
                :append-to-body="true"
                :modal-append-to-body="false">
       <div class="detail_area">
-        <div class="create_card">
+        <div class="detail">
           <div class="info">
             <el-form label-position="left" label-width="100px">
               <el-form-item label="竞赛名称">
@@ -27,9 +27,9 @@
                 {{competition.totalScore}}
               </el-form-item>
               <el-form-item label="状态">
-                <el-tag v-if="competition.status===0" type="danger">未发布</el-tag>
-                <el-tag v-else-if="competition.status===1" type="success">已发布</el-tag>
-                <el-tag v-else type="info">已取消</el-tag>
+                <el-tag v-if="competition.status===0" type="danger" size="mini">未发布</el-tag>
+                <el-tag v-else-if="competition.status===1" type="success" size="mini">已发布</el-tag>
+                <el-tag v-else type="info" size="mini">已取消</el-tag>
               </el-form-item>
             </el-form>
           </div>
@@ -43,7 +43,7 @@
             </div>
             <el-empty v-if="questionList.length===0" description="当前竞赛没有题目"></el-empty>
             <div v-for="(item,index) in questionList">
-              <QuestionCard :question="item" :index="index" :edit="false"></QuestionCard>
+              <QuestionCard ref="child" :question="item" :index="index" :edit="false"></QuestionCard>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
 
 <script>
 import QuestionCard from "@/components/planet/competition/create/QuestionCard";
-import {getQuestion, separator} from "@/api/planet/question";
+import {getQuestion, getQuestionListWithAnswer, separator} from "@/api/planet/question";
 import {releaseOrAbolish} from "@/api/planet/competition";
 export default {
   name: "CompetitionDetail",
@@ -83,18 +83,30 @@ export default {
 
     showAll() {
       this.ifShowAll = true
+      let list = this.$refs.child
+      for (let i = 0; i < list.length; i++) {
+        list[i].show()
+      }
     },
 
     hideAll() {
       this.ifShowAll = false
+      let list = this.$refs.child
+      for (let i = 0; i < list.length; i++) {
+        list[i].hide()
+      }
     },
 
     toEdit(){
+      console.log(this.competition)
       this.$router.push({
         name: 'editCompetition',
         params: {
           cid: this.competition.competitionId
-        }
+        },
+        query:{
+          competition:JSON.stringify(this.competition)
+        },
       })
     },
 
@@ -112,8 +124,8 @@ export default {
   },
   mounted() {
     let competitionId = this.competition.competitionId
-    getQuestion(competitionId).then((res)=>{
-      let list = res.data.data.question
+    getQuestionListWithAnswer(competitionId).then((res)=>{
+      let list = res.data.data.questionList
       for (let i = 0; i < list.length; i++) {
         this.questionList.push({
           competitionId:competitionId,
@@ -137,6 +149,10 @@ export default {
 .info{
   margin-left: 20px;
   margin-right: 50px;
+}
+
+.detail{
+
 }
 
 .table{
@@ -179,7 +195,7 @@ export default {
 }
 
 .opera_area{
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   right: 50px;
 }

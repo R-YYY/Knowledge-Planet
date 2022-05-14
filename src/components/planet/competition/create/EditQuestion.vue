@@ -10,13 +10,15 @@
         <div class="add_left">
           <div style="margin-bottom: 10px">题目</div>
           <el-input class="question_input" type="textarea" :autosize="{ minRows: 5}" v-model="question.content"></el-input>
+          <div style="margin-bottom: 10px">分数</div>
+          <el-input class="score_input" v-model="question.score"></el-input>
           <div style="margin-top: 20px;margin-bottom: 10px">选项</div>
           <div v-for="(item,index) in question.choices">
             <el-input v-model="question.choices[index]"></el-input>
             <div class="choice_set_area">
-              <div v-if="index===question.answer">
+              <div v-if="index==question.answer">
                 <el-tag type="success" size="mini">正确答案</el-tag>
-                <span class="choice_cancel">取消</span>
+                <span class="choice_cancel" @click="question.answer=null">取消</span>
               </div>
               <div v-else class="choice_set" @click="setAnswer(index)">
                 <i class="el-icon-check"></i><span>设为正确答案</span>
@@ -34,12 +36,12 @@
         <div class="add_right">
           <div style="margin-bottom: 10px">预览</div>
           <div class="right_description">
-            {{question.content}}
+            {{question.content}}<span class="right_score">({{question.score}}分)</span>
           </div>
           <div class="right_choice">
             <div v-for="(item,index) in question.choices">
-              <input type="radio"></input>{{item}}
-              <el-tag v-if="index===question.answer" type="success" size="mini">正确答案</el-tag>
+              <input type="radio" disabled></input>{{item}}
+              <el-tag v-if="index==question.answer" type="success" size="mini">正确答案</el-tag>
             </div>
           </div>
         </div>
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+import {addQuestion, updateQuestion} from "@/api/planet/question";
+
 export default {
   name: "EditQuestion",
   props:["item"],
@@ -73,6 +77,12 @@ export default {
 
     deleteChoice(index){
       if(this.question.choices.length > 2) {
+        if(this.question.answer > index){
+          this.question.answer--;
+        }
+        else if(this.question.answer === index){
+          this.question.answer=null
+        }
         this.question.choices.splice(index, 1)
       }
     },
@@ -81,23 +91,52 @@ export default {
       this.question.answer = index
     },
 
-    change(){
-      return this.item.content === this.question.content &&
-          this.item.answer === this.question.answer &&
-          this.item.choices === this.question.choices
+    validate(){
+      return this.question.content.trim() !== "" &&
+          this.question.answer !== null &&
+          this.question.answer <= this.question.choices.length &&
+          this.question.score > 0
     },
 
     save(){
+      if(!this.validate()){
+        this.$message.error("题目信息填写不完整，请检查后重试！")
+        return
+      }
+      if(this.question.questionId === ""){
+        this.addQuestion()
+      }
+      else{
+        this.changeQuestion()
+      }
+    },
 
+    changeQuestion(){
+      updateQuestion(this.question).then((res)=>{
+        console.log(res.data)
+        this.$message({type:"success",message:"更新成功"})
+        location.reload()
+        this.$router.go(0)
+      }).catch(()=>{
+        this.$message({type:"error",message:"系统错误，请稍后重试"})
+      })
+    },
+
+    addQuestion(){
+      addQuestion(this.question).then((res)=>{
+        console.log(res.data)
+        this.$message({type:"success",message:"添加成功"})
+        location.reload()
+        this.$router.go(0)
+      }).catch(()=>{
+        this.$message({type:"error",message:"系统错误，请稍后重试"})
+      })
     },
 
     beforeClose(){
-      console.log(this.item)
-      console.log(this.question)
       if(JSON.stringify(this.item) !== JSON.stringify(this.question)) {
         this.$confirm('在关闭前请确认是否保存修改？').then(_ => {
-
-          this.visible = false
+          this.save()
         }).catch(_ =>{
           this.question = JSON.parse(JSON.stringify(this.item))
           this.visible = false
@@ -157,13 +196,17 @@ export default {
 }
 
 .question_input{
-
+  margin-bottom: 10px;
 }
 
 .choice_set_area{
   padding-top: 10px;
   padding-bottom: 20px;
   display: flex;
+}
+
+.score_input{
+  width: 50px;
 }
 
 .choice_delete{
@@ -225,5 +268,10 @@ export default {
 .right_choice div{
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.right_score{
+  color: #8c939d;
+  margin-left: 10px;
 }
 </style>

@@ -105,6 +105,9 @@ export default {
         name: 'editCompetition',
         params: {
           cid: competition.competitionId
+        },
+        query:{
+          competition:JSON.stringify(competition)
         }
       })
     },

@@ -1,15 +1,15 @@
 <template>
   <div :class="index%2===0?'gray':'white'">
     <div style="display: flex">
-      <i v-if="!ifShow" class="el-icon-arrow-right" @click="ifShow=true"
+      <i v-if="!ifShow" class="el-icon-arrow-right" @click="show"
          style="margin-left: 20px;margin-right: 40px;cursor: pointer;line-height: 45px"></i>
-      <i v-if="ifShow" class="el-icon-arrow-down" @click="ifShow=false"
+      <i v-if="ifShow" class="el-icon-arrow-down" @click="hide"
          style="margin-left: 20px;margin-right: 40px;cursor: pointer;line-height: 45px"></i>
       <div class="id">{{question.questionId}}</div>
       <div class="des">{{question.content}}</div>
       <div class="score">{{question.score}}</div>
       <div v-if="edit" style="display: flex">
-        <div class="edit" @click="$refs.child.show()">
+        <div class="edit" @click="openEdit">
           <el-tooltip effect="dark" content="编辑" placement="top">
             <i class="el-icon-edit-outline"></i>
           </el-tooltip>
@@ -23,12 +23,12 @@
     </div>
     <div v-if="ifShow" class="info">
       <div class="description">
-        {{question.content}}
+        {{question.content}}<span class="right_score">({{question.score}}分)</span>
       </div>
       <div class="choice">
         <div v-for="(item,index) in question.choices">
-          <input type="radio"></input>{{item}}
-          <el-tag v-if="index===question.answer" type="success" size="mini">正确答案</el-tag>
+          <input type="radio" disabled></input>{{item}}
+          <el-tag v-if="index==question.answer" type="success" size="mini">正确答案</el-tag>
         </div>
       </div>
     </div>
@@ -47,8 +47,18 @@ export default {
       ifShow:false,
     }
   },
-  mounted() {
+  methods: {
+    openEdit(){
+      this.$refs.child.show()
+    },
 
+    show(){
+      this.ifShow = true
+    },
+
+    hide(){
+      this.ifShow = false
+    }
   }
 }
 </script>
@@ -112,5 +122,10 @@ export default {
 .delete{
   margin-left: 40px;
   color: red;
+}
+
+.right_score{
+  color: #8c939d;
+  margin-left: 10px;
 }
 </style>

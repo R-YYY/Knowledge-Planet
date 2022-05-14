@@ -5,22 +5,52 @@
       <i class="el-icon-arrow-left" style="font-weight: bold"></i>
       <span>返回竞赛管理</span>
     </div>
-    <div>
-      <EditCompetition></EditCompetition>
+    <div style="display: flex">
+      <div>
+        <QuestionList :question-list="questionList"></QuestionList>
+      </div>
+      <div>
+        <TotalQuestion :question-list="questionList" :competition="competition"></TotalQuestion>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import EditCompetition from "@/components/planet/competition/create/EditCompetition";
+import QuestionList from "@/components/planet/competition/create/QuestionList";
+import TotalQuestion from "@/components/planet/competition/create/TotalQuestion";
+import {getQuestion, getQuestionListWithAnswer, separator} from "@/api/planet/question";
 export default {
   name: "EditComView",
-  components: {EditCompetition},
+  components: {TotalQuestion, QuestionList},
+  data(){
+    return{
+      questionList:[],
+      competition:{},
+    }
+  },
   methods:{
     toCompetitionManage(){
       this.$router.push("/planet/competition/manage")
     },
-  }
+  },
+  mounted() {
+    this.competition = JSON.parse(this.$route.query.competition)
+    let competitionId = this.$route.params.cid
+    getQuestionListWithAnswer(competitionId).then((res)=>{
+      let list = res.data.data.questionList
+      for (let i = 0; i < list.length; i++) {
+        this.questionList.push({
+          competitionId:competitionId,
+          questionId:list[i].questionId,
+          content:list[i].content,
+          choices:list[i].items.split(separator),
+          answer: list[i].answer,
+          score:list[i].score
+        })
+      }
+    })
+  },
 }
 </script>
 

@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import EditCompetition from "@/components/planet/competition/create/EditCompetition";
+import QuestionList from "@/components/planet/competition/create/QuestionList";
 export default {
   name: "CompetitionHeader",
-  components: {EditCompetition},
+  components: {QuestionList},
   methods:{
     toRecord(){
       this.$router.push("/planet/competition/record")

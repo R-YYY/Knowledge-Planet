@@ -1,21 +1,40 @@
 <template>
   <div>
-    <div style="display: flex">
-      <div>
-        <div class="top">题数</div>
-        <div class="num">{{questionList.length}}</div>
+    <div class="card">
+      <div style="display: flex">
+        <div>
+          <div class="top">题数</div>
+          <div class="num">{{questionList.length}}</div>
+        </div>
+        <div>
+          <div class="top">总分</div>
+          <div class="num">{{getTotalScore()}}</div>
+        </div>
       </div>
-      <div>
-        <div class="top">总分</div>
-        <div class="num">{{getTotalScore()}}</div>
+      <div class="add_question" @click="$refs.child.show()">添加题目</div>
+      <div class="form">
+        <el-form label-position="left" label-width="70px">
+          <el-form-item label="竞赛名称">
+            {{competition.title}}
+          </el-form-item>
+          <el-form-item label="竞赛描述">
+            {{competition.description}}
+          </el-form-item>
+          <el-form-item label="开始时间">
+            {{competition.startTime}}
+          </el-form-item>
+          <el-form-item label="结束时间">
+            {{competition.endTime}}
+          </el-form-item>
+          <el-form-item label="状态">
+            <el-tag v-if="competition.status===0" type="danger" size="mini">未发布</el-tag>
+            <el-tag v-else-if="competition.status===1" type="success" size="mini">已发布</el-tag>
+            <el-tag v-else type="info" size="mini">已取消</el-tag>
+          </el-form-item>
+        </el-form>
       </div>
+      <EditQuestion ref="child" :item="newQuestion"></EditQuestion>
     </div>
-    <div class="add_question" @click="$refs.child.show()">添加题目</div>
-    <div style="display: flex">
-      <div class="create">发布</div>
-      <div class="cancel">取消</div>
-    </div>
-    <EditQuestion ref="child" :item="question"></EditQuestion>
   </div>
 </template>
 
@@ -24,14 +43,16 @@ import EditQuestion from "@/components/planet/competition/create/EditQuestion";
 export default {
   name: "TotalQuestion",
   components: {EditQuestion},
-  props:["questionList"],
+  props:["questionList","competition"],
   data(){
     return{
-      question:{
-        title:"",
+      newQuestion:{
+        competitionId:this.$route.params.cid,
+        questionId:"",
         content:"",
         choices:["","",""],
         answer:null,
+        score:1,
       }
     }
   },
@@ -42,12 +63,33 @@ export default {
         result += this.questionList[i].score
       }
       return result
-    }
+    },
+  },
+
+  mounted() {
+    // console.log(this.competition)
   }
 }
 </script>
 
 <style scoped>
+.card{
+  width: 300px;
+  height: auto;
+  margin-top: 15px;
+  margin-left: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #cdcdcd;
+}
+
+.form{
+  margin-left: 30px;
+  margin-right: 20px;
+  margin-top: 30px;
+  padding-bottom: 20px;
+}
+
 .top{
   text-align: center;
   color: #858b92;
@@ -102,5 +144,9 @@ export default {
   margin-left: 80px;
   margin-top: 50px;
   cursor: pointer;
+}
+
+.el-form-item{
+  margin-bottom: 0px;
 }
 </style>

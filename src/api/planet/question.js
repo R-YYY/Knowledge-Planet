@@ -1,17 +1,16 @@
 import axios from "../index";
-import {dateFormat} from "@/api/planet/competition";
 
-//问题描述与答案之间的间隔符
+//答案之间的分隔符
 export const separator = "/**###"
 
-export function addQuestion(competitionId,question) {
+export function addQuestion(question) {
     let items = ""
     for (let i = 0; i < question.choices.length - 1; i++) {
         items += question.choices[i] + separator
     }
     items += question.choices[question.choices.length - 1]
     let data = JSON.stringify({
-        "competitionId": competitionId,
+        "competitionId": question.competitionId,
         "content": question.content,
         "answer": question.answer,
         "score": question.score,
@@ -34,5 +33,39 @@ export function getQuestion(competitionId){
         params:{
             competitionId:competitionId
         }
+    })
+}
+
+export function getQuestionListWithAnswer(competitionId){
+    return axios({
+        method:"GET",
+        url:"/competition/getQuestionListWithAnswer",
+        params:{
+            competitionId:competitionId
+        }
+    })
+}
+
+export function updateQuestion(question){
+    let items = ""
+    for (let i = 0; i < question.choices.length - 1; i++) {
+        items += question.choices[i] + separator
+    }
+    items += question.choices[question.choices.length - 1]
+    let data = JSON.stringify({
+        "competitionId": question.competitionId,
+        "questionId":question.questionId,
+        "content": question.content,
+        "answer": question.answer,
+        "score": question.score,
+        "items": items
+    })
+    return axios({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        url:"/competition/updateQuestion",
+        data:data
     })
 }
