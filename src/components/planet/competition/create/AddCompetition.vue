@@ -62,6 +62,7 @@ export default {
         endTime:"",
         questionNum:0,
         score:0,
+        status:0,
       },
       rules:{
         title: [
@@ -90,7 +91,7 @@ export default {
             console.log(res.data)
             this.dialogVisible = false
             this.open(res.data.data.competitionId)
-          }).catch((err)=>{
+          }).catch(()=>{
             this.$message({type:"error",message:"系统错误，创建失败"})
           })
         }
@@ -107,6 +108,9 @@ export default {
           name: 'editCompetition',
           params: {
             cid: competitionId
+          },
+          query:{
+            competition: JSON.stringify(this.competition)
           }
         })
       }).catch(() => {
