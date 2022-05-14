@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import {getCompetitionNotStart} from "@/api/planet/competition";
+
 export default {
   name: "UpcomingCompetition",
   data(){
@@ -51,15 +53,27 @@ export default {
   methods:{
   },
   mounted() {
-    for (let i = 0; i < 10; i++) {
-      this.competitionList.push({
-        id:i,
-        title:"前端星第"+(i+1)+"场周赛",
-        startTime:"2022-4-27 15:00",
-        endTime:"2022-4-27 17:00",
-        description:"给每一个热带前端的小伙伴一次提升自己的机会！还等啥，快来参加~",
-      })
-    }
+    getCompetitionNotStart("23").then((res)=>{
+      let list = res.data.data.competitionList
+      for (let i = 0; i < list.length; i++) {
+        this.competitionList.push({
+          planetCode:list[i].competition.planetCode,
+          competitionId:list[i].competition.competition,
+          title: list[i].competition.title,
+          description: list[i].competition.description,
+          picture:list[i].competition.picture,
+          startTime: list[i].competition.startTime,
+          endTime: list[i].competition.endTime,
+          createTime:list[i].competition.createTime,
+          status:list[i].competition.status,
+          questionNumber:list[i].questionNumber,
+          totalScore:list[i].totalScore,
+          userScore: list[i].userScore,
+        })
+      }
+    }).catch(()=>{
+      this.$message.error("系统错误，请稍后重试！")
+    })
   }
 }
 </script>

@@ -50,7 +50,20 @@ export default {
     getCompetitionByPlanet("23").then((res)=>{
       let list = res.data.data.competitionList
       for (let i = 0; i < list.length; i++) {
-        this.competitionList.push(list[i].competition)
+        this.competitionList.push({
+          planetCode:list[i].competition.planetCode,
+          competitionId:list[i].competition.competition,
+          title: list[i].competition.title,
+          description: list[i].competition.description,
+          picture:list[i].competition.picture,
+          startTime: list[i].competition.startTime,
+          endTime: list[i].competition.endTime,
+          createTime:list[i].competition.createTime,
+          status:list[i].competition.status,
+          questionNumber:list[i].questionNumber,
+          totalScore:list[i].totalScore,
+          userScore: list[i].userScore,
+        })
       }
     })
   }

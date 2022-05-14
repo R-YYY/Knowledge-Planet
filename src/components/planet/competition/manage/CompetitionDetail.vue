@@ -21,7 +21,7 @@
                 {{competition.startTime}} ~ {{competition.endTime}}
               </el-form-item>
               <el-form-item label="总题数">
-                {{competition.questionNum}}
+                {{competition.questionNumber}}
               </el-form-item>
               <el-form-item label="总分">
                 {{competition.totalScore}}

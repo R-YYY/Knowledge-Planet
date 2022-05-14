@@ -71,3 +71,21 @@ export function releaseOrAbolish(competitionId,type){
         data:data
     })
 }
+
+export function getRegisteredCompetition(){
+    return axios({
+        method:"GET",
+        url:"/competition/getRegisteredCompetition",
+    })
+}
+
+export function getCompetitionNotStart(planetCode){
+    return axios({
+        method:"GET",
+        url:"/competition/getCompetitionNotStart",
+        params:{
+            planetCode:planetCode
+        }
+    })
+}
+

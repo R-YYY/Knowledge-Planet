@@ -4,31 +4,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "App",
-  provide() {
-    return {
-      reload : this.reload,
-    }
-  },
-  data() {
-    return {
-      isRouterAlive:true,
-    };
-  },
-  methods: {
-    // 通过声明reload方法，控制router-view的显示或隐藏，从而控制页面的再次加载
-    reload(){
-      this.isRouterAlive = false;
-      this.$nextTick(() => {
-        this.isRouterAlive = true;
-      })
-    },
-  },
-};
-</script>
-
 <style>
 html,body{
   margin: 0;

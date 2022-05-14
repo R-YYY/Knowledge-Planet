@@ -60,7 +60,7 @@ export default {
         createTime:"",
         startTime:"",
         endTime:"",
-        questionNum:0,
+        questionNumber:0,
         score:0,
         status:0,
       },
@@ -114,7 +114,8 @@ export default {
           }
         })
       }).catch(() => {
-
+        location.reload()
+        this.$router.go(0)
       });
     },
 

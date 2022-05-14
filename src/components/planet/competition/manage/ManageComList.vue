@@ -12,7 +12,7 @@
             height="450px"
             :row-style="{height:0+'px'}"
             :cell-style="{padding:7+'px'}">
-          <el-table-column fixed label="状态" width="250">
+          <el-table-column fixed label="竞赛名称" width="250">
             <template slot-scope="scope">
               <span style="margin-right: 10px">{{scope.row.title}}</span>
               <el-tag v-if="scope.row.status===0" type="danger" size="mini">未发布</el-tag>
@@ -29,7 +29,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="questionNum" label="总题数" width="120" sortable>
+          <el-table-column prop="questionNumber" label="总题数" width="120" sortable>
           </el-table-column>
           <el-table-column prop="totalScore" label="总分" width="120" sortable>
           </el-table-column>
@@ -86,7 +86,7 @@ export default {
         startTime:"",
         endTime:"",
         status:"",
-        questionNum:"",
+        questionNumber:"",
         totalScore:"",
       }
     }
@@ -111,11 +111,6 @@ export default {
         }
       })
     },
-
-    seeDetail(competition){
-      this.chooseCom = competition
-      this.$refs.child.show()
-    }
   },
   mounted() {
     this.competitionList = []
@@ -125,6 +120,7 @@ export default {
       console.log(list)
       for (let i = 0; i < list.length; i++) {
         this.competitionList.push({
+          planetCode:list[i].competition.planetCode,
           competitionId:list[i].competition.competitionId,
           title:list[i].competition.title,
           description:list[i].competition.description,
@@ -133,7 +129,7 @@ export default {
           startTime:list[i].competition.startTime,
           endTime:list[i].competition.endTime,
           status:list[i].competition.status,
-          questionNum:list[i].questionNumber,
+          questionNumber:list[i].questionNumber,
           totalScore:list[i].totalScore,
         })
       }

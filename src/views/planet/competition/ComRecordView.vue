@@ -14,6 +14,9 @@
           <div class="opera">操作</div>
         </div>
         <hr>
+        <div v-if="recordList.length===0">
+          <el-empty description="没有参赛记录"></el-empty>
+        </div>
         <div v-for="item in recordList.slice((currentPage-1)*10,currentPage*10)">
           <ComRecordItem :record="item"></ComRecordItem>
           <hr class="line">
@@ -34,6 +37,7 @@
 
 <script>
 import ComRecordItem from "@/components/planet/competition/record/ComRecordItem";
+import {getRegisteredCompetition} from "@/api/planet/competition";
 export default {
   name: "ComRecordView",
   components: {ComRecordItem},
@@ -53,15 +57,22 @@ export default {
     }
   },
   mounted() {
-    for (let i = 0; i < 11; i++) {
-      this.recordList.push({
-        title:"第"+(i+1)+"周周赛",
-        picture:"https://img1.baidu.com/it/u=1269253414,843691233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=311",
-        startTime:"2022-4-27 15:00",
-        endTime:"2022-5-1 17:00",
-        score:i*10
-      })
-    }
+    getRegisteredCompetition().then((res)=>{
+      let list = res.data.data.competitionList
+      for (let i = 0; i < list.length; i++) {
+        this.recordList.push({
+          title:list[i].competition.title,
+          picture:list[i].competition.picture,
+          startTime:list[i].competition.startTime,
+          endTime:list[i].competition.endTime,
+          userScore:list[i].userScore,
+          totalScore:list[i].totalScore,
+          questionNumber:list[i].questionNumber
+        })
+      }
+    }).catch(()=>{
+      this.$message.error("系统错误，请稍后重试")
+    })
   }
 }
 </script>

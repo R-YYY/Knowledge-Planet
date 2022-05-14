@@ -36,9 +36,12 @@
         </div>
       </div>
     </div>
-    <div class="me">
+    <div v-if="rankName==='积分活跃排行榜'" class="me">
       <div>你的排名：{{me.rank}}</div>
       <div>你的积分：{{me.integral}}</div>
+    </div>
+    <div v-else-if="rankName==='竞赛排行榜'" class="join">
+      <div>你的参加场次：{{joinCount}}</div>
     </div>
   </div>
 </template>
@@ -60,6 +63,7 @@ export default {
         rank:"null",
         integral:"null",
       },
+      joinCount:0,
       waitingImgUrl:"https://img2.baidu.com/it/u=295011096,4030987771&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=501"
     }
   },
@@ -84,22 +88,19 @@ export default {
     },
 
     loadCompetitionRank(){
-      this.users = []
-
-      //TODO 竞赛排行榜加载
-      // getLeaderBoard("23").then((res)=>{
-      //   let list = res.data.data.result.leaderBoard
-      //
-      // })
-
-      for (let i = 0; i < 47; i++) {
-        this.users.push({
-          rank:i+1,
-          userName:"第"+(i+1)+"的名字呢？",
-          desc:"已经参加竞赛"+(100-i)+"次",
-          avatar: "https://img1.baidu.com/it/u=1659441821,1293635445&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        });
-      }
+      getLeaderBoard("23").then((res)=>{
+        this.joinCount = res.data.data.result.joinCount
+        let list = res.data.data.result.leaderBoard
+        list.sort( (x,y) => y.count - x.count )
+        for (let i = 0; i < list.length; i++) {
+          this.users.push({
+            rank: i+1,
+            userName:list[i].userInfo.userName,
+            desc:"已经参加竞赛"+list[i].count+"次",
+            avatar: list[i].userInfo.avatar
+          })
+        }
+      })
     }
   },
   created() {
@@ -183,6 +184,18 @@ export default {
   width: 120px;
   margin-left: 20px;
   margin-right: -10px;
+}
+
+.join{
+  text-align: center;
+  width: 300px;
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  color: #9A9191;
+  border-radius: 0 0 20px 20px;
+  background-color: white;
+  box-shadow: 0 0 15px #cdcdcd;
 }
 
 .empty{
