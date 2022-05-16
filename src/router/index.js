@@ -21,6 +21,7 @@ import ManageComView from "@/views/planet/competition/ManageComView";
 import AdministratorInformationView from "@/views/administrator/AdministratorInformationView";
 import SystemNoticeView from "@/views/administrator/SystemNoticeView";
 import UserManagementView from "@/views/administrator/UserManagementView";
+import ResourceCheckView from "@/views/administrator/ResourceCheckView"
 
 Vue.use(VueRouter)
 
@@ -133,6 +134,11 @@ const routes = [
         path:'/admin/usermanage',
         name:'userManage',
         component: UserManagementView
+    },
+    {
+        path:'/admin/resourcecheck',
+        name:'resourcecheck',
+        component: ResourceCheckView
     }
 
 ]

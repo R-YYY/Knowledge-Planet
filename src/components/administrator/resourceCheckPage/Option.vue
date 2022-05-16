@@ -133,7 +133,7 @@ export default{
   font-family: "Microsoft YaHei";
 }
 
-.personalpage{
+.resourcepage{
   background-color: #e5ffff;
 }
 /deep/ .el-divider--horizontal{

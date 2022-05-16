@@ -142,6 +142,7 @@ export default{
   background-color: #99ebff;
   border-color: #99ebff;
   color:black;
+  width:200px;
 }
 .shortnoticecontent{
   text-align: center;

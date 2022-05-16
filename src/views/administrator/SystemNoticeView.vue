@@ -1,5 +1,5 @@
 <template>
-  <div id="administratorInformation">
+  <div id="systemNotice">
     <HomePageHeader></HomePageHeader>
     <div id="main">
       <Option class="left"></Option>
@@ -52,15 +52,4 @@ export default{
   display: inline-block;
   float: right;
 }
-/*.right_top{*/
-/*  display: inline-block;*/
-/*  float: right;*/
-/*  margin-right:15px;*/
-/*}*/
-/*.right_bottom{*/
-/*  display: inline-block;*/
-/*  float: right;*/
-/*  margin-top:300px;*/
-/*  margin-right:-320px;*/
-/*}*/
 </style>
