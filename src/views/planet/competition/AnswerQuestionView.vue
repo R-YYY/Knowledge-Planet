@@ -2,7 +2,7 @@
   <div>
     <Header></Header>
     <QuestionArea v-if="competition.score===null" @getScore="getScore" :competition="competition"></QuestionArea>
-    <ScoreCard v-else :score="competition.score" :time="competition.time"></ScoreCard>
+    <ScoreCard v-if="competition.score!==null" :score="competition.score"></ScoreCard>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       competition:{
-        Id:1,
+        id:1,
         title:"第十周",
         score:null,
         time:0,
@@ -27,17 +27,25 @@ export default {
     }
 
   },
+  created() {
+    console.log(this.$route.params)
+    this.competition.id = this.$route.params.id
+    this.competition.title = this.$route.params.title
+  },
   mounted() {
     this.getScore()
   },
   methods: {
     getScore(){
-      getCompetitionScore(this.competition.Id).then((res)=>{
+      getCompetitionScore(this.competition.id).then((res)=>{
         if(res.data.success){
+          console.log(res.data.data.score)
           this.competition.score = res.data.data.score
+          console.log(this.competition.score===null)
         }
-      }).then((err)=>{
+      }).catch((err)=>{
         console.log(err)
+        this.competition.score = null
       })
     }
   }

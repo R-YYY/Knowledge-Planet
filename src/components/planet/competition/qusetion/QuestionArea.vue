@@ -45,29 +45,33 @@ export default {
       questions: [],
       currentIndex: 1,
       timeBySeconds: 1,
+      timer:null,
     }
   },
   created() {
+    let nowTime = new Date()
+    let endTime = new Date(window.sessionStorage.getItem('endTime'))
+    this.timeBySeconds = parseInt((endTime - nowTime) / 1000)
     let that = this
-    setInterval(function () {
-      that.timeBySeconds++;
+    this.timer = setInterval(function () {
+      that.timeBySeconds--;
     }, 1000)
   },
   computed: {
     time() {
-      let hour = parseInt ((this.timeBySeconds / 3600).toString())
-      hour = hour.toString().length===1?('0'+hour):hour
-      let minutes = parseInt (((this.timeBySeconds / 60) % 60).toString())
-      minutes = minutes.toString().length===1?('0'+minutes):minutes
+      let hour = parseInt((this.timeBySeconds / 3600).toString())
+      hour = hour.toString().length === 1 ? ('0' + hour) : hour
+      let minutes = parseInt(((this.timeBySeconds / 60) % 60).toString())
+      minutes = minutes.toString().length === 1 ? ('0' + minutes) : minutes
       let seconds = this.timeBySeconds % 60
-      seconds = seconds.toString().length===1?('0'+seconds):seconds
-      return hour + ':' + minutes + ':' + seconds
+      seconds = seconds.toString().length === 1 ? ('0' + seconds) : seconds
+      return hour + '小时' + minutes + '分' + seconds + '秒'
     }
   },
   mounted() {
-    getQuestion(this.competition.Id).then((res) => {
-      console.log(res)
+    getQuestion(this.competition.id).then((res) => {
       if (res.data.success) {
+        console.log(res)
         let questions = res.data.data.question
         for (let item of questions) {
           let options = item.items.split("/**###")
@@ -116,19 +120,16 @@ export default {
       }
       let data = JSON.stringify(answers)
       submitAnswers(planetCode, data).then((res) => {
-        if(res.data.success){
-          getCompetitionScore(this.competition.Id).then((res)=>{
-            if(res.data.success){
-              this.$emit("getScore")
-            }
-          }).then((err)=>{
-            console.log(err)
-          })
+        if (res.data.success) {
+          this.$emit("getScore")
         }
       }).catch((err) => {
         console.log(err)
       })
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   }
 }
 </script>

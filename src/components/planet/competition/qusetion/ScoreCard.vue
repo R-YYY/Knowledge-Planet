@@ -1,14 +1,15 @@
 <template>
   <div id="score_card">
     <h2>你已成功完成竞赛！</h2>
-    <p>得分 40/100</p>
-    <p>用时 3分20秒</p>
+    <p>得分 {{score}}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ScoreCard"
+  name: "ScoreCard",
+  props:['score'],
+
 }
 </script>
 
@@ -34,6 +35,7 @@ export default {
 }
 
 #score_card p {
+  margin-top: 40px;
   font-size: 22px;
   font-weight: bold;
 }

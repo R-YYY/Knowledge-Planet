@@ -21,7 +21,14 @@ export default {
   props:["competition"],
   methods:{
     join(){
-      
+      window.sessionStorage.setItem("endTime",this.competition.endTime)
+      this.$router.push({
+        name:"AnswerQuestionView",
+        params:{
+          id: this.competition.competitionId,
+          title:this.competition.title,
+        }
+      })
     }
   }
 }
