@@ -1,7 +1,7 @@
 <template>
   <div id="option">
     <div class="leftbar">
-      <img src="../../../assets/homepageimg/1.jpg" class="avatar">
+      <img :src="information.avatar" class="avatar">
       <el-divider></el-divider>
       <div class="personalpage" @click="goToPersonalPage">
         <img src="../../../assets/admin/admin.png" class="personalpage_png">
@@ -29,9 +29,12 @@
 
 <script>
 
+import {getUserById} from "@/api/admin/manage";
+
 export default{
   data(){
     return{
+      information:{}
 
     }
   },
@@ -51,6 +54,13 @@ export default{
 
   },
   mounted(){
+    getUserById().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data
+        this.information=data.result
+        console.log(this.information)
+      }
+    })
 
   }
 

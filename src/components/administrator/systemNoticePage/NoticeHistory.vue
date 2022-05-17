@@ -46,55 +46,11 @@
 <script>
 
 
+import {getAllNotice} from "@/api/admin/manage";
 export default{
   data(){
     return{
-      notices:[
-        {
-          title:'1111',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'1111',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'112eh11',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'1111',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'12q3q111',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'1111',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'11dkbfiweb11',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'11qfewg211',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'11wer311',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'11weqt311',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-        {
-          title:'11weg11',
-          content:'o2ih30ti1h3t12i0jjjjjjjjjjjjjjjj'
-        },
-      ]
+      notices:[]
 
     }
   },
@@ -103,9 +59,16 @@ export default{
       this.$router.push('/admin/systemnotice')
     },
 
-
   },
   mounted(){
+    getAllNotice().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data.notices
+        console.log(data)
+        this.notices=data
+        console.log(this.notices)
+      }
+    })
 
   }
 

@@ -35,29 +35,55 @@
         </el-input>
       </div>
       <div class="create">
-        <el-button type="primary" icon="el-icon-success">发布</el-button>
+        <el-button type="primary" icon="el-icon-success" @click="release()">发布</el-button>
       </div>
-
-
 
     </div>
   </div>
 </template>
 
 <script>
+import {getUserById} from "@/api/admin/manage";
+import {releaseNotice} from "@/api/admin/manage";
 
 export default {
   data() {
     return {
+      adminId:'',
       title:'',
-      content:''
+      content:'',
+      information:{}
     }
   },
   methods: {
+    release() {
+      let data = JSON.stringify({
+        "adminId": this.information.userId,
+        "title": this.title,
+        "content": this.content,
+      })
+      releaseNotice(data).then((res) => {
+        console.log(res)
+        if (res.data.success) {
+          this.$message.success("发布成功！")
 
+        } else {
+          this.$message.error("发布失败!")
+        }
+      }).catch((err) => {
+        this.$message.error("发布失败，系统错误！")
+        console.log(err)
+      })
+    },
   },
   mounted() {
-
+    getUserById().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data
+        this.information=data.result
+        console.log(this.information)
+      }
+    })
   }
 
 }
