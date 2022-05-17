@@ -16,18 +16,7 @@
     </el-carousel>
     <div>
       <el-dialog :visible.sync="dialogVisible" width="30%" center>
-        <div class="join">
-          <img class="img" src="../../../assets/competition/wenhao.png" alt="">
-          <div>请确认是否参加竞赛</div>
-        </div>
-        <ul>
-          <li>竞赛名称：{{chooseCom.title}}</li>
-          <li>开始时间：{{chooseCom.startTime}}</li>
-          <li>结束时间：{{chooseCom.endTime}}</li>
-        </ul>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">确 定</el-button>
-        </div>
+        <JoinCompetition :competition="chooseCom"></JoinCompetition>
       </el-dialog>
     </div>
   </div>
@@ -35,14 +24,17 @@
 
 <script>
 import {getCompetitionNotStart} from "@/api/planet/competition";
+import JoinCompetition from "@/components/planet/competition/JoinCompetition";
 
 export default {
   name: "UpcomingCompetition",
+  components: {JoinCompetition},
   data(){
     return{
       dialogVisible:false,
       competitionList:[],
       chooseCom:{
+        competitionId:"",
         title:"",
         startTime:"",
         endTime:"",
@@ -58,7 +50,7 @@ export default {
       for (let i = 0; i < list.length; i++) {
         this.competitionList.push({
           planetCode:list[i].competition.planetCode,
-          competitionId:list[i].competition.competition,
+          competitionId:list[i].competition.competitionId,
           title: list[i].competition.title,
           description: list[i].competition.description,
           picture:list[i].competition.picture,
@@ -144,26 +136,5 @@ export default {
   background-color: #f7aa22;
   border-radius: 20px;
   cursor: pointer;
-}
-
-.join{
-  color: black;
-  text-align: center;
-  font-size: 20px;
-}
-
-.img{
-  width: 100px;
-  height: 100px;
-  margin-bottom: 20px;
-}
-
-ul{
-  color: black;
-  list-style: none;
-  margin-top: 50px;
-  margin-left: 30px;
-  font-size: 15px;
-  line-height: 30px;
 }
 </style>

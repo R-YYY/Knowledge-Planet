@@ -7,7 +7,7 @@
     <div class="main">
       <div class="text">
         <span class="content"
-              @click="contentVisible = !contentVisible">{{
+              @click="!topic.isShort?(contentVisible = !contentVisible):''">{{
             contentVisible ? topic.content : topic.shortContent
           }}</span>
         <span v-if="!topic.isShort" class="showButton" @click="contentVisible = !contentVisible">

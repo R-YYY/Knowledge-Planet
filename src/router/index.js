@@ -21,8 +21,7 @@ import ManageComView from "@/views/planet/competition/ManageComView";
 import AdministratorInformationView from "@/views/administrator/AdministratorInformationView";
 import SystemNoticeView from "@/views/administrator/SystemNoticeView";
 import UserManagementView from "@/views/administrator/UserManagementView";
-import ResourceCheckView from "@/views/administrator/ResourceCheckView"
-
+import AnswerQuestionView from "@/views/planet/competition/AnswerQuestionView"
 Vue.use(VueRouter)
 
 const routes = [
@@ -91,6 +90,11 @@ const routes = [
         component: ManageComView,
     },
     {
+        path: '/planet/competition/answer/:id/:title',
+        name:'AnswerQuestionView',
+        component: AnswerQuestionView,
+    },
+    {
         path: '/planet/competition/edit/:cid',
         name:'editCompetition',
         component: EditComView,
@@ -134,11 +138,6 @@ const routes = [
         path:'/admin/usermanage',
         name:'userManage',
         component: UserManagementView
-    },
-    {
-        path:'/admin/resourcecheck',
-        name:'resourcecheck',
-        component: ResourceCheckView
     }
 
 ]
