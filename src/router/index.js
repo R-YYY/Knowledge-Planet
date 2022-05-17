@@ -21,7 +21,7 @@ import ManageComView from "@/views/planet/competition/ManageComView";
 import AdministratorInformationView from "@/views/administrator/AdministratorInformationView";
 import SystemNoticeView from "@/views/administrator/SystemNoticeView";
 import UserManagementView from "@/views/administrator/UserManagementView";
-import AnswerQuestionView from "@/views/planet/competition/AnswerQuestionView"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -98,11 +98,6 @@ const routes = [
         path: '/planet/competition/record',
         name:'competitionRecord',
         component: ComRecordView,
-    },
-    {
-        path: '/planet/competition/answer',
-        name:'answerQuestionView',
-        component: AnswerQuestionView,
     },
     {
         path: '/planet/activity',

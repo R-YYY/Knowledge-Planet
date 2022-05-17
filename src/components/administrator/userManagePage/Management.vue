@@ -30,13 +30,6 @@
       </div>
 
       <div class="change">
-        <div class="changeadmin">
-          <el-switch
-              v-model="isAdmin"
-              active-text="管理员"
-              inactive-text="普通用户">
-          </el-switch>
-        </div>
         <div class="changenot">
           <el-switch
               style="display: block"
@@ -240,7 +233,7 @@ export default {
 }
 .change{
   display: flex;
-  margin-left:40px;
+  margin-left:10px;
   margin-top:20px;
 }
 .changenot{

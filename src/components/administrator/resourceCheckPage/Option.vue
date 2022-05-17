@@ -8,17 +8,17 @@
         <span class="personalpage_text">管理员主页</span>
       </div>
       <el-divider></el-divider>
-      <div class="noticepage" @click="goToSystemNotice">
-        <img src="../../../assets/admin/notice.png" class="notice_png">
-        <span class="notice_text">公告管理</span>
+      <div class="collect" @click="goToSystemNotice">
+        <img src="../../../assets/admin/notice.png" class="collect_png">
+        <span class="collect_text">公告管理</span>
       </div>
       <el-divider></el-divider>
-      <div class="userpage" @click="goToUserManage">
-        <img src="../../../assets/admin/user.png" class="user_png">
-        <span class="user_text">用户管理</span>
+      <div class="competerecord" @click="goToUserManage">
+        <img src="../../../assets/admin/user.png" class="competerecord_png">
+        <span class="competerecord_text">用户管理</span>
       </div>
       <el-divider></el-divider>
-      <div class="resourcecheck" @click="goToResourceCheck">
+      <div class="resourcepage" @click="goToResourceCheck">
         <img src="../../../assets/admin/resource.png" class="resourcecheck_png">
         <span class="resourcecheck_text">资源管理</span>
       </div>
@@ -35,6 +35,7 @@ export default{
   data(){
     return{
       information:{}
+
     }
   },
   methods:{
@@ -50,7 +51,6 @@ export default{
     goToResourceCheck(){
       this.$router.push('/admin/resourcecheck')
     }
-
   },
   mounted(){
     getUserById().then((res)=>{
@@ -96,7 +96,7 @@ export default{
   font-size:23px;
   font-family: "Microsoft YaHei";
 }
-.notice_png{
+.collect_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
@@ -105,13 +105,13 @@ export default{
   vertical-align: middle;
   margin-left: 40px;
 }
-.notice_text{
+.collect_text{
   vertical-align: middle;
   margin-left: 35px;
   font-size:23px;
   font-family: "Microsoft YaHei";
 }
-.user_png{
+.competerecord_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
@@ -120,18 +120,13 @@ export default{
   vertical-align: middle;
   margin-left: 40px;
 }
-.user_text{
+.competerecord_text{
   vertical-align: middle;
   margin-left:35px;
   font-size: 23px;
   font-family: "Microsoft YaHei";
 }
-.resourcecheck_text{
-  vertical-align: middle;
-  margin-left:35px;
-  font-size: 23px;
-  font-family: "Microsoft YaHei";
-}
+
 .resourcecheck_png{
   margin-top: 24px;
   margin-bottom: 24px;
@@ -141,7 +136,14 @@ export default{
   vertical-align: middle;
   margin-left: 40px;
 }
-.noticepage{
+.resourcecheck_text{
+  vertical-align: middle;
+  margin-left:35px;
+  font-size: 23px;
+  font-family: "Microsoft YaHei";
+}
+
+.resourcepage{
   background-color: #e5ffff;
 }
 /deep/ .el-divider--horizontal{

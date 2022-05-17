@@ -1,26 +1,27 @@
 <template>
-  <div id="userManagement">
+  <div id="resourceCheck">
     <HomePageHeader></HomePageHeader>
     <div id="main">
       <Option class="left"></Option>
-      <Management class="center"></Management>
-
+      <CheckResource class="center"></CheckResource>
+      <AllPlanet class="right"></AllPlanet>
     </div>
   </div>
 </template>
 
 <script>
 import HomePageHeader from "@/components/HomePageHeader";
-import Option from "@/components/administrator/userManagePage/Option";
-import Management from "@/components/administrator/userManagePage/Management";
-
+import Option from "@/components/administrator/resourceCheckPage/Option";
+import CheckResource from "@/components/administrator/resourceCheckPage/CheckResource";
+import AllPlanet from "@/components/administrator/resourceCheckPage/AllPlanet";
 
 export default{
-  name:"PersonalInformationView",
+  name:"ResourceCheckView",
   components:{
     HomePageHeader,
     Option,
-    Management,
+    CheckResource,
+    AllPlanet
   },
   data(){
     return{
@@ -47,15 +48,8 @@ export default{
   margin-left: 60px;
   float: left;
 }
-.right_top{
+.right{
   display: inline-block;
   float: right;
-  margin-right:15px;
-}
-.right_bottom{
-  display: inline-block;
-  float: right;
-  margin-top:300px;
-  margin-right:-320px;
 }
 </style>

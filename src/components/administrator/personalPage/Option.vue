@@ -1,7 +1,7 @@
 <template>
   <div id="option">
     <div class="leftbar">
-      <img src="../../../assets/homepageimg/1.jpg" class="avatar">
+      <img :src="information.avatar" class="avatar">
       <el-divider></el-divider>
       <div class="personalpage" @click="goToPersonalPage">
         <img src="../../../assets/admin/admin.png" class="personalpage_png">
@@ -17,6 +17,11 @@
         <img src="../../../assets/admin/user.png" class="competerecord_png">
         <span class="competerecord_text">用户管理</span>
       </div>
+      <el-divider></el-divider>
+      <div class="resourcepage" @click="goToResourceCheck">
+        <img src="../../../assets/admin/resource.png" class="resourcecheck_png">
+        <span class="resourcecheck_text">资源管理</span>
+      </div>
     </div>
 
   </div>
@@ -24,10 +29,12 @@
 
 <script>
 
+import {getUserById} from "@/api/admin/manage";
+
 export default{
   data(){
     return{
-
+      information:{}
     }
   },
   methods:{
@@ -39,10 +46,19 @@ export default{
     },
     goToUserManage(){
       this.$router.push('/admin/usermanage')
+    },
+    goToResourceCheck(){
+      this.$router.push('/admin/resourcecheck')
     }
-
   },
   mounted(){
+    getUserById().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data
+        this.information=data.result
+        console.log(this.information)
+      }
+    })
 
   }
 
@@ -109,6 +125,23 @@ export default{
   font-size: 23px;
   font-family: "Microsoft YaHei";
 }
+
+.resourcecheck_png{
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: inline-block;
+  width:30px;
+  height:30px;
+  vertical-align: middle;
+  margin-left: 40px;
+}
+.resourcecheck_text{
+  vertical-align: middle;
+  margin-left:35px;
+  font-size: 23px;
+  font-family: "Microsoft YaHei";
+}
+
 .personalpage{
   background-color: #e5ffff;
 }
