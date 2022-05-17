@@ -3,7 +3,7 @@
     <div class="admindata">
 
       <div class="header">
-        <el-input v-model="inputuser" placeholder="请输入内容" class="search_input"></el-input>
+        <el-input v-model="inputuser" placeholder="请输入用户的昵称" class="search_input"></el-input>
         <el-button type="primary" icon="el-icon-search" class="search_button" @click="search">搜索</el-button>
         <div class="infordivide">
           <el-divider></el-divider>
@@ -37,7 +37,7 @@
         <div class="changenot">
           <el-switch
               style="display: block"
-              v-model="isNot"
+              v-model="information.isNot"
               inactive-color="#13ce66"
               active-color="#ff4949"
               active-text="禁用"
@@ -85,91 +85,84 @@
 <script>
 import {changeUserStatus} from "@/api/admin/manage";
 import {searchUser} from "@/api/admin/manage";
+import {getLoginLogByUserId} from "@/api/admin/manage";
 
 export default {
   data() {
     return {
-      inputuser:'我王子轩就好这口儿',
-      information: {},
+      inputuser:'',
+      information: {
+        userId:'',
+        userName:'',
+        email:'',
+        avatar:'',
+        status:'',
+        isNot:'',
+      },
+      logId:'',
       logs:[],
-      isNot:'',
       isUserInformation:false,
     }
   },
   methods: {
     search(){
-      let name='搁浅的晴天一路向北'
-      // let formData = new FormData()
-      // formData.append("info",name)
-      // console.log(formData.get("info"))
+      let name=this.inputuser
       searchUser(name).then((res)=>{
-        console.log(112211221112)
         if(res.data.success === true){
-          let data = res.data.data
+          let data=res.data.data.userList
           console.log(data)
+          if(data.length==1){
+            this.information.userId=data[0].userId
+            this.information.email=data[0].email
+            this.information.userName=data[0].userName
+            this.information.status=data[0].status
+            this.information.avatar=data[0].avatar
+            this.isUserInformation=true
+            this.logId=this.information.userId
+            console.log(11448645)
+            console.log(data[0].status)
+            if(this.information.status==1){
+              this.information.isNot=true
+            }
+            else{
+              this.information.isNot=false
+            }
+            getLoginLogByUserId(this.logId).then((res)=>{
+              if(res.data.success === true){
+                console.log(998742754)
+                let data=res.data.data
+                console.log(data)
+                this.logs=data.loginLogList
+                console.log(this.logs)
+              }
+            })
+          }
+          else{
+            this.isUserInformation=false
+          }
         }
       })
-      // searchUser(info).then((res)=>{
-      //   if(res.data.success === true){
-      //     let data = res.data.data
-      //     console.log(data)
-      //     this.information=data.result
-      //     if(this.information.userId){
-      //       this.isUserInformation=true
-      //     }
-      //     console.log(this.information)
-      //     console.log(this.information.status)
-      //     if(this.information.status==0){
-      //       this.isNot=true
-      //     }
-      //     else{
-      //       this.isNot=false
-      //     }
-      //   }
-      // })
     },
-    // changestatus(){
-    //   console.log(this.isNot)
-    //   let userstatus=0
-    //   console.log(111)
-    //   if(this.isNot==false){
-    //     userstatus=1
-    //   }
-    //   console.log(userstatus)
-    //   let userId=this.information.userId
-    //   changeUserStatus(userId,userstatus).then((res)=>{
-    //     if(res.data.success === true){
-    //       console.log(res)
-    //       console.log(userstatus)
-    //     }
-    //   })
-    //   let data=this.inputuser
-    //   getUserById(data).then((res)=>{
-    //     if(res.data.success === true){
-    //       this.isUserInformation=true
-    //       let data = res.data.data
-    //       this.information=data.result
-    //       console.log(this.information)
-    //       console.log(this.information.status)
-    //       if(this.information.status==0){
-    //         this.isNot=true
-    //       }
-    //       else{
-    //         this.isNot=false
-    //       }
-    //     }
-    //   })
-    // }
+
+    changestatus(){
+      console.log(this.information.isNot)
+      let userstatus=1
+      console.log(111)
+      if(this.information.isNot==false){
+        userstatus=0
+      }
+      console.log(userstatus)
+      let userId=this.information.userId
+      changeUserStatus(userId,userstatus).then((res)=>{
+        if(res.data.success === true){
+          console.log(res)
+          console.log(userstatus)
+        }
+      })
+    }
   },
   mounted() {
-    // let data=this.inputuser
-    // getLoginLog(data).then((res)=>{
-    //   if(res.data.success === true){
-    //     let data=res.data.data
-    //     this.logs=data.result
-    //     console.log(this.logs)
-    //   }
-    // })
+
   }
 }
 </script>

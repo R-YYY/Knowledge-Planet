@@ -48,8 +48,8 @@ export function searchUser(info){
     data.append("info",info);
     return axios({
         method:"GET",
-        url:"/background/searchUser",
-        data:"ssadsadsa"
+        url:"/background/searchUser?info="+info,
+        data:data
     })
 }
 
@@ -69,5 +69,12 @@ export function getAllPlanet(){
     return axios({
         method:"GET",
         url:"/planet/getAllPlanet",
+    })
+}
+
+export function getLoginLogByUserId(userId){
+    return axios({
+        method:"GET",
+        url:"/background/getLoginLogByUserId/"+userId,
     })
 }
