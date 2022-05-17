@@ -69,3 +69,13 @@ export function updateQuestion(question){
         data:data
     })
 }
+export function submitAnswers(planetCode,data){
+    return axios({
+        method:"POST",
+        url:"/competition/submitAnswers",
+        params:{
+            planetCode:planetCode
+        },
+        data:data
+    })
+}
