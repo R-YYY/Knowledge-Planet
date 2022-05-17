@@ -12,25 +12,16 @@
     <div v-if="status()===-1" class="unable">参加</div>
     <div v-else class="btn" @click="dialogVisible = true">参加</div>
     <el-dialog :visible.sync="dialogVisible" width="30%" center>
-      <div class="join">
-        <img class="img" src="../../../assets/competition/wenhao.png" alt="">
-        <div>请确认是否参加竞赛</div>
-      </div>
-      <ul>
-        <li>竞赛名称：{{competition.title}}</li>
-        <li>开始时间：{{competition.startTime}}</li>
-        <li>结束时间：{{competition.endTime}}</li>
-      </ul>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">确 定</el-button>
-      </div>
+      <JoinCompetition :competition="competition"></JoinCompetition>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import JoinCompetition from "@/components/planet/competition/JoinCompetition";
 export default {
   name: "CompetitionListItem",
+  components: {JoinCompetition},
   props:["competition"],
   data(){
     return{
@@ -102,26 +93,5 @@ export default {
 .unable{
   background-color: #8c939d;
   cursor: not-allowed;
-}
-
-.join{
-  color: black;
-  text-align: center;
-  font-size: 20px;
-}
-
-.img{
-  width: 100px;
-  height: 100px;
-  margin-bottom: 20px;
-}
-
-ul{
-  color: black;
-  list-style: none;
-  margin-top: 50px;
-  margin-left: 30px;
-  font-size: 15px;
-  line-height: 30px;
 }
 </style>
