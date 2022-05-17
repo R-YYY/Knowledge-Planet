@@ -34,6 +34,7 @@ export default {
       dialogVisible:false,
       competitionList:[],
       chooseCom:{
+        competitionId:"",
         title:"",
         startTime:"",
         endTime:"",
@@ -49,7 +50,7 @@ export default {
       for (let i = 0; i < list.length; i++) {
         this.competitionList.push({
           planetCode:list[i].competition.planetCode,
-          competitionId:list[i].competition.competition,
+          competitionId:list[i].competition.competitionId,
           title: list[i].competition.title,
           description: list[i].competition.description,
           picture:list[i].competition.picture,
