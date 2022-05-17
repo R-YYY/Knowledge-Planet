@@ -4,8 +4,8 @@
       <img class="logo" src="../../assets/login/zsxq.png" alt="">
       <div class="login_form">
         <el-form label-width="60px" label-position="right">
-          <el-form-item  label="邮箱" class="input_item" prop="email">
-            <el-input v-model="email" placeholder="请输入登录邮箱"></el-input>
+          <el-form-item  label="账号" class="input_item" prop="email">
+            <el-input v-model="adminId" placeholder="请输入管理员账号"></el-input>
           </el-form-item>
           <el-form-item label="密码" class="input_item">
             <el-input v-model="password" placeholder="请输入密码" show-password></el-input>
@@ -29,13 +29,10 @@
       </div>
       <div class="opt_area">
         <el-button type="primary" class="login_btn" @click="login">登录</el-button><br>
-        <router-link class="forget_btn" :to="{name:'findPassword'}">忘记密码？</router-link>
-        <span class="register">没有账号？
-          <router-link class="register_btn" :to="{name:'register'}">点击注册</router-link></span>
       </div>
-      <div class="admin" @click="toAdmin">
-        <el-tooltip content="切换至管理员登录" effect="light">
-          <img src="../../assets/admin/admin.png" alt="">
+      <div class="admin" @click="toLogin">
+        <el-tooltip content="切换至普通用户登录" effect="light">
+          <img src="../../assets/admin/user.png" alt="">
         </el-tooltip>
       </div>
     </div>
@@ -43,17 +40,16 @@
 </template>
 
 <script>
-import {checkEmail, loginPost} from "@/api/login/login";
+import {adminLogin, checkEmail, loginPost} from "@/api/login/login";
 import IdentifyCode from "@/components/login/IdentifyCode";
 
 export default {
-  name: "LoginView",
+  name: "AdminLoginView",
   components: {IdentifyCode},
   data(){
     return{
-      email:"",
+      adminId:"",
       password:"",
-      newPassword:"",
       code:"",
       //生成验证码的字符范围
       // identifyCodes: "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789",
@@ -64,33 +60,21 @@ export default {
   },
   methods:{
     login(){
-      let msg = checkEmail(this.email)
-      if(msg !== "ok") {
-        this.$message({message: msg, type: 'error'});
-        return;
-      }
-      if(this.code !== this.identifyCode){
-        this.$message({message: "验证码错误！", type: 'error'});
-        return;
-      }
-      loginPost(this.email,this.$md5(this.password)).then((res)=>{
-        console.log(res)
+      // console.log(this.$md5(this.password))
+      adminLogin(this.adminId,this.$md5(this.password)).then((res)=>{
+        console.log(res.data)
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
-          window.sessionStorage.setItem("email",this.email);
           window.sessionStorage.setItem("token",res.data.data.token);
-          window.sessionStorage.setItem("userId",res.data.data.user.userId);
-          window.sessionStorage.setItem("avatar",res.data.data.user.avatar);
-          window.sessionStorage.setItem("userName",res.data.data.user.userName);
-          this.$router.push({name:'homepage'});
+          this.$router.push("/admin")
         }
       }).catch(()=>{
         this.$message({message: "系统错误" , type: 'error'});
       })
     },
 
-    toAdmin(){
-      this.$router.push("/adminLogin")
+    toLogin(){
+      this.$router.push("/login")
     },
 
     //回车登录

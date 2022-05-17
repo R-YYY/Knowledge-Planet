@@ -13,6 +13,17 @@ export function loginPost(email, password){
     })
 }
 
+export function adminLogin(adminId,password){
+    const data = new FormData()
+    data.append("adminId",adminId);
+    data.append("password",password);
+    return axios({
+        method: 'POST',
+        url: '/background/adminLogin',
+        data: data
+    })
+}
+
 export function getVerificationCodeGet(email){
     return axios({
         method:"GET",

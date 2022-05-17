@@ -22,6 +22,7 @@ import AdministratorInformationView from "@/views/administrator/AdministratorInf
 import SystemNoticeView from "@/views/administrator/SystemNoticeView";
 import UserManagementView from "@/views/administrator/UserManagementView";
 import ResourceCheckView from "@/views/administrator/ResourceCheckView"
+import AdminLoginView from "@/views/login/AdminLoginView";
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginView
+    },
+    {
+        path: '/adminLogin',
+        name: 'adminLogin',
+        component: AdminLoginView
     },
     {
         path: '/register',
