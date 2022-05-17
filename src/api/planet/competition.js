@@ -88,4 +88,12 @@ export function getCompetitionNotStart(planetCode){
         }
     })
 }
-
+export function getCompetitionScore(competitionId){
+    let formData = new FormData()
+    formData.append('competitionId',competitionId)
+    return axios({
+        method:"POST",
+        url:"/competition/getCompetitionScore",
+        data:formData
+    })
+}
