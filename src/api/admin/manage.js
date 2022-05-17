@@ -1,4 +1,5 @@
 import axios from "../index.js";
+import da from "element-ui/src/locale/lang/da";
 
 export function getAllNotice(){
     return axios({
@@ -6,7 +7,6 @@ export function getAllNotice(){
         url:"/system/getAllNotice/",
     })
 }
-
 
 export function getUserById(){
     return axios({
@@ -40,5 +40,34 @@ export function releaseNotice(data) {
         method: "POST",
         url:"/system/releaseNotice",
         data: data
+    })
+}
+
+export function searchUser(info){
+    let data = new FormData();
+    data.append("info",info);
+    return axios({
+        method:"GET",
+        url:"/background/searchUser",
+        data:"ssadsadsa"
+    })
+}
+
+export function changeUserStatus(userId,status){
+    let data = new FormData();
+    data.append("userId",userId);
+    data.append("status",status);
+
+    return axios({
+        method:"POST",
+        url:"/background/changeUserStatus",
+        data:data
+    })
+}
+
+export function getAllPlanet(){
+    return axios({
+        method:"GET",
+        url:"/planet/getAllPlanet",
     })
 }

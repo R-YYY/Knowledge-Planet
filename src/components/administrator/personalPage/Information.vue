@@ -30,7 +30,7 @@
 
       <div class="changeinformation">
         <el-dialog :visible.sync="showChangeInformation" width="35%">
-          <el-form :model="this.information" class="informationform">
+          <el-form :model="information" class="informationform">
             <el-form-item label="头像" :label-width="informationformLabelWidth">
               <el-upload
                   class="avatar-uploader"

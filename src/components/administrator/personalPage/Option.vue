@@ -59,9 +59,7 @@ export default{
         console.log(this.information)
       }
     })
-
   }
-
 }
 </script>
 
