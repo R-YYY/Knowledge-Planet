@@ -10,12 +10,10 @@
         </div>
       </div>
 
-      <div class="resource_text">
-        <span>资源</span>
-        <span>上传者</span>
-
-
-      </div>
+<!--      <div class="resource_text">-->
+<!--        <span>资源</span>-->
+<!--        <span>上传者</span>-->
+<!--      </div>-->
 
 <!--      <div class="none">-->
 <!--        <el-empty description="暂无数据" v-show="!isUserInformation"></el-empty>-->

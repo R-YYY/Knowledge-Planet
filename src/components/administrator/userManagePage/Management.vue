@@ -281,7 +281,7 @@ export default {
   height: 200px;
   border-radius: 16px;
   box-shadow: 0 0 5px #dcdcdc;
-  background-color: #99ccff;
+  background-color: white;
   margin-left:40px;
   margin-top: 5px;
 }
@@ -291,7 +291,7 @@ export default {
   height: 200px;
   border-radius: 16px;
   box-shadow: 0 0 5px #dcdcdc;
-  background-color: #99ccff;
+  background-color: white;
   margin-left:40px;
   margin-top: 5px;
 }

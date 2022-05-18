@@ -27,7 +27,7 @@
         <div v-else class="longnoticecontent" style="height:495px;overflow-y: scroll">
           <div v-for="item in notices">
             <el-popover
-                placement="top"
+                placement="top-start"
                 :title="item.title"
                 width="200"
                 trigger="hover"
@@ -102,8 +102,10 @@ export default{
   margin-bottom:10px;
 }
 .el-tag{
-  background-color: #99ebff;
-  border-color: #99ebff;
+  /*background-color: #99ebff;*/
+  /*border-color: #99ebff;*/
+  background-color:white;
+  border-color:white;
   color:black;
   width:200px;
 }

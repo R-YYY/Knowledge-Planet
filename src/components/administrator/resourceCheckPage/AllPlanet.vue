@@ -1,5 +1,5 @@
 <template>
-  <div id="allplanet">
+  <div id="planethistory">
     <div class="topbar">
       <div class="topheader">
 
@@ -13,13 +13,30 @@
 
         <div v-if="planets.length<=9" class="shortplanetcontent">
           <div v-for="item in planets">
-            <el-tag slot="reference" class="planet_tag">{{ item.planetName }}</el-tag>
+            <el-popover
+                placement="top-start"
+                :title="item.title"
+                width="200"
+                trigger="hover"
+                :content="item.content">
+              <el-tag slot="reference" class="planet_tag">{{ item.title }}</el-tag>
+            </el-popover>
           </div>
         </div>
 
         <div v-else class="longplanetcontent" style="height:495px;overflow-y: scroll">
           <div v-for="item in planets">
-            <el-tag slot="reference" class="planet_tag" type="plain">{{ item.planetName }}</el-tag>
+            <el-popover
+                placement="top"
+                :title="item.planetName"
+                width="200"
+                trigger="hover"
+                :content="item.planetDescription">
+              <el-tag slot="reference" class="planet_tag" type="plain">
+                <img :src="item.planetAvatar" class="planet_avatar">
+                {{ item.planetName }}
+              </el-tag>
+            </el-popover>
           </div>
         </div>
 
@@ -30,28 +47,32 @@
 </template>
 
 <script>
-
-
 import {getAllPlanet} from "@/api/admin/manage";
+
 export default{
   data(){
     return{
       planets:[]
+
     }
   },
   methods:{
+
 
   },
   mounted(){
     getAllPlanet().then((res)=>{
       if(res.data.success === true){
         let data = res.data.data.planetList
-        console.log(11987657657)
+        console.log(996633225588114477)
+        console.log(data)
         this.planets=data
         console.log(this.planets)
       }
     })
+
   }
+
 }
 </script>
 <style scoped>
@@ -70,19 +91,20 @@ export default{
   text-align: center;
   font-size:23px;
   font-family: "Microsoft YaHei";
-  margin-top:5px;
-
+  margin-top: 5px;
 }
 .planetdivide{
   width:320px;
 }
 .el-divider--horizontal{
   margin-bottom: 0px;
-  margin-top:25px;
 }
 .planet_tag{
+  font-size:15px;
   margin-top:10px;
   margin-bottom:10px;
+  /*line-height: 10px;*/
+  vertical-align: middle;
 }
 .el-tag{
   background-color: #99ebff;
@@ -95,5 +117,12 @@ export default{
 }
 .longplanetcontent{
   text-align: center;
+}
+.planet_avatar{
+  border-radius: 50%;
+  display: inline-block;
+  width:25px;
+  height:25px;
+  vertical-align: middle;
 }
 </style>
