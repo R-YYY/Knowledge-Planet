@@ -92,3 +92,9 @@ export function getJoinPlanet(){
     })
 }
 
+export function getRole(planetCode){
+    return axios({
+        method:"GET",
+        url:'/planet/getRole/'+planetCode
+    })
+}

@@ -80,7 +80,8 @@ export default {
     }
   },
   mounted() {
-    getMember("23").then((res)=>{
+    let planetCode = window.sessionStorage.getItem("planetCode")
+    getMember(planetCode).then((res)=>{
       if(res.data.data.result === undefined){
         return
       }

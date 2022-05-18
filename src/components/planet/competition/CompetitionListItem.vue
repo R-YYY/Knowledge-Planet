@@ -3,14 +3,18 @@
     <img class="picture" :src="competition.picture" alt="加载失败">
     <div>
       <div class="name">{{competition.title}}
-        <el-tag v-if="status()===1" type="danger" size="mini">未开始</el-tag>
-        <el-tag v-else-if="status()===0" type="success" size="mini">进行中</el-tag>
+        <el-tag v-if="timeStatus()===1" type="danger" size="mini">未开始</el-tag>
+        <el-tag v-else-if="timeStatus()===0" type="success" size="mini">进行中</el-tag>
         <el-tag v-else type="info" size="mini">已结束</el-tag>
       </div>
       <div class="time">{{competition.startTime}} ~ {{competition.endTime}}</div>
     </div>
-    <div v-if="status()===-1" class="unable">参加</div>
-    <div v-else class="btn" @click="dialogVisible = true">参加</div>
+    <div v-if="competition.userScore===null && timeStatus() === 1" class="btn" @click="joinOrQuit(1)">报名</div>
+    <div v-else-if="competition.userScore!==null && timeStatus() === 1" class="btn" @click="joinOrQuit(0)">取消报名</div>
+    <div v-else-if="competition.userScore===null && timeStatus() === 0" class="btn" @click="dialogVisible = true">参加</div>
+    <div v-else-if="competition.userScore!==null && timeStatus() === 0" class="btn">已参加</div>
+    <div v-else-if="competition.userScore===null && timeStatus() === -1" class="unable">已结束</div>
+    <div v-else-if="competition.userScore!==null && timeStatus() === -1" class="unable">已参加</div>
     <el-dialog :visible.sync="dialogVisible" width="30%" center>
       <JoinCompetition :competition="competition"></JoinCompetition>
     </el-dialog>
@@ -19,6 +23,7 @@
 
 <script>
 import JoinCompetition from "@/components/planet/competition/JoinCompetition";
+import {joinOrQuitCompetition} from "@/api/planet/competition";
 export default {
   name: "CompetitionListItem",
   components: {JoinCompetition},
@@ -29,13 +34,23 @@ export default {
     }
   },
   methods:{
-    status(){
+    timeStatus(){
       var start = new Date(this.competition.startTime)
       var end = new Date(this.competition.endTime)
       var now = new Date()
       if(now > end) return -1  //已结束
       if(now < start) return 1  //未开始
       return 0  //进行中
+    },
+
+    joinOrQuit(type){
+      joinOrQuitCompetition(this.competition.competitionId,type).then((res)=>{
+        console.log(res.data)
+        if(res.data.success){
+          this.competition.userScore = type===1?0:null
+          this.$message.success(type===1?"已取消报名":"报名成功")
+        }
+      })
     }
   }
 }
@@ -49,7 +64,7 @@ export default {
 }
 
 .name,.time{
-  width: 300px;
+  width: 285px;
 }
 
 .name{
@@ -76,7 +91,7 @@ export default {
   font-style: oblique;
   text-align: center;
   font-weight: bold;
-  width: 60px;
+  width: 90px;
   height: 30px;
   line-height: 30px;
   color: white;

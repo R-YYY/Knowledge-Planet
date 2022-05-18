@@ -74,8 +74,8 @@ export function submitAnswers(planetCode,data){
         method:"POST",
         url:"/competition/submitAnswers",
         params:{
-            planetCode:planetCode
+            planetCode:planetCode,
         },
-        data:data
+        data:data,
     })
 }

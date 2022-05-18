@@ -87,7 +87,8 @@ export default {
     create(){
       this.$refs.ruleForm.validate((valid)=>{
         if(valid){
-          addCompetition(this.competition,"23").then((res)=>{
+          let planetCode = window.sessionStorage.getItem("planetCode")
+          addCompetition(this.competition,planetCode).then((res)=>{
             console.log(res.data)
             this.dialogVisible = false
             this.open(res.data.data.competitionId)

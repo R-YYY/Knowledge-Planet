@@ -69,7 +69,8 @@ export default {
   },
   methods:{
     loadIntegralRank(){
-      getLeaderboard("23").then((res)=>{
+      let planetCode = window.sessionStorage.getItem("planetCode")
+      getLeaderboard(planetCode).then((res)=>{
         let list = JSON.parse(JSON.stringify(res.data.data.result.userList))
         this.users = []
         for (let i = 0; i < list.length; i++) {
@@ -88,7 +89,8 @@ export default {
     },
 
     loadCompetitionRank(){
-      getLeaderBoard("23").then((res)=>{
+      let planetCode = window.sessionStorage.getItem("planetCode")
+      getLeaderBoard(planetCode).then((res)=>{
         this.joinCount = res.data.data.result.joinCount
         let list = res.data.data.result.leaderBoard
         list.sort( (x,y) => y.count - x.count )

@@ -97,3 +97,14 @@ export function getCompetitionScore(competitionId){
         data:formData
     })
 }
+
+export function joinOrQuitCompetition(competitionId,type){
+    let data = new FormData()
+    data.append("competitionId",competitionId)
+    data.append("type",type)
+    return axios({
+        method:"POST",
+        url:"competition/joinOrQuitCompetition",
+        data:data,
+    })
+}

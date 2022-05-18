@@ -24,7 +24,8 @@ export default {
   props:["member"],
   methods:{
     deleteMe() {
-      deleteMember("23",this.member.userId).then((res)=>{
+      let planetCode = window.sessionStorage.getItem("planetCode")
+      deleteMember(planetCode,this.member.userId).then((res)=>{
         this.$message({message: res.data.message, type: res.data.success?'success':'error'})
         if(res.data.success){
           this.$emit('deleteMember',this.member.userId)

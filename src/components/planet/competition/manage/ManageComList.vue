@@ -114,7 +114,8 @@ export default {
   },
   mounted() {
     this.competitionList = []
-    getCompetitionByPlanet("23").then((res)=>{
+    let planetCode = window.sessionStorage.getItem("planetCode")
+    getCompetitionByPlanet(planetCode).then((res)=>{
       console.log(res.data)
       let list = res.data.data.competitionList
       console.log(list)
