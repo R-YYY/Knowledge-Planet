@@ -3,7 +3,7 @@
     <div id="content" @click="">
       <div class="top">
         <span class="title">{{ activity.title }}</span>
-        <span class="tag">学习</span>
+        <span class="tag">{{ activity.tag }}</span>
       </div>
       <div class="middle">
         {{ activity.description }}
