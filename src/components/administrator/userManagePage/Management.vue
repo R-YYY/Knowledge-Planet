@@ -3,68 +3,73 @@
     <div class="admindata">
 
       <div class="header">
-        <el-input v-model="inputuser" placeholder="请输入内容" class="search_input"></el-input>
-        <el-button type="primary" icon="el-icon-search" class="search_button">搜索</el-button>
+        <el-input v-model="inputuser" placeholder="请输入用户的昵称" class="search_input"></el-input>
+        <el-button type="primary" icon="el-icon-search" class="search_button" @click="search">搜索</el-button>
         <div class="infordivide">
           <el-divider></el-divider>
         </div>
       </div>
 
-      <div class="information" v-model="information">
+      <div class="none">
+        <el-empty description="暂无数据" v-show="!isUserInformation"></el-empty>
+      </div>
+
+      <div class="information" v-model="information" v-show="isUserInformation">
         <div class="avatar">
           <p class="avatar_text">头像:</p>
-          <img src="../../../assets/homepageimg/1.jpg" class="avatar_jpg">
+          <img :src="information.avatar" class="avatar_jpg">
         </div>
 
         <div class="content">
           <div class="name">
-            <span>昵称：</span><span>{{ information.name }}</span>
+            <span>昵称：</span><span>{{ information.userName }}</span>
           </div>
           <div class="mail">
-            <span>邮箱：</span><span>{{ information.mail }}</span>
+            <span>邮箱：</span><span>{{ information.email }}</span>
           </div>
           <div class="id">
-            <span>ID：</span><span>{{ information.id }}</span>
+            <span>ID：</span><span>{{ information.userId }}</span>
           </div>
         </div>
       </div>
 
-      <div class="change">
+      <div class="change" v-show="isUserInformation">
         <div class="changenot">
           <el-switch
               style="display: block"
-              v-model="isNot"
+              v-model="information.isNot"
               inactive-color="#13ce66"
               active-color="#ff4949"
               active-text="禁用"
-              inactive-text="正常">
+              inactive-text="正常"
+              @change="changestatus()">
           </el-switch>
         </div>
       </div>
 
-      <div class="loginrecord">
+      <div class="loginrecord" v-show="isUserInformation">
         <div class="loginrecord_text">登录记录</div>
-        <div v-if="records.length<=4" class="shortrecord">
-          <div v-for="item in records">
+        <div v-if="logs.length<=4" class="shortrecord">
+          <div v-for="item in logs">
             <el-tag class="record_tag">
               <span>
-                登录时间：{{item.time}}
+                登录时间：{{item.createTime}}
               </span>
               <span style="margin-left: 50px;">
-                登录身份：{{item.status}}
+                登录浏览器：{{item.browser}}
               </span>
             </el-tag>
           </div>
         </div>
 
         <div v-else class="longrecord" style="overflow-y: scroll">
-          <div v-for="item in records">
+          <div v-for="item in logs">
             <el-tag class="record_tag">
               <span>
-                登录时间：{{item.time}}
+                登录时间：{{item.createTime}}
               </span>
               <span style="margin-left: 50px;">
-                登录身份：{{item.status}}
+                登录浏览器：{{item.browser}}
               </span>
             </el-tag>
           </div>
@@ -78,64 +83,87 @@
 </template>
 
 <script>
+import {changeUserStatus} from "@/api/admin/manage";
+import {searchUser} from "@/api/admin/manage";
+import {getLoginLogByUserId} from "@/api/admin/manage";
 
 export default {
   data() {
     return {
       inputuser:'',
       information: {
-        avatar: '',
-        name: '11',
-        mail:'2926204175@qq.com',
-        id: '1952455',
-        coverge: {}
+        userId:'',
+        userName:'',
+        email:'',
+        avatar:'',
+        status:'',
+        isNot:'',
       },
-      isAdmin:false,
-      isNot:false,
-      records:[
-        {
-          time:'202120',
-          status:'普通用户'
-        },
-        {
-          time:'202120',
-          status:'普通用户'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        },
-        {
-          time:'202120',
-          status:'管理员'
-        }
-
-      ]
+      logId:'',
+      logs:[],
+      isUserInformation:false,
     }
   },
   methods: {
+    search(){
+      let name=this.inputuser
+      searchUser(name).then((res)=>{
+        if(res.data.success === true){
+          let data=res.data.data.userList
+          console.log(data)
+          if(data.length==1){
+            this.information.userId=data[0].userId
+            this.information.email=data[0].email
+            this.information.userName=data[0].userName
+            this.information.status=data[0].status
+            this.information.avatar=data[0].avatar
+            this.isUserInformation=true
+            this.logId=this.information.userId
+            console.log(11448645)
+            console.log(data[0].status)
+            if(this.information.status==1){
+              this.information.isNot=true
+            }
+            else{
+              this.information.isNot=false
+            }
+            getLoginLogByUserId(this.logId).then((res)=>{
+              if(res.data.success === true){
+                console.log(998742754)
+                let data=res.data.data
+                console.log(data)
+                this.logs=data.loginLogList
+                console.log(this.logs)
+              }
+            })
+          }
+          else{
+            this.isUserInformation=false
+          }
+        }
+      })
+    },
 
+    changestatus(){
+      console.log(this.information.isNot)
+      let userstatus=1
+      console.log(111)
+      if(this.information.isNot==false){
+        userstatus=0
+      }
+      console.log(userstatus)
+      let userId=this.information.userId
+      changeUserStatus(userId,userstatus).then((res)=>{
+        if(res.data.success === true){
+          console.log(res)
+          console.log(userstatus)
+        }
+      })
+    }
   },
   mounted() {
 
   }
-
 }
 </script>
 
@@ -155,7 +183,7 @@ export default {
 }
 
 .information{
-  margin-top:80px;
+  margin-top:-80px;
   display:flex;
   align-items: center;
 }
@@ -253,7 +281,7 @@ export default {
   height: 200px;
   border-radius: 16px;
   box-shadow: 0 0 5px #dcdcdc;
-  background-color: #99ccff;
+  background-color: white;
   margin-left:40px;
   margin-top: 5px;
 }
@@ -263,7 +291,7 @@ export default {
   height: 200px;
   border-radius: 16px;
   box-shadow: 0 0 5px #dcdcdc;
-  background-color: #99ccff;
+  background-color: white;
   margin-left:40px;
   margin-top: 5px;
 }
@@ -271,6 +299,10 @@ export default {
   margin-left: 20px;
   margin-top:5px;
   margin-bottom: 5px;
-  width:300px;
+  width:360px;
+}
+.none{
+  margin-left:0px;
+  margin-top:150px;
 }
 </style>

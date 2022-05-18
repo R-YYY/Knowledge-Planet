@@ -12,15 +12,15 @@
 
       <div class="information" v-model="information">
         <p class="avatar_text">头像:</p>
-        <img src="../../../assets/homepageimg/1.jpg" class="avatar_jpg">
+        <img :src="information.avatar" class="avatar_jpg">
         <div class="name">
-          <span>昵称：</span><span>{{ information.name }}</span>
+          <span>昵称：</span><span>{{ information.userName }}</span>
         </div>
         <div class="mail">
-          <span>邮箱：</span><span>{{ information.mail }}</span>
+          <span>邮箱：</span><span>{{ information.email }}</span>
         </div>
         <div class="id">
-          <span>ID：</span><span>{{ information.id }}</span>
+          <span>ID：</span><span>{{ information.userId }}</span>
         </div>
       </div>
 
@@ -44,18 +44,18 @@
             </el-form-item>
             <el-form-item label="昵称" :label-width="informationformLabelWidth">
               <el-col :span="18">
-                <el-input class="input" v-model="information.name" autocomplete="off"></el-input>
+                <el-input class="input" v-model="information.userName" autocomplete="off"></el-input>
               </el-col>
             </el-form-item>
 
             <el-form-item label="邮箱" :label-width="informationformLabelWidth">
               <el-col :span="18">
-                <el-input class="input" v-model="information.mail" autocomplete="off" disabled="true"></el-input>
+                <el-input class="input" v-model="information.email" autocomplete="off" disabled="true"></el-input>
               </el-col>
             </el-form-item>
             <el-form-item label="ID" :label-width="informationformLabelWidth">
               <el-col :span="18">
-                <el-input class="input" v-model="information.id" autocomplete="off" disabled="true"></el-input>
+                <el-input class="input" v-model="information.userId" autocomplete="off" disabled="true"></el-input>
               </el-col>
             </el-form-item>
 
@@ -73,16 +73,13 @@
 
 <script>
 
+import cos from "@/api/cos";
+import {getUserById, updateAvatarById, updateNameById} from "@/api/admin/manage";
+
 export default {
   data() {
     return {
-      information: {
-        avatar: '',
-        name: '11',
-        mail:'2926204175@qq.com',
-        id: '1952455',
-        coverge: {}
-      },
+      information: {},
       showChangeInformation: false,
       informationformLabelWidth: '3em'
     }
@@ -92,9 +89,55 @@ export default {
       this.information.coverage = file.raw
       this.information.avatar = URL.createObjectURL(file.raw);
     },
+    upload(name,avatar) {
+      let key = this.information.userId+this.information.userName
+      let coverage = this.information.coverage
+      let information = this.information
+      let that = this
+      cos.putObject({
+        Bucket: 'covenant-1308013334', /* 必须 */
+        Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
+        Key: key,              /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: coverage, // 上传文件对象
+        onProgress: function (progressData) {
+          console.log(JSON.stringify(progressData));
+        }
+      }, function (err, data) {
+        console.log(data)
+        if(err||data.statusCode!==200){
+          console.log("图片上传失败，请重新上传")
+        }
+        else{
+          let coverage="https://"+data.Location
+          updateAvatarById(coverage).then((res)=>{
+
+            console.log(res)
+          })
+        }
+      })
+
+      updateNameById(name).then((res)=>{
+        console.log(res)
+      })
+
+      this.showChangeInformation=false
+
+      this.$message({
+        type: 'success',
+        message: '修改成功!'
+      });
+
+    },
   },
   mounted() {
-
+    getUserById().then((res)=>{
+      if(res.data.success === true){
+        let data = res.data.data
+        this.information=data.result
+        console.log(this.information)
+      }
+    })
   }
 
 }

@@ -5,12 +5,14 @@
         <img src="../../../assets/picture/empty.png" alt="">
         <div class="empty_word">当前星球没有竞赛可以参加</div>
       </el-carousel-item>
-      <el-carousel-item v-else v-for="item in competitionList" :key="item.id" class="item_card">
+      <el-carousel-item v-else v-for="item in competitionList" :key="item.competitionId" class="item_card">
         <div>
           <div class="com_name">{{ item.title }}</div>
           <div class="com_time">时间：{{ item.startTime }} ~ {{item.endTime}}</div>
           <div class="com_des">{{ item.description }}</div>
-          <div class="btn" @click="dialogVisible=true;chooseCom=item">参加</div>
+<!--          <div class="btn" @click="dialogVisible=true;chooseCom=item">参加</div>-->
+          <div v-if="item.userScore===null" class="btn" @click="joinOrQuit(item,1)">报名</div>
+          <div v-else-if="item.userScore!==null" class="btn" @click="joinOrQuit(item,0)">取消报名</div>
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -23,7 +25,7 @@
 </template>
 
 <script>
-import {getCompetitionNotStart} from "@/api/planet/competition";
+import {getCompetitionNotStart, joinOrQuitCompetition} from "@/api/planet/competition";
 import JoinCompetition from "@/components/planet/competition/JoinCompetition";
 
 export default {
@@ -39,13 +41,24 @@ export default {
         startTime:"",
         endTime:"",
         description:"",
+        userScore:"",
       },
     }
   },
   methods:{
+    joinOrQuit(competition,type){
+      joinOrQuitCompetition(competition.competitionId,type).then((res)=>{
+        console.log(res.data)
+        if(res.data.success){
+          competition.userScore = type===1?0:null
+          this.$message.success(type===1?"已取消报名":"报名成功")
+        }
+      })
+    }
   },
   mounted() {
-    getCompetitionNotStart("23").then((res)=>{
+    let planetCode = window.sessionStorage.getItem("planetCode")
+    getCompetitionNotStart(planetCode).then((res)=>{
       let list = res.data.data.competitionList
       for (let i = 0; i < list.length; i++) {
         this.competitionList.push({
@@ -125,12 +138,12 @@ export default {
 .btn{
   position: relative;
   left: 50%;
-  margin-left: -40px;
+  margin-left: -60px;
   margin-top: 30px;
   color: white;
   font-weight: bold;
   text-align: center;
-  width: 80px;
+  width: 120px;
   height: 35px;
   line-height: 35px;
   background-color: #f7aa22;

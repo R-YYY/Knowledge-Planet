@@ -5,7 +5,7 @@
       <div class="title">{{record.title}}</div>
       <div class="time">{{record.startTime}} ~ {{record.endTime}}</div>
     </div>
-    <div class="score">{{record.score}}</div>
+    <div class="score">{{record.userScore?record.userScore:"成绩待定"}}</div>
     <el-button type="text">查看</el-button>
   </div>
 </template>

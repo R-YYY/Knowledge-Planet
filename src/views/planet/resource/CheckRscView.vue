@@ -44,7 +44,6 @@ export default {
   data() {
     return {
       check:true,
-      planetCode: "23",
       resourceList: [],
       isRecommended: true,
       type: 'unChecked',
@@ -52,7 +51,8 @@ export default {
     }
   },
   created() {
-    getResourceByPCode(this.planetCode).then((res) => {
+    let planetCode = window.sessionStorage.getItem("planetCode")
+    getResourceByPCode(planetCode).then((res) => {
       console.log(res)
       let list = res.data.data.resourceList
       for (let item of list) {

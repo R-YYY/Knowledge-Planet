@@ -11,7 +11,7 @@
         </el-popover>
       </div>
 
-      <div class="rpcontent" v-for="(item,index) in recommendplanet" :key="index">
+      <div class="shortrpcontent" v-for="(item,index) in recommendplanet" :key="index" v-if="recommendplanet.length<=3">
         <div class="content">
           <img :src="item.planet.planetAvatar" class="planet_img">
           <div class="ptitle">{{ item.planet.planetName }}</div>
@@ -30,6 +30,30 @@
           </div>
         </div>
       </div>
+
+      <div class="longrpcontent" v-for="(item,index) in recommendplanet" :key="index" v-else>
+        <div class="content">
+          <img :src="item.planet.planetAvatar" class="planet_img">
+          <div class="ptitle">{{ item.planet.planetName }}</div>
+          <div class="pintro">{{ item.planet.planetDescription}}</div>
+          <div class="goin">
+            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planet.planetCode)">加入</el-button>
+          </div>
+          <div class="other">
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:50px;">创建人：</span>
+            <img :src="item.uploaderAvatar" class="cp_avatar">
+            <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#53A6DF;margin-left:35px;">{{item.uploaderName}}</span>
+          </div>
+          <div class="divide">
+            <el-divider></el-divider>
+          </div>
+        </div>
+      </div>
+
+
+
+
     </div>
   </div>
 </template>
@@ -78,6 +102,7 @@ export default{
         console.log(res)
         let data = res.data.data.planetList
         this.recommendplanet=data
+        console.log(this.recommendplanet)
       }
     })
   }
@@ -85,12 +110,13 @@ export default{
 </script>
 
 <style scoped>
-#recommendplanet{
-
-}
-.rpcontent{
+.shortrpcontent{
   margin-top:25px;
-
+  height:600px;
+}
+.longrpcontent{
+  margin-top:25px;
+  height:600px;
 }
 .content{
   position:relative;
