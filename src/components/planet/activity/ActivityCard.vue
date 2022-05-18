@@ -259,8 +259,14 @@ export default {
 }
 
 .organizerName {
+  vertical-align: middle;
   line-height: 30px;
   margin-left: 10px;
+  display: inline-block;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #00c8bf;
   background-color: white;
   font-size: 16px;
