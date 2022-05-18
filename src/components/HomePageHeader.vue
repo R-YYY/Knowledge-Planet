@@ -13,11 +13,17 @@
         >
         </el-input>
 
-        <div class="shortsearchResult" v-show="isShowResult && planetResult.length<=8" >
+        <div class="none" v-show="isShowResult && planetResult.length==0">
+          <el-empty description="暂无数据"></el-empty>
+        </div>
+
+        <div class="shortsearchResult" v-show="isShowResult && planetResult.length<=8 && planetResult.length>0" >
           <div class="result" v-for="item in planetResult" >
             <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
             <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
             <span style="margin-left:20px;">星球代码：{{item.planet.planetCode}}</span>
+            <el-button size="mini" type="primary" class="join_button" v-if="item.role==1" @click="goinplanet(item.planet.planetCode)">进入</el-button>
+            <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
             <el-divider></el-divider>
           </div>
         </div>
@@ -280,18 +286,23 @@ export default {
   background-image: url("../assets/icon/notice2.png");
 }
 .shortsearchResult{
-  /*width:495px;*/
+  min-width:495px;
   text-align:left;
   margin-left:165px;
-  /*border-radius: 16px;*/
   box-shadow: 0 0 30px #dcdcdc;
   background-color:whitesmoke;
   position:absolute;
 }
 .longsearchResult{
-  /*width:495px;*/
   text-align:left;
   margin-left:165px;
+  box-shadow: 0 0 30px #dcdcdc;
+  background-color:whitesmoke;
+  position:absolute;
+}
+.none{
+  margin-left:165px;
+  width:495px;
   box-shadow: 0 0 30px #dcdcdc;
   background-color:whitesmoke;
   position:absolute;
