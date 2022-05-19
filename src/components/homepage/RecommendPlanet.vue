@@ -7,12 +7,14 @@
             placement="right-start"
             trigger="hover"
             content="根据兴趣爱好为你推荐星球">
-            <img src="../../assets/homepageimg/hint.png" class="hintpng" slot="reference">
+          <img src="../../assets/homepageimg/hint.png" class="hintpng" slot="reference">
         </el-popover>
       </div>
 
-      <div class="shortrpcontent" v-for="(item,index) in recommendplanet" :key="index" v-if="recommendplanet.length<=3">
-        <div class="content">
+
+
+      <div class="longrpcontent" v-if="recommendplanet.length>3" style="height:600px;margin-top:20px;overflow-y: scroll">
+        <div class="content" v-for="(item,index) in recommendplanet" :key="index">
           <img :src="item.planet.planetAvatar" class="planet_img">
           <div class="ptitle">{{ item.planet.planetName }}</div>
           <div class="pintro">{{ item.planet.planetDescription}}</div>
@@ -31,8 +33,8 @@
         </div>
       </div>
 
-      <div class="longrpcontent" v-for="(item,index) in recommendplanet" :key="index" v-else>
-        <div class="content">
+      <div class="shortrpcontent" v-if="recommendplanet.length<=3" style="height:600px;margin-top:20px">
+        <div class="content" v-for="(item,index) in recommendplanet" :key="index">
           <img :src="item.planet.planetAvatar" class="planet_img">
           <div class="ptitle">{{ item.planet.planetName }}</div>
           <div class="pintro">{{ item.planet.planetDescription}}</div>
@@ -49,6 +51,10 @@
             <el-divider></el-divider>
           </div>
         </div>
+      </div>
+
+      <div class="nonecontent" v-if="recommendplanet.length==0">
+        <el-empty description="暂无推荐星球"></el-empty>
       </div>
 
 
@@ -61,7 +67,6 @@
 <script>
 import {createPlanet, getRecommendPlanet} from "@/api/homepage/planet";
 import {joinPlanet} from "@/api/homepage/planet"
-
 export default{
   data(){
     return{
@@ -110,14 +115,7 @@ export default{
 </script>
 
 <style scoped>
-.shortrpcontent{
-  margin-top:25px;
-  height:600px;
-}
-.longrpcontent{
-  margin-top:25px;
-  height:600px;
-}
+
 .content{
   position:relative;
   margin-top:30px;
@@ -126,6 +124,7 @@ export default{
   width:780px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
+  height:670px;
 }
 .rptext{
   position: relative;
@@ -142,7 +141,6 @@ export default{
   width:120px;
   height:120px;
   margin-left:30px;
-
 }
 .ptitle{
   margin-left:225px;

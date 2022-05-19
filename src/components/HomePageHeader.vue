@@ -2,45 +2,20 @@
   <div>
     <div id="homepageHeader">
       <div id="left">
-        <div id="logo"></div>
+        <div id="logo" @click="goToHomepage()"></div>
       </div>
       <div id="center">
-        <el-input class="search"
-                  style="position: relative"
-                  v-model="searchContent"
-                  placeholder="请输入内容"
-                  @keyup.enter.native="searchplanet"
-        >
-        </el-input>
-
-        <div class="none" v-show="isShowResult && planetResult.length==0">
-          <el-empty description="暂无数据"></el-empty>
+        <div class="searchBar">
+          <input type="text"
+                 placeholder="请输入你想搜索的内容..."
+                 v-model="searchContent"
+                 @keyup.enter="searchplanet">
+          <i class="el-icon-search"
+             :style="'color:'+color"
+             @mousedown="searchplanet"
+             @mouseover="color = '#74D8BE'"
+             @mouseleave="color = '#E4E7ED'"></i>
         </div>
-
-        <div class="shortsearchResult" v-show="isShowResult && planetResult.length<=8 && planetResult.length>0" >
-          <div class="result" v-for="item in planetResult" >
-            <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
-            <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
-            <span style="margin-left:20px;">星球代码：{{item.planet.planetCode}}</span>
-            <el-button size="mini" type="primary" class="join_button" v-if="item.role==1" @click="goinplanet(item.planet.planetCode)">进入</el-button>
-            <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
-            <el-divider></el-divider>
-          </div>
-        </div>
-
-        <div class="longsearchResult" v-show="isShowResult && planetResult.length>8" style="height:495px;overflow-y: scroll" >
-          <div class="result" v-for="item in planetResult" >
-            <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
-            <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
-            <span style="margin-left:20px;">星球代码：{{item.planet.planetCode}}</span>
-            <el-button size="mini" type="primary" class="join_button" v-if="item.role==1" @click="goinplanet(item.planet.planetCode)">进入</el-button>
-            <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
-            <el-divider></el-divider>
-          </div>
-        </div>
-
-
-
       </div>
       <div id="right">
         <div id="icon1" class="icon" @click="goToPersonalPage"></div>
@@ -53,6 +28,38 @@
     </div>
     <div class="placeholder">
     </div>
+    <el-dialog
+        title="搜索结果"
+        :visible.sync="isShowResult"
+        class="searchresult"
+    >
+      <div class="none" v-show="isShowResult && planetResult.length==0">
+        <el-empty description="暂无数据"></el-empty>
+      </div>
+
+      <div class="shortsearchResult" v-show="isShowResult && planetResult.length<=8 && planetResult.length>0" >
+        <div class="result" v-for="item in planetResult" >
+          <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
+          <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
+          <span style="margin-left:20px;">创建时间：{{item.planet.createTime}}</span>
+          <el-button size="mini" type="primary" class="join_button" v-if="item.role!=null" @click="goinplanet(item.planet.planetCode)">进入</el-button>
+          <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
+          <el-divider></el-divider>
+        </div>
+      </div>
+
+      <div class="longsearchResult" v-show="isShowResult && planetResult.length>8" style="height:495px;overflow-y: scroll" >
+        <div class="result" v-for="item in planetResult" >
+          <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
+          <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
+          <span style="margin-left:20px;">创建时间：{{item.planet.createTime}}</span>
+          <el-button size="mini" type="primary" class="join_button" v-if="item.role!=null" @click="goinplanet(item.planet.planetCode)">进入</el-button>
+          <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
+          <el-divider></el-divider>
+        </div>
+      </div>
+
+    </el-dialog>
     <el-drawer
         style="margin-top:50px;"
         :visible.sync="isShowNoticeDrawer"
@@ -157,6 +164,9 @@ export default {
     goToPersonalPage(){
       this.$router.push('/personal')
     },
+    goToHomepage(){
+      this.$router.push('/homepage')
+    },
     goinplanet(planetCode){
       window.sessionStorage.setItem("planetCode",planetCode)
       this.$router.push('/planet')
@@ -238,8 +248,10 @@ export default {
 
 #center {
   line-height: 50px;
-  text-align: center;
+  position: relative;
+  text-align: right;
   flex: 1;
+  min-width: 320px;
 }
 
 #logo {
@@ -251,16 +263,26 @@ export default {
   top: 10%;
 }
 
-/deep/ input {
-  height: 35px;
-  width: 60%;
-  min-width: 200px;
-  border-radius: 20px;
-  border-color: #CECACA;
-  background-image: url('../assets/icon/search.png');
-  background-size: 20px 20px;
-  background-repeat: no-repeat;
-  background-position: 98% center;
+
+
+
+.searchBar {
+  margin-top: 7px;
+  display: inline-block;
+  line-height: 30px;
+
+}
+
+input {
+  outline: none;
+  padding-left: 13px;
+  height: 30px;
+  width: 250px;
+  border-radius: 42px;
+  border: 2px solid #E4E7ED;
+  /*background: #F9F0DA;*/
+  transition: .3s linear;
+  float: right;
 }
 
 .icon {
@@ -285,28 +307,6 @@ export default {
 #icon3 {
   background-image: url("../assets/icon/notice2.png");
 }
-.shortsearchResult{
-  min-width:495px;
-  text-align:left;
-  margin-left:165px;
-  box-shadow: 0 0 30px #dcdcdc;
-  background-color:whitesmoke;
-  position:absolute;
-}
-.longsearchResult{
-  text-align:left;
-  margin-left:165px;
-  box-shadow: 0 0 30px #dcdcdc;
-  background-color:whitesmoke;
-  position:absolute;
-}
-.none{
-  margin-left:165px;
-  width:495px;
-  box-shadow: 0 0 30px #dcdcdc;
-  background-color:whitesmoke;
-  position:absolute;
-}
 .messagenumber{
   margin-left:125px;
   margin-top:-85px;
@@ -327,11 +327,25 @@ export default {
 }
 .planet_text{
   vertical-align: middle;
+  line-height: 50px;
 }
 .join_button{
   margin-left: 10px;
 }
 .goin_button{
   margin-left:10px;
+}
+input:focus {
+  width: 300px;
+  border: 2px solid #74D8BE;
+}
+i {
+  cursor: pointer;
+  position: absolute;
+  color: #E4E7ED;
+  background: none;
+  margin-right: 10px;
+  right: 0;
+  line-height: 36px;
 }
 </style>

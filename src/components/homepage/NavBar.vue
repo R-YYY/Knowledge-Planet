@@ -196,9 +196,12 @@ export default{
         }),
         getJoinPlanet().then((res)=>{
           if(res.data.success === true){
-            let data = res.data.data.planetList
+            let data = res.data.data
             console.log(data)
-            this.joinplanets=data
+            console.log(78762764)
+            console.log(data)
+            this.joinplanets=data.planetList
+            console.log(this.joinplanets)
           }
         })
   }

@@ -62,7 +62,7 @@
           </el-form>
           <div slot="footer" class="dialog_footer">
             <el-button @click="showChangeInformation = false">取 消</el-button>
-            <el-button @click="upload">确 定</el-button>
+            <el-button @click="upload(information.userName,information.avatar)">确 定</el-button>
           </div>
         </el-dialog>
       </div>

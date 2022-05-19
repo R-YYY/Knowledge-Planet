@@ -19,7 +19,7 @@
           <div class="placing">{{item.index}}</div>
           <span class="aaa">{{item.title}}</span>
           <span ><img src="../../assets/homepageimg/hot.png" class="hot_img"></span>
-          <span style="height: 30px;line-height: 30px;">{{item.planethot}}</span>
+          <span style="height: 30px;line-height: 30px;float:right;margin-right:-30px;margin-top:12px;">{{item.planethot}}</span>
         </div>
       </div>
     </div>
@@ -122,15 +122,17 @@ export default{
   font-color:#2C2C2C;
   padding-top: 15px;
   text-align: center;
-  height:20px;
+  height:15px;
 }
 .hot_img{
-  margin-left:130px;
+  margin-right:40px;
+  float:right;
+  margin-top:15px;
   width:20px;
 }
 .aaa{
   display: inline-block;
-  width:50px;
+  /*width:50px;*/
   margin-left:20px;
 }
 .rank{
