@@ -34,10 +34,11 @@ import {getCompetitionByPlanet} from "@/api/planet/competition";
 import {compareCompetition} from "@/utils/compare";
 export default {
   name: "CompetitionList",
+  props:["competitionList"],
   components: {CompetitionListItem},
   data(){
     return{
-      competitionList:[],
+      // competitionList:[],
       currentPage:1,
     }
   },
@@ -46,32 +47,32 @@ export default {
       this.currentPage = val
     }
   },
-  created() {
-    this.competitionList=[]
-    let planetCode = window.sessionStorage.getItem("planetCode")
-    getCompetitionByPlanet(planetCode).then((res)=>{
-      let list = res.data.data.competitionList
-      for (let i = 0; i < list.length; i++) {
-        if(list[i].competition.status === 1){
-          this.competitionList.push({
-            planetCode:list[i].competition.planetCode,
-            competitionId:list[i].competition.competitionId,
-            title: list[i].competition.title,
-            description: list[i].competition.description,
-            picture:list[i].competition.picture,
-            startTime: list[i].competition.startTime,
-            endTime: list[i].competition.endTime,
-            createTime:list[i].competition.createTime,
-            status:list[i].competition.status,
-            questionNumber:list[i].questionNumber,
-            totalScore:list[i].totalScore,
-            userScore: list[i].userScore,
-          })
-        }
-      }
-      this.competitionList.sort(compareCompetition())
-    })
-  }
+  // created() {
+  //   this.competitionList=[]
+  //   let planetCode = window.sessionStorage.getItem("planetCode")
+  //   getCompetitionByPlanet(planetCode).then((res)=>{
+  //     let list = res.data.data.competitionList
+  //     for (let i = 0; i < list.length; i++) {
+  //       if(list[i].competition.status === 1){
+  //         this.competitionList.push({
+  //           planetCode:list[i].competition.planetCode,
+  //           competitionId:list[i].competition.competitionId,
+  //           title: list[i].competition.title,
+  //           description: list[i].competition.description,
+  //           picture:list[i].competition.picture,
+  //           startTime: list[i].competition.startTime,
+  //           endTime: list[i].competition.endTime,
+  //           createTime:list[i].competition.createTime,
+  //           status:list[i].competition.status,
+  //           questionNumber:list[i].questionNumber,
+  //           totalScore:list[i].totalScore,
+  //           userScore: list[i].userScore,
+  //         })
+  //       }
+  //     }
+  //     this.competitionList.sort(compareCompetition())
+  //   })
+  // }
 }
 </script>
 

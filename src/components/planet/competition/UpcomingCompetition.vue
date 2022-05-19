@@ -5,16 +5,16 @@
         <img src="../../../assets/picture/empty.png" alt="">
         <div class="empty_word">当前星球没有竞赛可以参加</div>
       </el-carousel-item>
-      <el-carousel-item v-else v-for="item in competitionList" :key="item.competitionId" class="item_card">
-        <div>
-          <div class="com_name">{{ item.title }}</div>
-          <div class="com_time">时间：{{ item.startTime }} ~ {{item.endTime}}</div>
-          <div class="com_des">{{ item.description }}</div>
-<!--          <div class="btn" @click="dialogVisible=true;chooseCom=item">参加</div>-->
-          <div v-if="item.userScore===null" class="btn" @click="joinOrQuit(item,1)">报名</div>
-          <div v-else-if="item.userScore!==null" class="btn" @click="joinOrQuit(item,0)">取消报名</div>
-        </div>
-      </el-carousel-item>
+      <div v-else v-for="item in competitionList" :key="item.competitionId">
+        <el-carousel-item v-if="item.userScore===null" class="item_card">
+          <div>
+            <div class="com_name">{{ item.title }}</div>
+            <div class="com_time">时间：{{ item.startTime }} ~ {{item.endTime}}</div>
+            <div class="com_des">{{ item.description }}</div>
+            <div class="btn" @click="chooseCom=item;dialogVisible = true">参加</div>
+          </div>
+        </el-carousel-item>
+      </div>
     </el-carousel>
     <div>
       <el-dialog :visible.sync="dialogVisible" width="30%" center>
@@ -25,16 +25,17 @@
 </template>
 
 <script>
-import {getCompetitionNotStart, joinOrQuitCompetition} from "@/api/planet/competition";
+import {joinOrQuitCompetition} from "@/api/planet/competition";
 import JoinCompetition from "@/components/planet/competition/JoinCompetition";
 
 export default {
   name: "UpcomingCompetition",
   components: {JoinCompetition},
+  props:["competitionList"],
   data(){
     return{
       dialogVisible:false,
-      competitionList:[],
+      // competitionList:[],
       chooseCom:{
         competitionId:"",
         title:"",
@@ -56,30 +57,30 @@ export default {
       })
     }
   },
-  mounted() {
-    let planetCode = window.sessionStorage.getItem("planetCode")
-    getCompetitionNotStart(planetCode).then((res)=>{
-      let list = res.data.data.competitionList
-      for (let i = 0; i < list.length; i++) {
-        this.competitionList.push({
-          planetCode:list[i].competition.planetCode,
-          competitionId:list[i].competition.competitionId,
-          title: list[i].competition.title,
-          description: list[i].competition.description,
-          picture:list[i].competition.picture,
-          startTime: list[i].competition.startTime,
-          endTime: list[i].competition.endTime,
-          createTime:list[i].competition.createTime,
-          status:list[i].competition.status,
-          questionNumber:list[i].questionNumber,
-          totalScore:list[i].totalScore,
-          userScore: list[i].userScore,
-        })
-      }
-    }).catch(()=>{
-      this.$message.error("系统错误，请稍后重试！")
-    })
-  }
+  // mounted() {
+  //   let planetCode = window.sessionStorage.getItem("planetCode")
+  //   getCompetitionNotStart(planetCode).then((res)=>{
+  //     let list = res.data.data.competitionList
+  //     for (let i = 0; i < list.length; i++) {
+  //       this.competitionList.push({
+  //         planetCode:list[i].competition.planetCode,
+  //         competitionId:list[i].competition.competitionId,
+  //         title: list[i].competition.title,
+  //         description: list[i].competition.description,
+  //         picture:list[i].competition.picture,
+  //         startTime: list[i].competition.startTime,
+  //         endTime: list[i].competition.endTime,
+  //         createTime:list[i].competition.createTime,
+  //         status:list[i].competition.status,
+  //         questionNumber:list[i].questionNumber,
+  //         totalScore:list[i].totalScore,
+  //         userScore: list[i].userScore,
+  //       })
+  //     }
+  //   }).catch(()=>{
+  //     this.$message.error("系统错误，请稍后重试！")
+  //   })
+  // }
 }
 </script>
 
@@ -146,7 +147,7 @@ export default {
   width: 120px;
   height: 35px;
   line-height: 35px;
-  background-color: #f7aa22;
+  background-color: #74D8BE;
   border-radius: 20px;
   cursor: pointer;
 }

@@ -48,8 +48,8 @@
           </div>
         </div>
         <div class="opera_area">
-          <el-button v-if="competition.status===0" @click="releaseOrAbolish(1)">发布竞赛</el-button>
-          <el-button v-else-if="competition.status===1" @click="releaseOrAbolish(2)">取消竞赛</el-button>
+          <el-button v-if="competition.status===0" @click="release">发布竞赛</el-button>
+          <el-button v-else-if="competition.status===1" @click="abolish">取消竞赛</el-button>
           <el-button type="primary" @click="toEdit">编辑</el-button>
         </div>
       </div>
@@ -102,24 +102,42 @@ export default {
       this.$router.push({
         name: 'editCompetition',
         params: {
-          cid: this.competition.competitionId
-        },
-        query:{
+          cid: this.competition.competitionId,
           competition:JSON.stringify(this.competition)
         },
       })
     },
 
-    releaseOrAbolish(val){
-      releaseOrAbolish(this.competition.competitionId,val).then((res)=>{
+    release(){
+      if(this.questionList.length === 0){
+        this.$message.error("当前竞赛没有题目，请添加题目后再发布！")
+        return
+      }
+      releaseOrAbolish(this.competition.competitionId,1).then((res)=>{
         if(res.data.success){
-          this.competition.status = val
+          this.competition.status = 1
         }
       }).catch(()=>{
         this.$message({type:"error",message:"系统错误，请稍后重试"})
       })
     },
 
+    abolish(){
+      this.$confirm('竞赛取消后将无法重新发布，请确认是否取消竞赛?', '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      }).then(() => {
+        releaseOrAbolish(this.competition.competitionId,2).then((res)=>{
+          if(res.data.success){
+            this.competition.status = 2
+            this.$message.success("竞赛已取消")
+          }
+        }).catch(()=>{
+          this.$message({type:"error",message:"系统错误，请稍后重试"})
+        })
+      });
+    },
 
   },
   mounted() {

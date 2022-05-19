@@ -36,6 +36,13 @@ export function getQuestion(competitionId){
     })
 }
 
+export function getQuestionWithUserResult(competitionId){
+    return axios({
+        method:"GET",
+        url:"/competition/getQuestionWithUserResult/"+competitionId,
+    })
+}
+
 export function getQuestionListWithAnswer(competitionId){
     return axios({
         method:"GET",

@@ -9,12 +9,11 @@
       </div>
       <div class="time">{{competition.startTime}} ~ {{competition.endTime}}</div>
     </div>
-    <div v-if="competition.userScore===null && timeStatus() === 1" class="btn" @click="joinOrQuit(1)">报名</div>
-    <div v-else-if="competition.userScore!==null && timeStatus() === 1" class="btn" @click="joinOrQuit(0)">取消报名</div>
-    <div v-else-if="competition.userScore===null && timeStatus() === 0" class="btn" @click="dialogVisible = true">参加</div>
-    <div v-else-if="competition.userScore!==null && timeStatus() === 0" class="btn">已参加</div>
-    <div v-else-if="competition.userScore===null && timeStatus() === -1" class="unable">已结束</div>
-    <div v-else-if="competition.userScore!==null && timeStatus() === -1" class="unable">已参加</div>
+    <div v-if="competition.userScore===null && timeStatus() === 1" class="join_btn" @click="joinOrQuit(1)">报名</div>
+    <div v-else-if="competition.userScore!==null && timeStatus() === 1" class="join_btn" @click="joinOrQuit(0)">取消报名</div>
+    <div v-else-if="competition.userScore===null && timeStatus() === 0" class="add_btn" @click="dialogVisible = true">参加</div>
+    <div v-else-if="competition.userScore!==null && timeStatus() === 0" class="add_btn">已作答</div>
+    <div v-else-if="timeStatus() === -1" class="unable">已结束</div>
     <el-dialog :visible.sync="dialogVisible" width="30%" center>
       <JoinCompetition :competition="competition"></JoinCompetition>
     </el-dialog>
@@ -87,7 +86,7 @@ export default {
   margin-right: 20px;
 }
 
-.btn,.unable{
+.join_btn,.add_btn,.unable{
   font-style: oblique;
   text-align: center;
   font-weight: bold;
@@ -100,7 +99,12 @@ export default {
   margin-bottom: 15px;
 }
 
-.btn{
+.add_btn{
+  background-color: #74D8BE;
+  cursor: pointer;
+}
+
+.join_btn{
   background-color: #fcc278;
   cursor: pointer;
 }

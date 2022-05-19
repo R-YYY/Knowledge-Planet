@@ -24,6 +24,7 @@ import UserManagementView from "@/views/administrator/UserManagementView";
 import AnswerQuestionView from "@/views/planet/competition/AnswerQuestionView"
 import AdminLoginView from "@/views/login/AdminLoginView";
 import ResourceCheckView from "@/views/administrator/ResourceCheckView";
+import HistoryCompView from "@/views/planet/competition/HistoryCompView";
 Vue.use(VueRouter)
 
 const routes = [
@@ -110,6 +111,11 @@ const routes = [
         path: '/planet/competition/record',
         name:'competitionRecord',
         component: ComRecordView,
+    },
+    {
+        path: '/planet/competition/record/:cid',
+        name:'historyCompetition',
+        component: HistoryCompView,
     },
     {
         path: '/planet/activity',

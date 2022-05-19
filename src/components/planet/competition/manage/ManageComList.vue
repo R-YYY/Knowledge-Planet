@@ -104,11 +104,9 @@ export default {
       this.$router.push({
         name: 'editCompetition',
         params: {
-          cid: competition.competitionId
-        },
-        query:{
+          cid: competition.competitionId,
           competition:JSON.stringify(competition)
-        }
+        },
       })
     },
   },

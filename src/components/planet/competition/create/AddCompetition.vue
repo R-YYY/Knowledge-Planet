@@ -13,7 +13,7 @@
                 :on-remove="removePicture"
                 :limit="1"
                 action="string">
-              <div v-if="competition.picture!==''" :style="{backgroundImage:'url('+competition.picture+')'}" class="picture"></div>
+              <div v-if="competition.picture!==null" :style="{backgroundImage:'url('+competition.picture+')'}" class="picture"></div>
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -56,7 +56,7 @@ export default {
       competition:{
         title:"",
         description:"",
-        picture:"",
+        picture:null,
         createTime:"",
         startTime:"",
         endTime:"",
@@ -108,11 +108,9 @@ export default {
         this.$router.push({
           name: 'editCompetition',
           params: {
-            cid: competitionId
-          },
-          query:{
+            cid: competitionId,
             competition: JSON.stringify(this.competition)
-          }
+          },
         })
       }).catch(() => {
         location.reload()
@@ -158,7 +156,7 @@ export default {
         if (err || data.statusCode !== 204) {
           that.$message.error("图片文件失败")
         } else {
-          that.competition.picture = ''
+          that.competition.picture = null
           console.log("图片删除成功")
         }
       })
