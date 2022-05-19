@@ -75,8 +75,10 @@ export default {
   mounted() {
     getRegisteredCompetition().then((res)=>{
       let list = res.data.data.competitionList
+      let planetCode = window.sessionStorage.getItem("planetCode")
       for (let i = 0; i < list.length; i++) {
-        if(new Date(list[i].competition.startTime) < new Date()) {
+        if(new Date(list[i].competition.startTime) < new Date()
+            && list[i].competition.planetCode.toString()===planetCode) {
           this.recordList.push({
             competitionId:list[i].competition.competitionId,
             title: list[i].competition.title,

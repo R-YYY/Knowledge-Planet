@@ -2,7 +2,7 @@
   <div>
     <div class="back" @click="toCompetitionRecord">
       <i class="el-icon-arrow-left" style="font-weight: bold"></i>
-      <span>返回参赛记录</span>
+      <span>返回</span>
     </div>
     <div class="com_main">
       <div class="com_header">
@@ -102,7 +102,7 @@ export default {
     },
 
     toCompetitionRecord(){
-      this.$router.push("/planet/competition/record")
+      this.$router.go(-1)
     },
   },
 }
