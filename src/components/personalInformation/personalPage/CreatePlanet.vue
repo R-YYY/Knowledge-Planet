@@ -9,14 +9,27 @@
         <div class="createdivide">
           <el-divider></el-divider>
         </div>
-        <div class="planets">
-          <el-tag
-              v-for="item in createplanets"
-              effect="dark"
-              type="danger"
-              style="margin-left:30px;margin-top:10px;"
-              @click="goToCreatePlanet(item.planet.planetCode)"
-          >{{ item.planet.planetName }}</el-tag>
+
+        <div class="shortcreateplanet" v-if="createplanets.length<=3">
+          <div v-for="item in createplanets">
+            <el-tag
+                effect="dark"
+                type="danger"
+                class="createplanet_tag"
+                @click="goToCreatePlanet(item.planet.planetCode)"
+            >{{ item.planet.planetName }}</el-tag>
+          </div>
+        </div>
+
+        <div class="longcreateplanet" v-else style="height:185px;overflow-y: scroll">
+          <div v-for="item in createplanets">
+            <el-tag
+                effect="dark"
+                type="danger"
+                class="createplanet_tag"
+                @click="goToCreatePlanet(item.planet.planetCode)"
+            >{{ item.planet.planetName }}</el-tag>
+          </div>
         </div>
       </div>
     </div>
@@ -82,5 +95,24 @@ export default{
 }
 .el-divider--horizontal{
   margin-bottom: 10px;
+}
+.createplanet_tag{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.el-tag{
+  /*background-color:white;*/
+  /*border-color:white;*/
+  color:black;
+  width:200px;
+}
+.shortcreateplanet{
+  text-align: center;
+}
+.longcreateplanet{
+  text-align: center;
+}
+.el-divider--horizontal{
+  margin-bottom: 0px;
 }
 </style>

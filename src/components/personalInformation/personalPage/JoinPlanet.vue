@@ -9,14 +9,27 @@
         <div class="joindivide">
           <el-divider></el-divider>
         </div>
-        <div class="planets">
-          <el-tag
-              v-for="item in joinplanets"
-              effect="dark"
-              style="margin-left:30px;margin-top:10px;"
-              type="success"
-              @click="goToJoinPlanet(item.planet.planetCode)"
-          >{{ item.planet.planetName }}</el-tag>
+
+        <div class="shortjoinplanet" v-if="joinplanets.length<=3">
+          <div v-for="item in joinplanets">
+            <el-tag
+                effect="dark"
+                type="success"
+                class="joinplanet_tag"
+                @click="goToJoinPlanet(item.planet.planetCode)"
+            >{{ item.planet.planetName }}</el-tag>
+          </div>
+        </div>
+
+        <div class="longjoinplanet" v-else style="height:185px;overflow-y: scroll">
+          <div v-for="item in joinplanets">
+            <el-tag
+                effect="dark"
+                type="success"
+                class="joinplanet_tag"
+                @click="goToJoinPlanet(item.planet.planetCode)"
+            >{{ item.planet.planetName }}</el-tag>
+          </div>
         </div>
       </div>
 
@@ -80,7 +93,24 @@ export default{
 .joindivide{
   width:320px;
 }
+
+.joinplanet_tag{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.el-tag{
+  /*background-color:white;*/
+  /*border-color:white;*/
+  color:black;
+  width:200px;
+}
+.shortjoinplanet{
+  text-align: center;
+}
+.longjoinplanet{
+  text-align: center;
+}
 .el-divider--horizontal{
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 </style>

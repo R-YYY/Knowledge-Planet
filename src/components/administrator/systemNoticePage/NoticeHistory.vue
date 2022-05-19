@@ -102,8 +102,6 @@ export default{
   margin-bottom:10px;
 }
 .el-tag{
-  /*background-color: #99ebff;*/
-  /*border-color: #99ebff;*/
   background-color:white;
   border-color:white;
   color:black;
