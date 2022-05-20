@@ -132,17 +132,13 @@ export default {
     getAllNotice().then((res)=>{
       if(res.data.success === true){
         let data = res.data.data.notices
-        console.log(data)
         this.notices=data
-        console.log(this.notices)
       }
     }),
         getMessage().then((res)=>{
           if(res.data.success === true){
             let data = res.data.data.messageList
-            console.log(data)
             this.messages=data
-            console.log(this.messages)
           }
         })
   },

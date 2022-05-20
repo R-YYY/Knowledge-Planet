@@ -27,10 +27,15 @@
         <span>成员管理</span>
       </div>
     </div>
+    <div class="choice_card" @click="quit">
+        <span class="quit_font">退出星球</span>
+    </div>
   </div>
 </template>
 
 <script>
+import {quitPlanet} from "@/api/homepage/planet";
+
 export default {
   name: "PlanetChoice",
   props:["isManager"],
@@ -54,6 +59,34 @@ export default {
           break;
       }
 
+    },
+    quit(){
+      this.$confirm('此操作将永久退出该星球, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        quitPlanet(window.sessionStorage.getItem("planetCode")).then((res)=>{
+          if(res.data.success){
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+          }else{
+            this.$message({
+              type: 'error',
+              message: '退出失败，未知原因'
+            });
+          }
+        }).catch((err)=>{
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        });
+      });
     }
   }
 }
@@ -95,5 +128,14 @@ export default {
   margin: 0 15px;
   border-top:2px dashed #C1C0C0;
   border-bottom: 0;
+}
+.quit_font{
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+  color: #e56f71;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 18px;
 }
 </style>

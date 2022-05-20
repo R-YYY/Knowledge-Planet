@@ -44,3 +44,10 @@ export function joinOrQuitActivity(activityId,type) {
         data:formData
     })
 }
+
+export function getActivityMember(activityId) {
+    return axios({
+        method: 'GET',
+        url: '/activity/getActivityMember/'+activityId,
+    })
+}

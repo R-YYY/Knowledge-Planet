@@ -3,8 +3,8 @@
     <Header>
       <template v-slot:default>
         <div class="planetInfo">
-          <span class="span">已进入&nbsp<span class="green">{{name}}</span></span>
-          <span class="span">已有<span class="green">{{personNum}}</span>位小伙伴加入该星球</span>
+          <span class="span">已进入&nbsp<span class="green">{{name}}</span>&nbsp星球</span>
+          <span class="span">已有<span class="green">&nbsp{{personNum}}&nbsp</span>位小伙伴加入该星球</span>
         </div>
       </template>
     </Header>
@@ -26,13 +26,13 @@
 import IntegralRank from "@/components/planet/homepage/integral/IntegralRank";
 import TopicArea from "@/components/planet/homepage/TopicArea";
 import PlanetChoice from "@/components/planet/homepage/PlanetChoice";
-import {getRole} from "@/api/homepage/planet";
+import {getMemNumOfPlanet, getRole} from "@/api/homepage/planet";
 export default {
   name: "PlanetHomePageView",
   components: {PlanetChoice, TopicArea, IntegralRank},
   data(){
     return{
-      name:"前端星",
+      name:window.sessionStorage.getItem("planetName"),
       personNum:123,
       isManager:false,
     }
@@ -42,6 +42,13 @@ export default {
     getRole(planetCode).then((res)=>{
       window.sessionStorage.setItem("isManager",res.data.data.role)
       this.isManager=res.data.data.role===1
+    })
+    getMemNumOfPlanet(planetCode).then((res)=>{
+      if(res.data.success){
+        this.personNum = res.data.data.num
+      }
+    }).catch((err)=>{
+      console.log(err)
     })
   }
 }

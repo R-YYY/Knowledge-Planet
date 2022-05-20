@@ -98,3 +98,15 @@ export function getRole(planetCode){
         url:'/planet/getRole/'+planetCode
     })
 }
+export function getMemNumOfPlanet(planetCode){
+    return axios({
+        method:"GET",
+        url:'/planet/getMemNumOfPlanet?planetCode='+planetCode
+    })
+}
+export function quitPlanet(planetCode){
+    return axios({
+        method:"POST",
+        url:'/planet/quitPlanet/'+planetCode
+    })
+}

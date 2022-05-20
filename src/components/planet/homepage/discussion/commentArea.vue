@@ -166,7 +166,6 @@ export default {
       e.target.style.height = e.target.scrollTop + e.target.scrollHeight + "px"
     },
     analyseContent(content) {
-      console.log(1)
       let shortContent = ''
       let reg = /[^\x00-\xff]/
       let l = 0

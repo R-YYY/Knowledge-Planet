@@ -6,14 +6,14 @@
         <HeadBar class="left" @select="select" @update="updateActivity" :checkMode="checkMode"></HeadBar>
         <InfoCard class="center"></InfoCard>
         <div class="right">
-          <el-button  class="checkButton" @click="checkMode=!checkMode" >{{checkMode?'正常模式':'审核模式'}}</el-button>
+          <el-button v-if="isManager"  class="checkButton" @click="checkMode=!checkMode" >{{checkMode?'正常模式':'审核模式'}}</el-button>
         </div>
       </div>
       <div id="content">
-        <div v-if="!checkMode" class="card" v-show="item.isShow" v-for="(item, index) in activityList" :key="item.activityId">
+        <div v-if="!checkMode&&item.isShow" class="card" v-for="(item, index) in activityList" :key="item.activityId">
           <ActivityCard :activity="item" @quit="item.isShow=false"></ActivityCard>
         </div>
-        <div v-if="checkMode" class="card" v-show="item.isShow" v-for="(item, index) in noCheckActivityList" :key="item.activityId">
+        <div v-if="checkMode&&item.isShow" class="card" v-for="(item, index) in noCheckActivityList" :key="item.activityId">
           <ActivityCard :activity="item" @update="updateActivity"></ActivityCard>
         </div>
       </div>
@@ -37,13 +37,14 @@ export default {
   },
   data() {
     return {
-      planetId: 23,
+      planetCode: window.sessionStorage.getItem("planetCode"),
       activityList: [],
       noCheckActivityList:[],
       showRelate: '全部',
       showNumber: '全部',
       showTag: '全部',
       checkMode:false,
+      isManager:window.sessionStorage.getItem('isManager')==="1"
     }
   },
   created() {
@@ -51,7 +52,7 @@ export default {
   },
   methods: {
     updateActivity(){
-      getActivity(23).then((res) => {
+      getActivity(this.planetCode).then((res) => {
         console.log(res)
         if (res.data.success) {
           this.activityList = []

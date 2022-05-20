@@ -129,7 +129,7 @@ export default {
       }
       picture = picture.substr(0,picture.length - 1)
       let data = JSON.stringify({
-        "planetCode": 23,
+        "planetCode": window.sessionStorage.getItem('planetCode'),
         "content": this.content,
         "picture": picture
       })

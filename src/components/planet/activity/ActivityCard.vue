@@ -1,6 +1,17 @@
 <template>
   <div id="card">
-    <div id="content" @click="">
+    <el-dialog title="成员信息" :visible.sync="dialogTableVisible">
+      <el-table :data="memberList">
+        <el-table-column property="avatar" label="头像" width="150">
+          <template slot-scope="scope">
+            <span class="organizerAvatar" :style="{backgroundImage:'url('+scope.row.avatar+')'}"></span>
+          </template>
+        </el-table-column>
+        <el-table-column property="userName" label="昵称" width="200"></el-table-column>
+        <el-table-column property="email" label="邮箱"></el-table-column>
+      </el-table>
+    </el-dialog>
+    <div id="content">
       <div class="top">
         <span class="title">{{ activity.title }}</span>
         <span class="tag">{{ activity.tag }}</span>
@@ -17,10 +28,12 @@
           <el-tooltip effect="light" :content="'地址:'+activity.address" placement="top">
             <span class="address">{{ activity.address }} </span>
           </el-tooltip>
-          <span class="peopleNum">当前人数 <span
-              style="font-weight: bold">{{ activity.curNumber }}/{{ activity.maxNumber }}</span></span>
+          <span class="peopleNum" @click="checkMemberList">当前人数
+            <span
+                style="font-weight: bold">{{ activity.curNumber }}/{{ activity.maxNumber }}
+            </span>
+          </span>
         </div>
-
       </div>
     </div>
     <div id="footer">
@@ -47,7 +60,7 @@
 
 <script>
 
-import {joinOrQuitActivity,checkActivity} from "@/api/planet/activity";
+import {joinOrQuitActivity, checkActivity, getActivityMember} from "@/api/planet/activity";
 import throttle from "@/utils/throttle";
 import {loginPost} from "@/api/login/login";
 
@@ -56,6 +69,8 @@ export default {
   props: ['activity'],
   data() {
     return {
+      memberList: [],
+      dialogTableVisible: false
     }
   },
   created() {
@@ -116,14 +131,14 @@ export default {
         this.$prompt('请输入拒绝原因', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          }).then((res) => {
-          checkActivity(this.activity.activityId,res.value,index).then((res)=>{
-            if(res.data.success){
+        }).then((res) => {
+          checkActivity(this.activity.activityId, res.value, index).then((res) => {
+            if (res.data.success) {
               console.log(res)
               this.$message.success("操作成功！")
               this.$emit("update")
             }
-          }).catch((err)=>{
+          }).catch((err) => {
             console.log(err)
           })
         }).catch(() => {
@@ -132,18 +147,41 @@ export default {
             message: '取消拒绝'
           });
         });
-      }else{
-        checkActivity(this.activity.activityId,'通过',index).then((res)=>{
-          if(res.data.success){
+      } else {
+        checkActivity(this.activity.activityId, '通过', index).then((res) => {
+          if (res.data.success) {
             console.log(res)
             this.$message.success("操作成功！")
             this.$emit("update")
           }
-        }).catch((err)=> {
+        }).catch((err) => {
           console.log(err)
         })
       }
 
+    },
+    getMember() {
+      getActivityMember(this.activity.activityId).then((res) => {
+        console.log(res)
+        if (res.data.success) {
+          this.memberList = []
+          for (let item of res.data.data.memberList) {
+            this.memberList.push({
+              avatar: item.avatar,
+              userName: item.userName,
+              email: item.email
+            })
+          }
+          this.dialogTableVisible = true
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    checkMemberList() {
+      if (window.sessionStorage.getItem("userId") === this.activity.organizerId || window.sessionStorage.getItem("isManager") === "1") {
+        this.getMember()
+      }
     }
   }
 }
@@ -237,6 +275,7 @@ export default {
   font-size: 13px;
   text-align: right;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 #footer {

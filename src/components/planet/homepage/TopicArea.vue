@@ -38,6 +38,7 @@ export default {
   },
   data() {
     return {
+      planetCode:window.sessionStorage.getItem('planetCode'),
       topics: [],
     }
   },
@@ -81,7 +82,7 @@ export default {
       }
     },
     updateTopic(){
-      getAllTopic(23).then((res)=>{
+      getAllTopic(this.planetCode).then((res)=>{
         let data = res.data.data.topicList
         this.topics = []
         for(let item of data){
@@ -89,7 +90,6 @@ export default {
           if(item.topic.picture)
             pictureList = item.topic.picture.split(',')
           let shortContent = this.analyseContent(item.topic.content)
-          console.log(shortContent)
           this.topics.push({
             topicId:item.topic.topicId,
             praiseCount:item.topic.praiseCount,

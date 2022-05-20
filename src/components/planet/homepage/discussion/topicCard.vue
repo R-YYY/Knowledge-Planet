@@ -84,7 +84,6 @@ export default {
   },
   created() {
     this.throttleLike = throttle(this.like,1000)
-    console.log(this.topic)
     this.contentVisible = this.topic.isShort
   },
   methods: {
@@ -102,7 +101,6 @@ export default {
           this.$message({message: "点赞失败，系统错误", type: 'error'});
         })
       } else {
-        console.log(2)
         unPraise(this.topic.topicId, 1).then((res) => {
           if (res.data.success === true) {
             that.topic.isLiked = false
