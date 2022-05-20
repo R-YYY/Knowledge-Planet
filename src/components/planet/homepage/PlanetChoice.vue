@@ -21,13 +21,13 @@
         <span>知识竞赛</span>
       </div>
     </div>
-    <div class="choice_card" v-if="isManager">
+    <div class="choice_card" v-if="isManager==='1'">
       <div class="choice" @click="goto('member')">
         <img src="../../../assets/icon/member.png" alt="">
         <span>成员管理</span>
       </div>
     </div>
-    <div v-if="isManager!==1" class="choice_card" @click="quit">
+    <div v-if="isManager!=='1'" class="choice_card" @click="quit">
         <span class="quit_font">退出星球</span>
     </div>
   </div>
@@ -38,7 +38,12 @@ import {quitPlanet} from "@/api/homepage/planet";
 
 export default {
   name: "PlanetChoice",
-  props:["isManager"],
+  // props:["isManager"],
+  data(){
+    return{
+      isManager:window.sessionStorage.getItem('isManager')
+    }
+  },
   methods:{
     goto(path){
       switch(path){
@@ -61,6 +66,7 @@ export default {
 
     },
     quit(){
+      console.log(this.isManager)
       this.$confirm('此操作将永久退出该星球, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -57,7 +57,7 @@ export default {
     return {
       dialogFormVisible: false,
       form: {
-        planetCode: '23',
+        planetCode: window.sessionStorage.getItem("planetCode"),
         title: '',
         description: '',
         tag: '',

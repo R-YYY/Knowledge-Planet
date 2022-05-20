@@ -105,8 +105,11 @@ export function getMemNumOfPlanet(planetCode){
     })
 }
 export function quitPlanet(planetCode){
+    let formData = new FormData()
+    formData.append("planetCode",planetCode)
     return axios({
         method:"POST",
-        url:'/planet/quitPlanet/'+planetCode
+        url:'/planet/quitPlanet/',
+        data:formData
     })
 }
