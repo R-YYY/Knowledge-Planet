@@ -27,7 +27,7 @@
         <span>成员管理</span>
       </div>
     </div>
-    <div class="choice_card" @click="quit">
+    <div v-if="isManager!==1" class="choice_card" @click="quit">
         <span class="quit_font">退出星球</span>
     </div>
   </div>
@@ -72,6 +72,7 @@ export default {
               type: 'success',
               message: '退出成功!'
             });
+            this.$router.push('/homepage')
           }else{
             this.$message({
               type: 'error',
