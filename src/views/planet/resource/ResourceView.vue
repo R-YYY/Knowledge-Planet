@@ -48,7 +48,7 @@ export default {
       resourceList: [],
       isRecommended: true,
       type: 'all',
-      isManager:true,
+      isManager:window.sessionStorage.getItem('isManager')==="1",
     }
   },
   created() {

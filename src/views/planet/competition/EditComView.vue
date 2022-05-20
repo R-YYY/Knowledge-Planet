@@ -7,10 +7,13 @@
     </div>
     <div style="display: flex">
       <div>
-        <QuestionList :question-list="questionList"></QuestionList>
+        <QuestionList :question-list="questionList" :can-edit="competition.status===0"></QuestionList>
       </div>
       <div>
-        <TotalQuestion :question-list="questionList" :competition="competition"></TotalQuestion>
+        <TotalQuestion :question-list="questionList"
+                       :competition="competition"
+                       :can-edit="competition.status===0">
+        </TotalQuestion>
       </div>
     </div>
   </div>

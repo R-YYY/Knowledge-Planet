@@ -21,7 +21,7 @@
         <span>知识竞赛</span>
       </div>
     </div>
-    <div class="choice_card">
+    <div class="choice_card" v-if="isManager">
       <div class="choice" @click="goto('member')">
         <img src="../../../assets/icon/member.png" alt="">
         <span>成员管理</span>
@@ -33,6 +33,7 @@
 <script>
 export default {
   name: "PlanetChoice",
+  props:["isManager"],
   methods:{
     goto(path){
       switch(path){

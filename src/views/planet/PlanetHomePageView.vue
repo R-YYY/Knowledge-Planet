@@ -10,7 +10,7 @@
     </Header>
     <div class="main">
       <div>
-        <PlanetChoice></PlanetChoice>
+        <PlanetChoice :is-manager="isManager"></PlanetChoice>
       </div>
       <div>
         <TopicArea></TopicArea>
@@ -26,6 +26,7 @@
 import IntegralRank from "@/components/planet/homepage/integral/IntegralRank";
 import TopicArea from "@/components/planet/homepage/TopicArea";
 import PlanetChoice from "@/components/planet/homepage/PlanetChoice";
+import {getRole} from "@/api/homepage/planet";
 export default {
   name: "PlanetHomePageView",
   components: {PlanetChoice, TopicArea, IntegralRank},
@@ -33,7 +34,15 @@ export default {
     return{
       name:"前端星",
       personNum:123,
+      isManager:false,
     }
+  },
+  mounted() {
+    let planetCode = window.sessionStorage.getItem("planetCode")
+    getRole(planetCode).then((res)=>{
+      window.sessionStorage.setItem("isManager",res.data.data.role)
+      this.isManager=res.data.data.role===1
+    })
   }
 }
 </script>

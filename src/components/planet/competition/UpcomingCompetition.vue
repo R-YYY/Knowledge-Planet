@@ -6,12 +6,13 @@
         <div class="empty_word">当前星球没有竞赛可以参加</div>
       </el-carousel-item>
       <div v-else v-for="item in competitionList" :key="item.competitionId">
-        <el-carousel-item v-if="item.userScore===null" class="item_card">
+        <el-carousel-item class="item_card">
           <div>
             <div class="com_name">{{ item.title }}</div>
             <div class="com_time">时间：{{ item.startTime }} ~ {{item.endTime}}</div>
             <div class="com_des">{{ item.description }}</div>
-            <div class="btn" @click="chooseCom=item;dialogVisible = true">参加</div>
+            <div v-if="item.userScore===null" class="btn" @click="chooseCom=item;dialogVisible = true">参加</div>
+            <div v-else class="btn">已作答</div>
           </div>
         </el-carousel-item>
       </div>

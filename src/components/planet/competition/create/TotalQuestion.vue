@@ -11,7 +11,8 @@
           <div class="num">{{getTotalScore()}}</div>
         </div>
       </div>
-      <div class="add_question" @click="$refs.child.show()">添加题目</div>
+      <div v-if="canEdit" class="add_question" @click="$refs.child.show()">添加题目</div>
+      <div v-else class="add_question unable">添加题目</div>
       <div class="form">
         <el-form label-position="left" label-width="70px">
           <el-form-item label="竞赛名称">
@@ -31,6 +32,11 @@
             <el-tag v-else-if="competition.status===1" type="success" size="mini">已发布</el-tag>
             <el-tag v-else type="info" size="mini">已取消</el-tag>
           </el-form-item>
+          <el-form-item label="备注">
+            <span v-if="competition.status===0" style="font-size: 13px">无</span>
+            <span v-if="competition.status===1" class="tip">当前竞赛已发布，不可编辑</span>
+            <span v-else-if="competition.status===2" class="tip">当前竞赛已取消，不可编辑</span>
+          </el-form-item>
         </el-form>
       </div>
       <EditQuestion ref="child" :item="newQuestion"></EditQuestion>
@@ -43,7 +49,7 @@ import EditQuestion from "@/components/planet/competition/create/EditQuestion";
 export default {
   name: "TotalQuestion",
   components: {EditQuestion},
-  props:["questionList","competition"],
+  props:["questionList","competition","canEdit"],
   data(){
     return{
       newQuestion:{
@@ -65,10 +71,6 @@ export default {
       return result
     },
   },
-
-  mounted() {
-    // console.log(this.competition)
-  }
 }
 </script>
 
@@ -121,6 +123,11 @@ export default {
   margin-bottom: 20px;
 }
 
+.unable{
+  cursor: not-allowed;
+  background-color: gainsboro;
+}
+
 .create{
   text-align: center;
   line-height: 30px;
@@ -148,5 +155,10 @@ export default {
 
 .el-form-item{
   margin-bottom: 0px;
+}
+
+.tip{
+  color: red;
+  font-size: 13px;
 }
 </style>

@@ -8,11 +8,11 @@
           <div class="question_id">题号</div>
           <div class="question_desc">题目</div>
           <div class="question_score">分数</div>
-          <div class="question_opera">操作</div>
+          <div v-if="canEdit" class="question_opera">操作</div>
         </div>
         <el-empty class="empty" v-if="questionList.length===0" description="当前竞赛没有题目"></el-empty>
         <div v-for="(item,index) in questionList">
-          <QuestionCard :question="item" ref="child" :index="index" :edit="true"></QuestionCard>
+          <QuestionCard :question="item" ref="child" :index="index" :edit="canEdit"></QuestionCard>
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@ import AddCompetition from "@/components/planet/competition/create/AddCompetitio
 export default {
   name: "QuestionList",
   components: {AddCompetition, TotalQuestion, QuestionCard},
-  props:["questionList"],
+  props:["questionList","canEdit"],
   data() {
     return {
       title: "",

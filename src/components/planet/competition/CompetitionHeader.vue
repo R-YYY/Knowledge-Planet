@@ -3,7 +3,7 @@
     <h1 class="name">星球竞赛</h1>
     <el-divider direction="vertical"></el-divider>
     <div class="history" @click="toRecord">参赛记录</div>
-    <div>
+    <div v-if="isManager">
       <el-button round icon="el-icon-upload" @click="toCreate">竞赛管理</el-button>
     </div>
   </div>
@@ -14,6 +14,11 @@ import QuestionList from "@/components/planet/competition/create/QuestionList";
 export default {
   name: "CompetitionHeader",
   components: {QuestionList},
+  data(){
+    return{
+      isManager:window.sessionStorage.getItem('isManager')==="1",
+    }
+  },
   methods:{
     toRecord(){
       this.$router.push("/planet/competition/record")
