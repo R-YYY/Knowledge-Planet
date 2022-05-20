@@ -50,6 +50,7 @@
 import cos from "@/api/cos";
 import {uploadResource} from "@/api/planet/resource";
 import {addActivity} from "@/api/planet/activity";
+import {dateFormat} from "@/api/planet/competition";
 
 export default {
   name: "uploadForm",
@@ -102,6 +103,11 @@ export default {
   },
   methods: {
     upload() {
+      let date = dateFormat("YYYY-mm-dd HH:MM:SS",new Date())
+      if(this.form.time[1]<=date){
+        this.$message.error("时间有误，请重新选择时间")
+        return
+      }
       console.log(this.form.time[0])
       let data = JSON.stringify({
         "planetCode": this.form.planetCode,
