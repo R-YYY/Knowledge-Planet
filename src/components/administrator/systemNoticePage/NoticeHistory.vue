@@ -80,7 +80,6 @@ export default{
   height:560px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color: #e5ffff;
 }
 .topheader{
   position: absolute;
@@ -102,8 +101,8 @@ export default{
   margin-bottom:10px;
 }
 .el-tag{
-  background-color:white;
-  border-color:white;
+  background-color: #99ebff;
+  border-color: #99ebff;
   color:black;
   width:200px;
 }

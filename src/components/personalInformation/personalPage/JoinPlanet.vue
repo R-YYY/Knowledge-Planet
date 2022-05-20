@@ -17,7 +17,7 @@
                 type="success"
                 class="joinplanet_tag"
                 @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
-            >{{ item.planet.planetName }}</el-tag>
+            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
 
@@ -28,7 +28,7 @@
                 type="success"
                 class="joinplanet_tag"
                 @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
-            >{{ item.planet.planetName }}</el-tag>
+            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
       </div>
@@ -72,7 +72,6 @@ export default{
   height:250px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color: #e5ffff;
 }
 .topheader{
   position: absolute;
@@ -113,5 +112,12 @@ export default{
 }
 .el-divider--horizontal{
   margin-bottom: 0px;
+}
+.planet_avatar{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:5px;
 }
 </style>

@@ -45,7 +45,6 @@ export default{
   height:165px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color: #e5ffff;
 }
 .topheader{
   position: absolute;

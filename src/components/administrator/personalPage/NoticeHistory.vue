@@ -76,7 +76,6 @@ export default{
   height:380px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color: #e5ffff;
 }
 .bottomheader{
   margin-top: 10px;

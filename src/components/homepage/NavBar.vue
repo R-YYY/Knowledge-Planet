@@ -14,7 +14,7 @@
                 style="margin-left:30px;margin-top:30px;"
                 type="success"
                 @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
-            >{{ item.planet.planetName }}</el-tag>
+            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
         <div class="createplanet" style="margin-top:30px;">
@@ -26,7 +26,7 @@
                 type="danger"
                 style="margin-left:30px;margin-top:20px;"
                 @click="goToCreatePlanet(item.planet.planetCode,item.planet.planetName)"
-            >{{ item.planet.planetName }}</el-tag>
+            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
       </div>
@@ -364,5 +364,12 @@ export default{
 .hint{
   margin-left:125px;
   margin-top:-10px;
+}
+.planet_avatar{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:5px;
 }
 </style>

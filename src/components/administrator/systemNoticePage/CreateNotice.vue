@@ -96,7 +96,6 @@ export default {
   min-height: 560px;
   border-radius: 16px;
   box-shadow: 0 0 30px #dcdcdc;
-  background-color: #e5ffff;
 }
 
 .header {
