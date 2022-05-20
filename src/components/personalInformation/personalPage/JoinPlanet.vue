@@ -16,7 +16,7 @@
                 effect="dark"
                 type="success"
                 class="joinplanet_tag"
-                @click="goToJoinPlanet(item.planet.planetCode)"
+                @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -27,7 +27,7 @@
                 effect="dark"
                 type="success"
                 class="joinplanet_tag"
-                @click="goToJoinPlanet(item.planet.planetCode)"
+                @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -47,8 +47,9 @@ export default{
     }
   },
   methods:{
-    goToJoinPlanet(planetCode) {
+    goToJoinPlanet(planetCode,planetName) {
       window.sessionStorage.setItem("planetCode",planetCode)
+      window.sessionStorage.setItem("planetName",planetName)
       this.$router.push('/planet')
     }
 

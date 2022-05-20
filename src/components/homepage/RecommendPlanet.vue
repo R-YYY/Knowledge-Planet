@@ -19,7 +19,7 @@
           <div class="ptitle">{{ item.planet.planetName }}</div>
           <div class="pintro">{{ item.planet.planetDescription}}</div>
           <div class="goin">
-            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planet.planetCode)">加入</el-button>
+            <el-button type="primary" size="mini" style="width:60px;height:33px;text-align:center" @click="joinplanet(item.planet.planetCode,item.planet.planetName)">加入</el-button>
           </div>
           <div class="other">
             <span style="font-family: 'Microsoft YaHei';font-size:14px;color:#727B82;margin-left:225px;">创建时间：{{item.planet.createTime}}</span>
@@ -74,7 +74,7 @@ export default{
     }
   },
   methods:{
-    joinplanet(planetCode) {
+    joinplanet(planetCode,planetName) {
       console.log(planetCode)
       this.$confirm('您确定加入该星球吗?', '提示', {
         confirmButtonText: '确定',
@@ -89,6 +89,7 @@ export default{
           console.log(res)
           if(res.data.success){
             window.sessionStorage.setItem("planetCode",planetCode)
+            window.sessionStorage.setItem("planetName",planetName)
             this.$router.push('/planet')
           }
         })

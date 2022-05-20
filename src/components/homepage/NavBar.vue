@@ -13,7 +13,7 @@
                 effect="dark"
                 style="margin-left:30px;margin-top:30px;"
                 type="success"
-                @click="goToJoinPlanet(item.planet.planetCode)"
+                @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -25,7 +25,7 @@
                 effect="dark"
                 type="danger"
                 style="margin-left:30px;margin-top:20px;"
-                @click="goToCreatePlanet(item.planet.planetCode)"
+                @click="goToCreatePlanet(item.planet.planetCode,item.planet.planetName)"
             >{{ item.planet.planetName }}</el-tag>
           </div>
         </div>
@@ -154,7 +154,8 @@ export default{
           let coverage="https://"+data.Location
           createPlanet(name,description,coverage).then((res)=>{
             console.log(res)
-            that.$router.push("planet")
+            window.sessionStorage.setItem("planetName",name)
+            that.$router.push("/planet")
           })
         }
       })
@@ -164,12 +165,14 @@ export default{
       this.planetform.coverage = file.raw
       this.planetform.avatar = URL.createObjectURL(file.raw);
     },
-    goToJoinPlanet(planetCode){
+    goToJoinPlanet(planetCode,planetName){
       window.sessionStorage.setItem("planetCode",planetCode)
+      window.sessionStorage.setItem("planetName",planetName)
       this.$router.push('/planet')
     },
-    goToCreatePlanet(planetCode){
+    goToCreatePlanet(planetCode,planetName){
       window.sessionStorage.setItem("planetCode",planetCode)
+      window.sessionStorage.setItem("planetName",planetName)
       this.$router.push('/planet')
     }
   },

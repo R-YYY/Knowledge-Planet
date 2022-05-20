@@ -42,8 +42,8 @@
           <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
           <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
           <span style="margin-left:20px;">创建时间：{{item.planet.createTime}}</span>
-          <el-button size="mini" type="primary" class="join_button" v-if="item.role!=null" @click="goinplanet(item.planet.planetCode)">进入</el-button>
-          <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode)">加入</el-button>
+          <el-button size="mini" type="primary" class="join_button" v-if="item.role!=null" @click="goinplanet(item.planet.planetCode,item.planet.planetName)">进入</el-button>
+          <el-button size="mini" type="success" class="goin_button" v-else @click="joinplanet(item.planet.planetCode,item.planet.planetName)">加入</el-button>
           <el-divider></el-divider>
         </div>
       </div>
@@ -167,11 +167,12 @@ export default {
     goToHomepage(){
       this.$router.push('/homepage')
     },
-    goinplanet(planetCode){
+    goinplanet(planetCode,planetName){
       window.sessionStorage.setItem("planetCode",planetCode)
+      window.sessionStorage.setItem("planetName",planetName)
       this.$router.push('/planet')
     },
-    joinplanet(planetCode) {
+    joinplanet(planetCode,planetName) {
       console.log(planetCode)
       this.$confirm('您确定加入该星球吗?', '提示', {
         confirmButtonText: '确定',
@@ -186,6 +187,7 @@ export default {
           console.log(res)
           if(res.data.success){
             window.sessionStorage.setItem("planetCode",planetCode)
+            window.sessionStorage.setItem("planetName",planetName)
             this.$router.push('/planet')
           }
         })
