@@ -109,8 +109,10 @@ export default {
           name: 'editCompetition',
           params: {
             cid: competitionId,
-            competition: JSON.stringify(this.competition)
           },
+          query:{
+            competition:JSON.stringify(this.competition)
+          }
         })
       }).catch(() => {
         location.reload()

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-button type="text" size="small" @click="visible=true">查看</el-button>
     <el-drawer :visible.sync="visible"
                direction="rtl"
                size="40%"
@@ -103,8 +102,10 @@ export default {
         name: 'editCompetition',
         params: {
           cid: this.competition.competitionId,
-          competition:JSON.stringify(this.competition)
         },
+        query:{
+          competition:JSON.stringify(this.competition)
+        }
       })
     },
 
@@ -139,22 +140,31 @@ export default {
       });
     },
 
+    loadQuestion(){
+      this.questionList=[]
+      let competitionId = this.competition.competitionId
+      getQuestionListWithAnswer(competitionId).then((res)=>{
+        let list = res.data.data.questionList
+        for (let i = 0; i < list.length; i++) {
+          this.questionList.push({
+            competitionId:competitionId,
+            questionId:list[i].questionId,
+            content:list[i].content,
+            choices:list[i].items.split(separator),
+            answer: list[i].answer,
+            score:list[i].score
+          })
+        }
+      })
+    }
   },
-  mounted() {
-    let competitionId = this.competition.competitionId
-    getQuestionListWithAnswer(competitionId).then((res)=>{
-      let list = res.data.data.questionList
-      for (let i = 0; i < list.length; i++) {
-        this.questionList.push({
-          competitionId:competitionId,
-          questionId:list[i].questionId,
-          content:list[i].content,
-          choices:list[i].items.split(separator),
-          answer: list[i].answer,
-          score:list[i].score
-        })
-      }
-    })
+  watch:{
+    competition:{
+      handler(newValue,oldValue){
+        this.loadQuestion()
+      },
+      deep:true
+    }
   }
 }
 </script>

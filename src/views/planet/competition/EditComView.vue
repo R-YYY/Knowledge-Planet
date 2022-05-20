@@ -38,7 +38,7 @@ export default {
     },
   },
   mounted() {
-    this.competition = JSON.parse(this.$route.params.competition)
+    this.competition = JSON.parse(this.$route.query.competition)
     let competitionId = this.$route.params.cid
     getQuestionListWithAnswer(competitionId).then((res)=>{
       let list = res.data.data.questionList

@@ -42,13 +42,14 @@
           <el-table-column fixed="right" label="操作" width="120">
             <template slot-scope="scope">
               <div style="display:flex;">
-                <CompetitionDetail style="margin-right: 10px" :competition="scope.row"></CompetitionDetail>
+                <el-button type="text" size="small" @click="seeDetail(scope.row)">查看</el-button>
                 <el-button type="text" size="small" @click="toEdit(scope.row)">编辑</el-button>
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
+      <CompetitionDetail ref="child" :competition="chooseCom"></CompetitionDetail>
       <div class="page">
         <el-pagination
             background
@@ -105,18 +106,23 @@ export default {
         name: 'editCompetition',
         params: {
           cid: competition.competitionId,
-          competition:JSON.stringify(competition)
         },
+        query:{
+          competition:JSON.stringify(competition)
+        }
       })
     },
+
+    seeDetail(competition){
+      this.chooseCom=competition
+      this.$refs.child.show()
+    }
   },
   mounted() {
     this.competitionList = []
     let planetCode = window.sessionStorage.getItem("planetCode")
     getCompetitionByPlanet(planetCode).then((res)=>{
-      console.log(res.data)
       let list = res.data.data.competitionList
-      console.log(list)
       for (let i = 0; i < list.length; i++) {
         this.competitionList.push({
           planetCode:list[i].competition.planetCode,
