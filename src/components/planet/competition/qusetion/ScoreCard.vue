@@ -2,6 +2,7 @@
   <div id="score_card">
     <h2>你已成功完成竞赛！</h2>
     <p>得分 {{score}}</p>
+    <el-button class="btn" round @click="$router.push('/planet/competition')">返回竞赛主页</el-button>
   </div>
 </template>
 
@@ -38,5 +39,9 @@ export default {
   margin-top: 40px;
   font-size: 22px;
   font-weight: bold;
+}
+
+.btn{
+  margin-top: 40px;
 }
 </style>
