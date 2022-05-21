@@ -1,6 +1,6 @@
 <template>
   <div id="favoriteresourcecard">
-    <div id="content" @click="getDetail">
+    <div id="content" @click="showCheckDetail">
       <div class="content_left">
         <img :src="message.coverage" alt="正在显示" class="logo">
       </div>
@@ -26,16 +26,28 @@
         <span class="text">访问</span>
       </div>
     </div>
+
+    <el-dialog
+        title="资源详情"
+        :visible.sync="detailVisible"
+        width="60%">
+      <FavoriteResourceDetail :resource="resource"></FavoriteResourceDetail>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import {praise, unPraise, collect, unCollect} from "@/api/planet/resource";
+import {collect, unCollect} from "@/api/planet/resource";
 import throttle from "@/utils/throttle";
+import FavoriteResourceDetail from "@/components/personalInformation/collectPage/FavoriteResourceDetail";
 
 export default {
   name: "ResourceCard",
   props: ['resource'],
+  components:{
+    FavoriteResourceDetail
+  },
   data() {
     return {
       message: {
@@ -67,6 +79,7 @@ export default {
       ],
       likeTag: 0,
       starTag: 2,
+      detailVisible:false
     }
   },
   created() {
@@ -80,6 +93,9 @@ export default {
     }
   },
   methods: {
+    showCheckDetail(){
+      this.detailVisible=true
+    },
     star(e) {
       let span = e.currentTarget.children[1]
       if (!this.message.collected) {
@@ -127,7 +143,7 @@ export default {
 <style scoped>
 #favoriteresourcecard {
   height: 220px;
-  width: 450px;
+  width: 350px;
   border-radius: 16px;
   background-color: white;
   box-shadow: 0 0 30px #dcdcdc;
@@ -200,7 +216,7 @@ content_right_bottom {
 }
 
 .footer_center {
-  border-left: 2px solid #dadada;
+
   border-right: 2px solid #dadada;
 }
 

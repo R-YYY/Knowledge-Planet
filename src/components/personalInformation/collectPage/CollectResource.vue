@@ -4,7 +4,15 @@
       <div class="header">
         <p class="resource_text">我的收藏</p>
       </div>
-      <div class="resource_content">
+      <div class="none" v-if="resourceList.length==0">
+        <el-empty description="暂无收藏资源"></el-empty>
+      </div>
+      <div class="short_resource_content" v-if="resourceList.length>0 && resourceList.length<=1">
+        <div class="card" v-for="item in resourceList" :key="item.resourceId" >
+          <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
+        </div>
+      </div>
+      <div class="long_resource_content" style="height:497px;overflow-y: scroll" v-else>
         <div class="card" v-for="item in resourceList" :key="item.resourceId" >
           <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
         </div>
@@ -56,7 +64,7 @@ export default{
   box-shadow: 0 0 30px #dcdcdc;
 }
 .header{
-  position:absolute;
+  display:flex;
   margin-top: -15px;
   margin-left: 20px;
 }
@@ -65,10 +73,32 @@ export default{
   font-weight: bold;
   font-size: 25px;
 }
-.resource_content{
-  position:absolute;
-  width:880px;
-  margin-top:100px;
-  margin-left:20px;
+.short_resource_content{
+  /*position:absolute;*/
+  /*width:880px;*/
+  /*margin-top:100px;*/
+  /*margin-left:20px;*/
+  margin-left: 0px;
+  margin-right: 0px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+.long_resource_content{
+  /*position:absolute;*/
+  /*width:880px;*/
+  /*margin-top:100px;*/
+  /*margin-left:20px;*/
+  margin-left: 0px;
+  margin-right: 0px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+.card {
+  margin: 20px 20px 10px 20px;
+}
+div .card:nth-last-child(1):nth-child(3n - 1){
+  margin-right: calc(30% + 80px);
 }
 </style>
