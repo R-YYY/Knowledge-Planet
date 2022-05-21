@@ -75,8 +75,8 @@ export default{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
@@ -85,37 +85,37 @@ export default{
   margin-bottom: 24px;
   vertical-align: middle;
   margin-left: 35px;
-  font-size:23px;
+  font-size:21px;
   font-family: "Microsoft YaHei";
 }
 .collect_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
 .collect_text{
   vertical-align: middle;
   margin-left: 35px;
-  font-size:23px;
+  font-size:21px;
   font-family: "Microsoft YaHei";
 }
 .competerecord_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
 .competerecord_text{
   vertical-align: middle;
   margin-left:35px;
-  font-size: 23px;
+  font-size: 21px;
   font-family: "Microsoft YaHei";
 }
 .personalpage{

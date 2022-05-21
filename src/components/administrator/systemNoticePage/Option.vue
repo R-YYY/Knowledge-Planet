@@ -83,8 +83,8 @@ export default{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
@@ -93,51 +93,51 @@ export default{
   margin-bottom: 24px;
   vertical-align: middle;
   margin-left: 35px;
-  font-size:23px;
+  font-size:21px;
   font-family: "Microsoft YaHei";
 }
 .notice_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
 .notice_text{
   vertical-align: middle;
   margin-left: 35px;
-  font-size:23px;
+  font-size:21px;
   font-family: "Microsoft YaHei";
 }
 .user_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
 .user_text{
   vertical-align: middle;
   margin-left:35px;
-  font-size: 23px;
+  font-size: 21px;
   font-family: "Microsoft YaHei";
 }
 .resourcecheck_text{
   vertical-align: middle;
   margin-left:35px;
-  font-size: 23px;
+  font-size: 21px;
   font-family: "Microsoft YaHei";
 }
 .resourcecheck_png{
   margin-top: 24px;
   margin-bottom: 24px;
   display: inline-block;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   vertical-align: middle;
   margin-left: 40px;
 }
