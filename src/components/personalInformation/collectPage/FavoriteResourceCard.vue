@@ -4,6 +4,7 @@
       <div class="content_left">
         <img :src="message.coverage" alt="正在显示" class="logo">
       </div>
+
       <div class="content_right">
         <div class="content_right_top">{{ message.resourceName }}</div>
         <div class="content_right_middle">{{ message.resourceDescription }}</div>
@@ -14,14 +15,11 @@
         </div>
       </div>
     </div>
+
     <div id="footer">
-      <div class="footer_left" @click="throttleLike($event)">
-        <img :src="require('@/assets/icon/'+iconList[likeTag])" class="icon">
-        <span ref="like" class="text">{{ message.likeCount }}</span>
-      </div>
       <div class="footer_center" @click="throttleStar($event)">
         <img :src="require('@/assets/icon/'+iconList[starTag])" class="icon">
-        <span ref="collect" class="text">{{ message.collectCount }}</span>
+        <span ref="collect" class="text"></span>
       </div>
       <div class="footer_right" @click="enter">
         <img src="@/assets/icon/enter2.png" class="icon">
@@ -73,50 +71,15 @@ export default {
   },
   created() {
     this.throttleStar = throttle(this.star,1000)
-    this.throttleLike = throttle(this.like, 1000)
   },
   mounted() {
     this.message = this.resource
-    if (this.message.liked) {
-      this.$refs.like.className += " active"
-      this.likeTag++;
-    }
     if (this.message.collected) {
       this.$refs.collect.className += " active"
       this.starTag++;
     }
   },
   methods: {
-    like(e) {
-      let span = e.currentTarget.children[1]
-      if (!this.message.liked) {
-        praise(this.message.resourceId).then((res) => {
-          if (res.data.success === true) {
-            this.message.liked = !this.message.liked
-            this.message.likeCount++;
-            this.likeTag++;
-            span.className = "text active"
-          } else {
-            this.$message({message: "点赞失败，系统错误", type: 'error'});
-          }
-        }).catch(() => {
-          this.$message({message: "点赞失败，系统错误", type: 'error'});
-        })
-      } else {
-        unPraise(this.message.resourceId).then((res) => {
-          if (res.data.success === true) {
-            this.message.liked = !this.message.liked
-            this.message.likeCount--;
-            this.likeTag--;
-            span.className = "text"
-          }
-        }).catch(() => {
-          this.$message({message: "取消点赞失败，系统错误", type: 'error'});
-        })
-
-      }
-
-    },
     star(e) {
       let span = e.currentTarget.children[1]
       if (!this.message.collected) {
@@ -164,7 +127,7 @@ export default {
 <style scoped>
 #favoriteresourcecard {
   height: 220px;
-  width: 350px;
+  width: 450px;
   border-radius: 16px;
   background-color: white;
   box-shadow: 0 0 30px #dcdcdc;
@@ -175,6 +138,7 @@ export default {
   height: 175px;
   width: 100%;
   border-bottom: 2px solid #dadada;
+  margin-top: 50px;
 }
 
 .content_left {

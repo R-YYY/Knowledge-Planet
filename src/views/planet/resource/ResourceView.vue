@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      planetCode: "23",
+      planetCode: window.sessionStorage.getItem("planetCode"),
       resourceList: [],
       isRecommended: true,
       type: 'all',
