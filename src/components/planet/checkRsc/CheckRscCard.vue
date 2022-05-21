@@ -83,7 +83,8 @@ export default {
         "checkInfo": "通过",
         "uploaderId": this.resource.uploaderId,
       })
-      checkResource(data).then((res)=>{
+      let planetCode = window.sessionStorage.getItem("planetCode")
+      checkResource(data,planetCode).then((res)=>{
         console.log(res)
         this.$message({type: res.data.success?'success':'error', message: res.data.message});
         if(res.data.success) {
@@ -103,7 +104,8 @@ export default {
           "checkInfo": value.value,
           "uploaderId": this.resource.uploaderId,
         })
-        checkResource(data).then((res)=>{
+        let planetCode = window.sessionStorage.getItem("planetCode")
+        checkResource(data,planetCode).then((res)=>{
           console.log(res)
           this.$message({type: res.data.success?'success':'error', message: res.data.message});
           if(res.data.success) {
