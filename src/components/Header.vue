@@ -363,7 +363,7 @@ i {
   line-height: 36px;
 }
 .messagenumber{
-  margin-left:125px;
+  margin-left:85px;
   margin-top:-85px;
 }
 .readmessage{
