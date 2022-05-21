@@ -9,11 +9,17 @@
           <el-divider></el-divider>
         </div>
       </div>
+      <div class="resource_text">
+        <span>资源</span>
+        <span style="margin-left:280px;">上传者</span>
+        <span style="margin-left:190px;">操作</span>
+      </div>
+      <div class="infordivide">
+        <el-divider></el-divider>
+      </div>
 
-<!--      <div class="resource_text">-->
-<!--        <span>资源</span>-->
-<!--        <span>上传者</span>-->
-<!--      </div>-->
+
+
 
 <!--      <div class="none">-->
 <!--        <el-empty description="暂无数据" v-show="!isUserInformation"></el-empty>-->
@@ -78,5 +84,10 @@ export default {
 .none{
   margin-left:0px;
   margin-top:150px;
+}
+.resource_text{
+  font-family: "Microsoft YaHei";
+  margin-left:40px;
+  margin-top: 80px;
 }
 </style>
