@@ -10,18 +10,7 @@
           <el-divider></el-divider>
         </div>
 
-        <div class="shortcreateplanet" v-if="createplanets.length<=3">
-          <div v-for="item in createplanets">
-            <el-tag
-                effect="dark"
-                type="danger"
-                class="createplanet_tag"
-                @click="goToCreatePlanet(item.planet.planetCode,item.planet.planetName)"
-            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
-          </div>
-        </div>
-
-        <div class="longcreateplanet" v-else style="height:185px;overflow-y: scroll">
+        <div class="longcreateplanet" style="height:185px;overflow-y: auto">
           <div v-for="item in createplanets">
             <el-tag
                 effect="dark"
@@ -103,9 +92,6 @@ export default{
 .el-tag{
   color:black;
   width:200px;
-}
-.shortcreateplanet{
-  text-align: center;
 }
 .longcreateplanet{
   text-align: center;

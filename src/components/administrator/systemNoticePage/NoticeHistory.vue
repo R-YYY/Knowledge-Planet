@@ -11,20 +11,7 @@
           <el-divider></el-divider>
         </div>
 
-        <div v-if="notices.length<=9" class="shortnoticecontent">
-          <div v-for="item in notices">
-            <el-popover
-                placement="top-start"
-                :title="item.title"
-                width="200"
-                trigger="hover"
-                :content="item.content">
-              <el-tag slot="reference" class="notice_tag">{{ item.title }}</el-tag>
-            </el-popover>
-          </div>
-        </div>
-
-        <div v-else class="longnoticecontent" style="height:495px;overflow-y: scroll">
+        <div class="longnoticecontent" style="height:495px;overflow-y: auto">
           <div v-for="item in notices">
             <el-popover
                 placement="top-start"
@@ -105,9 +92,6 @@ export default{
   border-color: #99ebff;
   color:black;
   width:200px;
-}
-.shortnoticecontent{
-  text-align: center;
 }
 .longnoticecontent{
   text-align: center;

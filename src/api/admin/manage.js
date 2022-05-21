@@ -78,3 +78,25 @@ export function getLoginLogByUserId(userId){
         url:"/background/getLoginLogByUserId/"+userId,
     })
 }
+
+
+
+export function getResourceByPCode(planetCode) {
+    return axios({
+        method: "GET",
+        url: "/resource/getResourceByPCode",
+        params:{
+            planetCode:planetCode
+        }
+    })
+}
+
+export function freezeResource(resourceId){
+    let data = new FormData();
+    data.append("resourceId",resourceId);
+    return axios({
+        method:"POST",
+        url:"/resource/freezeResource",
+        data:data
+    })
+}

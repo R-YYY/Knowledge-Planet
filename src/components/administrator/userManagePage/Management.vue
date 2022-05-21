@@ -49,20 +49,8 @@
 
       <div class="loginrecord" v-show="isUserInformation">
         <div class="loginrecord_text">登录记录</div>
-        <div v-if="logs.length<=4" class="shortrecord">
-          <div v-for="item in logs">
-            <el-tag class="record_tag">
-              <span>
-                登录时间：{{item.createTime}}
-              </span>
-              <span style="margin-left: 50px;">
-                登录浏览器：{{item.browser}}
-              </span>
-            </el-tag>
-          </div>
-        </div>
 
-        <div v-else class="longrecord" style="overflow-y: scroll">
+        <div class="longrecord" style="overflow-y: auto">
           <div v-for="item in logs">
             <el-tag class="record_tag">
               <span>
@@ -273,16 +261,6 @@ export default {
   font-size: 20px;
   margin-left:40px;
   margin-top: 25px;
-}
-.shortrecord{
-  position: absolute;
-  width: 605px;
-  height: 200px;
-  border-radius: 16px;
-  box-shadow: 0 0 5px #dcdcdc;
-  background-color: white;
-  margin-left:40px;
-  margin-top: 5px;
 }
 .longrecord{
   position: absolute;

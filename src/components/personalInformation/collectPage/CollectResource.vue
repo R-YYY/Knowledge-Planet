@@ -7,12 +7,8 @@
       <div class="none" v-if="resourceList.length==0">
         <el-empty description="暂无收藏资源"></el-empty>
       </div>
-      <div class="short_resource_content" v-if="resourceList.length>0 && resourceList.length<=1">
-        <div class="card" v-for="item in resourceList" :key="item.resourceId" >
-          <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
-        </div>
-      </div>
-      <div class="long_resource_content" style="height:497px;overflow-y: scroll" v-else>
+
+      <div class="long_resource_content" style="height:497px;overflow-y: auto" v-if="resourceList.length>=2">
         <div class="card" v-for="item in resourceList" :key="item.resourceId" >
           <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
         </div>
@@ -72,17 +68,6 @@ export default{
   font-family: "Microsoft YaHei";
   font-weight: bold;
   font-size: 25px;
-}
-.short_resource_content{
-  /*position:absolute;*/
-  /*width:880px;*/
-  /*margin-top:100px;*/
-  /*margin-left:20px;*/
-  margin-left: 0px;
-  margin-right: 0px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
 }
 .long_resource_content{
   /*position:absolute;*/

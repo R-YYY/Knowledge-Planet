@@ -10,18 +10,8 @@
           <el-divider></el-divider>
         </div>
 
-        <div class="shortjoinplanet" v-if="joinplanets.length<=3">
-          <div v-for="item in joinplanets">
-            <el-tag
-                effect="dark"
-                type="success"
-                class="joinplanet_tag"
-                @click="goToJoinPlanet(item.planet.planetCode,item.planet.planetName)"
-            ><img :src="item.planet.planetAvatar" class="planet_avatar">{{ item.planet.planetName }}</el-tag>
-          </div>
-        </div>
 
-        <div class="longjoinplanet" v-else style="height:185px;overflow-y: scroll">
+        <div class="longjoinplanet" style="height:185px;overflow-y: auto">
           <div v-for="item in joinplanets">
             <el-tag
                 effect="dark"
@@ -103,9 +93,6 @@ export default{
   /*border-color:white;*/
   color:black;
   width:200px;
-}
-.shortjoinplanet{
-  text-align: center;
 }
 .longjoinplanet{
   text-align: center;

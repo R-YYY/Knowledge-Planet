@@ -11,20 +11,7 @@
           <el-divider></el-divider>
         </div>
 
-        <div v-if="planets.length<=9" class="shortplanetcontent">
-          <div v-for="item in planets">
-            <el-popover
-                placement="top-start"
-                :title="item.title"
-                width="200"
-                trigger="hover"
-                :content="item.content">
-              <el-tag slot="reference" class="planet_tag">{{ item.title }}</el-tag>
-            </el-popover>
-          </div>
-        </div>
-
-        <div v-else class="longplanetcontent" style="height:495px;overflow-y: scroll">
+        <div  class="longplanetcontent" style="height:495px;overflow-y: auto">
           <div v-for="item in planets">
             <el-popover
                 placement="top"
@@ -32,7 +19,7 @@
                 width="200"
                 trigger="hover"
                 :content="item.planetDescription">
-              <el-tag slot="reference" class="planet_tag" type="plain">
+              <el-tag slot="reference" class="planet_tag" type="plain" @click="searchResourceById(item.planetName)">
                 <img :src="item.planetAvatar" class="planet_avatar">
                 {{ item.planetName }}
               </el-tag>
@@ -48,6 +35,7 @@
 
 <script>
 import {getAllPlanet} from "@/api/admin/manage";
+import eventBus from "@/utils/eventBus";
 
 export default{
   data(){
@@ -57,6 +45,11 @@ export default{
     }
   },
   methods:{
+    searchResourceById(planetName){
+      eventBus.$emit('CodeResource',planetName)
+
+
+    }
 
 
   },
@@ -104,6 +97,7 @@ export default{
   margin-bottom:10px;
   /*line-height: 10px;*/
   vertical-align: middle;
+  text-align: left;
 }
 .el-tag{
   background-color: #99ebff;
