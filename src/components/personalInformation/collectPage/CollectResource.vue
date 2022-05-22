@@ -8,7 +8,7 @@
         <el-empty description="暂无收藏资源"></el-empty>
       </div>
 
-      <div class="long_resource_content" style="height:497px;overflow-y: auto" v-if="resourceList.length>=2">
+      <div class="long_resource_content" style="height:497px;overflow-y: auto" v-if="resourceList.length>=1">
         <div class="card" v-for="item in resourceList" :key="item.resourceId" >
           <FavoriteResourceCard :resource="item"></FavoriteResourceCard>
         </div>

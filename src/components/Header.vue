@@ -144,15 +144,17 @@ export default {
   },
   methods: {
     searchplanet(){
-      this.isShowResult=!this.isShowResult
-      getSearchPlanet(this.searchContent).then((res)=>{
-        if(res.data.success === true){
-          let data = res.data.data.planetList
-          console.log(77847648478)
-          console.log(data)
-          this.planetResult=data
-        }
-      })
+      if(this.searchContent!=''){
+        this.isShowResult=!this.isShowResult
+        getSearchPlanet(this.searchContent).then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.planetList
+            console.log(77847648478)
+            console.log(data)
+            this.planetResult=data
+          }
+        })
+      }
     },
     showNotice(){
       this.isShowMessageDrawer=false

@@ -12,7 +12,8 @@
       <div class="resource">
         <div class="resource_text">
           <span>资源</span>
-          <span style="margin-left:480px;">操作</span>
+          <span style="margin-left:380px;">状态</span>
+          <span style="margin-left:115px;">操作</span>
         </div>
         <div class="infordivide">
           <el-divider></el-divider>
@@ -24,10 +25,16 @@
             <el-empty description="暂无数据" v-show="!isUserInformation"></el-empty>
           </div>
 
-          <div class="long_resource_content" style="height:450px;overflow-y: auto" v-if="resourceList.length>=2">
+          <div class="long_resource_content" style="height:450px;overflow-y: auto" v-if="this.inputname!=null && resourceList.length>=1">
             <div class="card" v-for="item in resourceList" :key="item.resourceId" >
               <CheckResourceCard :resource="item"></CheckResourceCard>
-              <el-button class="delete_button" type="danger" icon="el-icon-delete" circle @click="deleteresource(item.resourceId)"></el-button>
+              <div class="status_text" v-if="item.status==0">未审核</div>
+              <div class="status_text" v-if="item.status==1">通过</div>
+              <div class="status_text" v-if="item.status==2">不通过</div>
+              <div class="status_text" v-if="item.status==3">冻结</div>
+              <el-button type="success" icon="el-icon-check" circle @click="unfreezeresource(item.resourceId)" class="unfreeze_button"></el-button>
+              <el-button class="freeze_button" type="danger" icon="el-icon-close" circle @click="freezeresource(item.resourceId)"></el-button>
+
             </div>
           </div>
 
@@ -45,7 +52,7 @@
 
 import {getSearchPlanet} from "@/api/homepage/planet";
 import {getResourceByPCode} from "@/api/admin/manage";
-import {freezeResource} from "@/api/admin/manage";
+import {freezeOrThawResource} from "@/api/admin/manage";
 import CheckResourceCard from "@/components/administrator/resourceCheckPage/CheckResourceCard";
 import CheckResourceDetail from "@/components/administrator/resourceCheckPage/CheckResourceDetail";
 import eventBus from "@/utils/eventBus";
@@ -68,46 +75,87 @@ export default {
     }
   },
   methods: {
-    searchplanet(name=this.inputname){
-      console.log(name)
-      getSearchPlanet(name).then((res)=>{
-        if(res.data.success === true){
-          let data = res.data.data.planetList
-          console.log(data)
-          this.planetResult=data
-          this.planetCode=this.planetResult[0].planet.planetCode
-          console.log(this.planetCode)
+    searchplanet(){
+      if(this.inputname!=''){
+        let name=this.inputname
+        console.log(name)
+        getSearchPlanet(name).then((res)=>{
+          if(res.data.success === true){
+            let data = res.data.data.planetList
+            console.log(data)
+            this.planetResult=data
+            this.planetCode=this.planetResult[0].planet.planetCode
+            console.log(this.planetCode)
 
-          getResourceByPCode(this.planetCode).then((res)=>{
+            getResourceByPCode(this.planetCode).then((res)=>{
+              if(res.data.success === true){
+                let data = res.data.data.resourceList
+                this.resourceList=data
+                console.log(this.resourceList)
+              }
+            })
+          }
+        })
+      }
+    },
+    freezeresource(resourceId){
+      let type=3
+      freezeOrThawResource(resourceId,type).then((res)=>{
+        if(res.data.success === true){
+          console.log(res)
+
+          getSearchPlanet(this.inputname).then((res)=>{
             if(res.data.success === true){
-              let data = res.data.data.resourceList
-              console.log(77847648478)
+              let data = res.data.data.planetList
               console.log(data)
-              this.resourceList=data
-              console.log(this.resourceList)
+              this.planetResult=data
+              this.planetCode=this.planetResult[0].planet.planetCode
+              console.log(this.planetCode)
+
+              getResourceByPCode(this.planetCode).then((res)=>{
+                if(res.data.success === true){
+                  let data = res.data.data.resourceList
+                  this.resourceList=data
+                  console.log(this.resourceList)
+                }
+              })
             }
           })
         }
       })
     },
-    deleteresource(resourceId){
-      freezeResource(resourceId).then((res)=>{
+    unfreezeresource(resourceId){
+      let type=1
+      freezeOrThawResource(resourceId,type).then((res)=>{
         if(res.data.success === true){
           console.log(res)
-          console.log(771111111)
-          this.searchplanet()
+          getSearchPlanet(this.inputname).then((res)=>{
+            if(res.data.success === true){
+              let data = res.data.data.planetList
+              console.log(data)
+              this.planetResult=data
+              this.planetCode=this.planetResult[0].planet.planetCode
+              console.log(this.planetCode)
+
+              getResourceByPCode(this.planetCode).then((res)=>{
+                if(res.data.success === true){
+                  let data = res.data.data.resourceList
+                  this.resourceList=data
+                  console.log(this.resourceList)
+                }
+              })
+            }
+          })
         }
       })
-    }
-
+    },
   },
 
   mounted() {
     eventBus.$on('CodeResource',(res)=>{
-      this.searchplanet(res)
+      this.inputname=res
+      this.searchplanet(this.inputname)
     })
-
-
   }
 }
 </script>
@@ -167,12 +215,24 @@ export default {
   height: 250px;
 }
 
-.delete_button{
+.status_text{
+  display:inline;
+  margin-left:60px;
+  margin-top:100px;
+  width:60px;
+}
+
+.unfreeze_button{
   display: inline-block;
-  margin-top: 100px;
-  margin-left: 150px;
+  margin-top: 90px;
+  margin-left: 60px;
   height: 40px;
-  margin-right: 104px;
+}
+.freeze_button{
+  display: inline-block;
+  margin-top: 90px;
+  height: 40px;
+  margin-right: 23px;
 }
 
 </style>

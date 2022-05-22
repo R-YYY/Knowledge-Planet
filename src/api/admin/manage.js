@@ -100,3 +100,16 @@ export function freezeResource(resourceId){
         data:data
     })
 }
+
+export function freezeOrThawResource(resourceId,type){
+    let data = new FormData();
+    data.append("resourceId",resourceId);
+    data.append("type",type);
+    return axios({
+        method:"POST",
+        url:"/resource/freezeOrThawResource",
+        data:data
+    })
+}
+
+
