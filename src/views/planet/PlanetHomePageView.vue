@@ -34,14 +34,14 @@ export default {
     return{
       name:window.sessionStorage.getItem("planetName"),
       personNum:123,
-      isManager:false,
+      isManager:"",
     }
   },
-  mounted() {
+  created() {
     let planetCode = window.sessionStorage.getItem("planetCode")
     getRole(planetCode).then((res)=>{
       window.sessionStorage.setItem("isManager",res.data.data.role)
-      this.isManager=res.data.data.role===1
+      this.isManager=res.data.data.role
     })
     getMemNumOfPlanet(planetCode).then((res)=>{
       if(res.data.success){
