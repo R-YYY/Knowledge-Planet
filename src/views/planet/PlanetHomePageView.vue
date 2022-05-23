@@ -13,7 +13,7 @@
         <PlanetChoice :is-manager="isManager"></PlanetChoice>
       </div>
       <div>
-        <TopicArea></TopicArea>
+        <TopicArea :ownerId="ownerId"></TopicArea>
       </div>
       <div>
         <IntegralRank rank-name="积分活跃排行榜"></IntegralRank>
@@ -27,14 +27,16 @@ import IntegralRank from "@/components/planet/homepage/integral/IntegralRank";
 import TopicArea from "@/components/planet/homepage/TopicArea";
 import PlanetChoice from "@/components/planet/homepage/PlanetChoice";
 import {getMemNumOfPlanet, getRole} from "@/api/homepage/planet";
+import {getOwnerId} from "@/api/planet/topic";
 export default {
   name: "PlanetHomePageView",
   components: {PlanetChoice, TopicArea, IntegralRank},
   data(){
     return{
       name:window.sessionStorage.getItem("planetName"),
-      personNum:123,
+      personNum:1,
       isManager:"",
+      ownerId:'',
     }
   },
   created() {
@@ -48,6 +50,12 @@ export default {
         this.personNum = res.data.data.num
       }
     }).catch((err)=>{
+      console.log(err)
+    })
+    getOwnerId(planetCode).then((res) => {
+      if (res.data.success)
+        this.ownerId = res.data.data.ownerId
+    }).catch((err) => {
       console.log(err)
     })
   }

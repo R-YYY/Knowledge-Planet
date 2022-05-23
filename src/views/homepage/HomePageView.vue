@@ -1,6 +1,6 @@
 <template>
   <div id="homepage">
-    <HomePageHeader></HomePageHeader>
+    <Header></Header>
     <div id="main">
       <NavBar class="left"></NavBar>
       <RecommendPlanet class="center"></RecommendPlanet>
@@ -13,12 +13,12 @@
 import NavBar from "@/components/homepage/NavBar";
 import RecommendPlanet from "@/components/homepage/RecommendPlanet";
 import DateRank from "@/components/homepage/DateRank";
-import HomePageHeader from "@/components/HomePageHeader";
+import Header from "@/components/Header";
 
 export default{
   name:"HomePageView",
   components:{
-    HomePageHeader,
+    Header,
     RecommendPlanet,
     NavBar,
     DateRank

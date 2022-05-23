@@ -64,3 +64,9 @@ export function unPraise(id,type) {
         data:formData,
     })
 }
+export function getOwnerId(planetCode) {
+    return axios({
+        method: 'GET',
+        url: '/planet/getOwnerId/'+planetCode,
+    })
+}

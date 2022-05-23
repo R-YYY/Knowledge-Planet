@@ -75,7 +75,6 @@ export default{
   },
   methods:{
     joinplanet(planetCode,planetName) {
-      console.log(planetCode)
       this.$confirm('您确定加入该星球吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -86,7 +85,6 @@ export default{
           message: '加入成功!'
         });
         joinPlanet(planetCode).then((res)=>{
-          console.log(res)
           if(res.data.success){
             window.sessionStorage.setItem("planetCode",planetCode)
             window.sessionStorage.setItem("planetName",planetName)
@@ -104,11 +102,8 @@ export default{
   mounted(){
     getRecommendPlanet().then((res)=>{
       if(res.data.success){
-        console.log(9988776655)
-        console.log(res)
         let data = res.data.data.planetList
         this.recommendplanet=data
-        console.log(this.recommendplanet)
       }
     })
   }

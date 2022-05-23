@@ -5,7 +5,6 @@
       <div class="header_select">
         <ul @click="select">
           <li><span class="selectItem selectedItem">全部</span></li>
-          <li><span class="selectItem">最新</span></li>
           <li><span class="selectItem">只看星主</span>
             <div id="fire"></div>
           </li>
@@ -15,9 +14,9 @@
         <CreateDiscuss></CreateDiscuss>
       </div>
     </div>
-    <div v-if="topics.length===0" class="empty"></div>
+    <div v-if="topics.length===0||(ownerTopicNum===0&&isRecommended)" class="empty"></div>
     <div v-else style="margin-bottom: 100px">
-      <div v-for="(item,index) in topics" :key="item.topicId">
+      <div v-show="item.userId===ownerId||isRecommended" v-for="(item,index) in topics" :key="item.topicId">
         <Card :topic="item" @update="updateTopic"></Card>
       </div>
     </div>
@@ -32,14 +31,17 @@ import eventBus from "@/utils/eventBus";
 
 export default {
   name: "TopicArea",
+  props:['ownerId'],
   components: {
     CreateDiscuss,
     Card
   },
   data() {
     return {
-      planetCode:window.sessionStorage.getItem('planetCode'),
+      planetCode: window.sessionStorage.getItem('planetCode'),
       topics: [],
+      ownerTopicNum:0,
+      isRecommended: true
     }
   },
   methods: {
@@ -52,13 +54,11 @@ export default {
         e.target.className = "selectItem selectedItem"
         switch (e.target.innerHTML) {
           case "全部":
-            this.$emit('select', 'all')
+            this.isRecommended = true
             break;
-          case "最新":
-            this.$emit('select', 'time')
-            break;
-          case "星主推荐":
-            this.$emit('select', 'recommend')
+          case "只看星主":
+            this.isRecommended = false
+            console.log(this.ownerTopicNum)
             break;
         }
       }
@@ -81,19 +81,24 @@ export default {
         return shortContent
       }
     },
-    updateTopic(){
-      getAllTopic(this.planetCode).then((res)=>{
+    updateTopic() {
+      getAllTopic(this.planetCode).then((res) => {
+        console.log(res)
         let data = res.data.data.topicList
         this.topics = []
-        for(let item of data){
+        this.ownerTopicNum = 0
+        for (let item of data) {
           let pictureList = []
-          if(item.topic.picture)
+          if (item.topic.picture)
             pictureList = item.topic.picture.split(',')
+          if(item.topic.userId===this.ownerId)
+            this.ownerTopicNum++
           let shortContent = this.analyseContent(item.topic.content)
           this.topics.push({
-            topicId:item.topic.topicId,
-            praiseCount:item.topic.praiseCount,
-            content:item.topic.content,
+            topicId: item.topic.topicId,
+            userId: item.topic.userId,
+            praiseCount: item.topic.praiseCount,
+            content: item.topic.content,
             isShort: shortContent === true,
             shortContent: shortContent === true ? null : shortContent,
             avatar: item.avatar,
@@ -101,20 +106,20 @@ export default {
             time: item.topic.time,
             commentCount: item.topic.commentCount,
             pictureList: pictureList,
-            isLiked:item.liked,
+            isLiked: item.liked,
           })
         }
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err)
       })
     },
   },
   created() {
-   this.updateTopic()
-    eventBus.$on('addMyTopic',()=>{
+    this.updateTopic()
+    eventBus.$on('addMyTopic', () => {
       this.updateTopic()
     })
-    eventBus.$on('addMyReply',()=>{
+    eventBus.$on('addMyReply', () => {
       this.updateTopic()
     })
   }

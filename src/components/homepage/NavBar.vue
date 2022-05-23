@@ -6,7 +6,7 @@
         trigger="click">
       <div class="planets">
         <div class="joinplanet">
-          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我加入的星球</h>
+          <h1 style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我加入的星球</h1>
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-20px;">
             <el-tag
                 v-for="item in joinplanets"
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="createplanet" style="margin-top:30px;">
-          <h style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h>
+          <h1 style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h1>
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
             <el-tag
                 v-for="item in createplanets"
@@ -60,7 +60,7 @@
         </el-popover>
       </div>
       <el-carousel height="150px">
-        <el-carousel-item v-for="item in notices" :key="item">
+        <el-carousel-item v-for="item in notices" >
           <div class="nt">{{item.title}}</div>
           <div class="ni">{{item.infor}}</div>
           <div class="nf">——知识星球官方</div>
@@ -144,7 +144,6 @@ export default{
           console.log(JSON.stringify(progressData));
         }
       }, function (err, data) {
-        console.log(data)
         if(err||data.statusCode!==200){
           console.log("图片上传失败，请重新上传")
         }
@@ -153,7 +152,6 @@ export default{
           let description=planetform.description
           let coverage="https://"+data.Location
           createPlanet(name,description,coverage).then((res)=>{
-            console.log(res)
             window.sessionStorage.setItem("planetName",name)
             that.$router.push("/planet")
           })
@@ -179,9 +177,7 @@ export default{
   mounted(){
     getAllNotice().then((res)=>{
       if(res.data.success === true){
-        console.log(1)
         let data = res.data.data.notices
-        console.log(data)
         for(let i = 0;i<data.length;i++){
           this.notices[i] = {}
           this.notices[i].title = data[i].title
@@ -193,18 +189,13 @@ export default{
         getCreatePlanet().then((res)=>{
           if(res.data.success === true){
             let data = res.data.data.planetList
-            console.log(data)
             this.createplanets=data
           }
         }),
         getJoinPlanet().then((res)=>{
           if(res.data.success === true){
             let data = res.data.data
-            console.log(data)
-            console.log(78762764)
-            console.log(data)
             this.joinplanets=data.planetList
-            console.log(this.joinplanets)
           }
         })
   }

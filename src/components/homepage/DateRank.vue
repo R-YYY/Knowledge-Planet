@@ -56,9 +56,7 @@ export default{
   mounted(){
     getHotPlanet().then((res)=>{
       if(res.data.success === true){
-        console.log(1)
         let data = res.data.data.planetList
-        console.log(data)
         for(let i = 0;i<data.length;i++){
           this.planets[i] = {}
           this.planets[i].index = i+1
@@ -71,7 +69,6 @@ export default{
         getLoginRecord().then((res)=>{
           if(res.data.success === true){
             let data=res.data.data.date
-            console.log(data)
             this.activedate=data
             this.calendarPage=true
           }
