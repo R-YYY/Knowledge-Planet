@@ -40,7 +40,7 @@ export default{
       this.$router.push('/personal/favorite')
     },
     goToPersonalCompeteRecord(){
-      this.$router.push('personal/competerecord')
+      this.$router.push('personal/competeRecord')
     }
 
   },
