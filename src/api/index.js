@@ -1,27 +1,30 @@
 import Vue from 'vue'
 import Axios from 'axios'
-
+import {Loading} from 'element-ui'
 const axiosInstance = Axios.create({
     baseURL: "http://49.235.232.7:81/kp",
     timeout: 5000
 })
-
+let loadingInstance = null
 axiosInstance.interceptors.request.use(
     config => {
         config.headers['Content-Type']= 'application/json;charset=UTF-8'
         if (window.sessionStorage.getItem('token')) {
             config.headers['token'] = window.sessionStorage.getItem('token')
         }
+        loadingInstance = Loading.service({fullscreen:true})
         return config
     },
     err => {
         Vue.prototype.$message.error('请求超时')
         return Promise.reject(err)
     }
+
 )
 
 axiosInstance.interceptors.response.use(
     response => {
+        loadingInstance.close()
         return response
     },
     error => {
