@@ -4,7 +4,7 @@
 
       <div class="header">
         <el-input v-model="inputname" placeholder="请输入内容" class="search_input"></el-input>
-        <el-button type="primary" icon="el-icon-search" class="search_button" @click="searchplanet">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" class="search_button" @click="searchplanets">搜索</el-button>
         <div class="infordivide">
           <el-divider></el-divider>
         </div>
@@ -20,7 +20,6 @@
         </div>
         <div class="resource_content">
 
-
           <div class="none" v-if="resourceList.length==0">
             <el-empty description="暂无数据" v-show="!isUserInformation"></el-empty>
           </div>
@@ -28,21 +27,37 @@
           <div class="long_resource_content" style="height:450px;overflow-y: auto" v-if="this.inputname!=null && resourceList.length>=1">
             <div class="card" v-for="item in resourceList" :key="item.resourceId" >
               <CheckResourceCard :resource="item"></CheckResourceCard>
-              <div class="status_text" v-if="item.status==0">未审核</div>
               <div class="status_text" v-if="item.status==1">通过</div>
               <div class="status_text" v-if="item.status==2">不通过</div>
               <div class="status_text" v-if="item.status==3">冻结</div>
-              <el-button type="success" icon="el-icon-check" circle @click="unfreezeresource(item.resourceId)" class="unfreeze_button"></el-button>
-              <el-button class="freeze_button" type="danger" icon="el-icon-close" circle @click="freezeresource(item.resourceId)"></el-button>
-
+              <el-button type="success" icon="el-icon-check" circle @click="unfreezeresource(item.resourceId)" class="unfreeze_button" :disabled="item.status==1"></el-button>
+              <el-button class="freeze_button" type="danger" icon="el-icon-close" circle @click="freezeresource(item.resourceId)" :disabled="item.status!=1"></el-button>
             </div>
           </div>
 
         </div>
       </div>
 
+      <el-dialog
+          title="搜索结果"
+          :visible.sync="isShowResult"
+          class="searchresult"
+      >
+        <div class="planetresult_none" v-show="isShowResult && planetResult.length==0" style="height:395px;">
+          <el-empty description="暂无数据"></el-empty>
+        </div>
 
+        <div class="longsearchResult" v-show="isShowResult && planetResult.length>0" style="height:395px;overflow-y: auto" >
+          <div class="result" v-for="item in planetResult" >
+            <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
+            <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
+            <span style="margin-left:20px;">创建时间：{{item.planet.createTime}}</span>
+            <el-button size="mini" type="primary" class="see_button" @click="seeresource(item.planet.planetCode)">查看</el-button>
+            <el-divider></el-divider>
+          </div>
+        </div>
 
+      </el-dialog>
 
     </div>
   </div>
@@ -71,10 +86,26 @@ export default {
       isNot:'',
       isUserInformation:false,
       planetResult:[],
-      resourceList:[]
+      resourceList:[],
+      isShowResult:false
     }
   },
   methods: {
+    searchplanets(){
+      if(this.inputname!=''){
+        let name=this.inputname
+        console.log(name)
+        getSearchPlanet(name).then((res)=>{
+          if(res.data.success === true){
+            this.isShowResult=true
+            let data = res.data.data.planetList
+            console.log(data)
+            this.planetResult=data
+            console.log(this.planetResult)
+          }
+        })
+      }
+    },
     searchplanet(){
       if(this.inputname!=''){
         let name=this.inputname
@@ -86,6 +117,7 @@ export default {
             this.planetResult=data
             this.planetCode=this.planetResult[0].planet.planetCode
             console.log(this.planetCode)
+            console.log(this.planetResult)
 
             getResourceByPCode(this.planetCode).then((res)=>{
               if(res.data.success === true){
@@ -149,6 +181,17 @@ export default {
         }
       })
     },
+    seeresource(planetCode){
+      getResourceByPCode(planetCode).then((res)=>{
+        if(res.data.success === true){
+          this.isShowResult=false
+          let data = res.data.data.resourceList
+          this.resourceList=data
+          console.log(this.resourceList)
+        }
+      })
+
+    }
   },
 
   mounted() {
@@ -193,7 +236,7 @@ export default {
 
 .none{
   margin-left:0px;
-  margin-top:150px;
+  margin-top:60px;
 }
 .resource_text{
   font-family: "Microsoft YaHei";
@@ -234,5 +277,21 @@ export default {
   height: 40px;
   margin-right: 23px;
 }
-
+.planet_avatar{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:10px;
+}
+.planet_text{
+  vertical-align: middle;
+  line-height: 50px;
+}
+.searchresult{
+  margin-left:100px;
+}
+.see_button{
+  margin-left: 20px;
+}
 </style>

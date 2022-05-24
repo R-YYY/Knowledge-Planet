@@ -1,6 +1,6 @@
 <template>
   <div id="personalCompeteRecord">
-    <HomePageHeader></HomePageHeader>
+    <Header></Header>
     <div id="main">
       <Option class="left"></Option>
       <CompeteRecord class="right"></CompeteRecord>
@@ -9,13 +9,14 @@
 </template>
 
 <script>
-import HomePageHeader from "@/components/HomePageHeader";
+
+import Header from "@/components/Header";
 import Option from "@/components/personalInformation/competeRecordPage/Option";
 import CompeteRecord from "@/components/personalInformation/competeRecordPage/CompeteRecord"
 export default{
   name:"PersonalCompeteRecordView",
   components:{
-    HomePageHeader,
+    Header,
     Option,
     CompeteRecord
   },

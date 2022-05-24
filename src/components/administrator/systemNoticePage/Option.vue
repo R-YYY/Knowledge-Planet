@@ -1,12 +1,7 @@
 <template>
   <div id="option">
     <div class="leftbar">
-      <img :src="information.avatar" class="avatar">
-      <el-divider></el-divider>
-      <div class="personalpage" @click="goToPersonalPage">
-        <img src="../../../assets/admin/admin.png" class="personalpage_png">
-        <span class="personalpage_text">管理员主页</span>
-      </div>
+      <img src="../../../assets/admin/status.png" class="avatar">
       <el-divider></el-divider>
       <div class="noticepage" @click="goToSystemNotice">
         <img src="../../../assets/admin/notice.png" class="notice_png">
@@ -73,28 +68,10 @@ export default{
   box-shadow: 0 0 30px #dcdcdc;
 }
 .avatar{
-  border-radius: 50%;
   width:70px;
   height:70px;
   margin-left:90px;
   margin-top:20px;
-}
-.personalpage_png{
-  margin-top: 24px;
-  margin-bottom: 24px;
-  display: inline-block;
-  width:28px;
-  height:28px;
-  vertical-align: middle;
-  margin-left: 40px;
-}
-.personalpage_text{
-  margin-top: 24px;
-  margin-bottom: 24px;
-  vertical-align: middle;
-  margin-left: 35px;
-  font-size:21px;
-  font-family: "Microsoft YaHei";
 }
 .notice_png{
   margin-top: 24px;

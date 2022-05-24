@@ -1,6 +1,6 @@
 <template>
   <div id="personalInformation">
-    <HomePageHeader></HomePageHeader>
+    <Header></Header>
     <div id="main">
       <Option class="left"></Option>
       <Information class="center"></Information>
@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import HomePageHeader from "@/components/HomePageHeader";
+
+import Header from "@/components/Header";
 import Option from "@/components/personalInformation/personalPage/Option";
 import Information from "@/components/personalInformation/personalPage/Information";
 import JoinPlanet from "@/components/personalInformation/personalPage/JoinPlanet";
@@ -20,7 +21,7 @@ import CreatePlanet from "@/components/personalInformation/personalPage/CreatePl
 export default{
   name:"PersonalInformationView",
   components:{
-    HomePageHeader,
+    Header,
     Option,
     Information,
     JoinPlanet,

@@ -306,7 +306,6 @@ export default {
   top: 10%;
 }
 
-
 .icon {
   float: right;
   margin-top: 10px;
@@ -370,6 +369,7 @@ i {
 }
 .readmessage{
   margin-left: 300px;
+  margin-bottom:10px;
 }
 .el-divider--horizontal{
   margin-top:0px;

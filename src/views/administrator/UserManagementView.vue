@@ -1,6 +1,6 @@
 <template>
   <div id="userManagement">
-    <HomePageHeader></HomePageHeader>
+    <Header></Header>
     <div id="main">
       <Option class="left"></Option>
       <Management class="center"></Management>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import HomePageHeader from "@/components/HomePageHeader";
+import Header from "@/components/Header";
 import Option from "@/components/administrator/userManagePage/Option";
 import Management from "@/components/administrator/userManagePage/Management";
 
@@ -18,7 +18,7 @@ import Management from "@/components/administrator/userManagePage/Management";
 export default{
   name:"PersonalInformationView",
   components:{
-    HomePageHeader,
+    Header,
     Option,
     Management,
   },

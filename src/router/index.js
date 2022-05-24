@@ -18,7 +18,6 @@ import PersonalCompeteRecordView from "@/views/personal/PersonalCompeteRecordVie
 import EditComView from "@/views/planet/competition/EditComView";
 import ComRecordView from "@/views/planet/competition/ComRecordView";
 import ManageComView from "@/views/planet/competition/ManageComView";
-import AdministratorInformationView from "@/views/administrator/AdministratorInformationView";
 import SystemNoticeView from "@/views/administrator/SystemNoticeView";
 import UserManagementView from "@/views/administrator/UserManagementView";
 import AnswerQuestionView from "@/views/planet/competition/AnswerQuestionView"
@@ -136,11 +135,6 @@ const routes = [
         path:'/personal/competerecord',
         name:'personalCompeteRecord',
         component: PersonalCompeteRecordView
-    },
-    {
-        path:'/admin',
-        name:'administratorInformation',
-        component:AdministratorInformationView
     },
     {
         path:'/admin/systemnotice',

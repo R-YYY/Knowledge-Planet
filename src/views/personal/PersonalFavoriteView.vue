@@ -1,6 +1,6 @@
 <template>
   <div id="personalInformation">
-    <HomePageHeader></HomePageHeader>
+    <Header></Header>
     <div id="main">
       <Option class="left"></Option>
       <CollectResource class="right"></CollectResource>
@@ -9,13 +9,14 @@
 </template>
 
 <script>
-import HomePageHeader from "@/components/HomePageHeader";
+
+import Header from "@/components/Header";
 import Option from "@/components/personalInformation/collectPage/Option";
 import CollectResource from "@/components/personalInformation/collectPage/CollectResource"
 export default{
   name:"PersonalFavoriteView",
   components:{
-    HomePageHeader,
+    Header,
     Option,
     CollectResource
   },
