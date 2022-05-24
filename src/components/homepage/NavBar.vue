@@ -10,6 +10,7 @@
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-20px;">
             <el-tag
                 v-for="item in joinplanets"
+                :key="item.planet.planetCode"
                 effect="dark"
                 style="margin-left:30px;margin-top:30px;"
                 type="success"
@@ -22,6 +23,7 @@
           <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
             <el-tag
                 v-for="item in createplanets"
+                :key="item.planet.planetCode"
                 effect="dark"
                 type="danger"
                 style="margin-left:30px;margin-top:20px;"
@@ -60,7 +62,7 @@
         </el-popover>
       </div>
       <el-carousel height="150px">
-        <el-carousel-item v-for="item in notices" >
+        <el-carousel-item v-for="item in notices" :key="item.noticeId">
           <div class="nt">{{item.title}}</div>
           <div class="ni">{{item.infor}}</div>
           <div class="nf">——知识星球官方</div>

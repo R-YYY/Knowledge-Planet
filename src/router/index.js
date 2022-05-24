@@ -26,137 +26,172 @@ import ResourceCheckView from "@/views/administrator/ResourceCheckView";
 import HistoryCompView from "@/views/planet/competition/HistoryCompView";
 Vue.use(VueRouter)
 
-const routes = [
-    {
-        path: '/',
-        redirect: {name: 'login'}
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: LoginView
-    },
-    {
-        path: '/adminLogin',
-        name: 'adminLogin',
-        component: AdminLoginView
-    },
-    {
-        path: '/register',
-        name: 'register',
-        component: RegisterView
-    },
-    {
-        path: '/findPassword',
-        name: 'findPassword',
-        component: FindPasswordView,
-    },
-    {
-        path: '/success',
-        name: 'success',
-        component: Success,
-    },
-    {
-        path: '/planet/resource',
-        name: 'resource',
-        component: ResourceView,
-    },
-    {
-        path: '/planet/resource/check',
-        name: 'checkResource',
-        component: CheckRscView,
-    },
-    {
-        path: '/planet/resource/detail/:rid',
-        name: 'resourceDetail',
-        component: ResourceDetail,
-    },
-    {
-        path: '/homepage',
-        name: 'homepage',
-        component: HomePageView,
-    },
-    {
-        path: '/planet',
-        name:'planetHomepage',
-        component: PlanetHomePageView,
-    },
-    {
-        path: '/planet/member',
-        name:'member',
-        component: MemberView,
-    },
-    {
-        path: '/planet/competition',
-        name:'competition',
-        component: CompetitionView,
-    },
-    {
-        path: '/planet/competition/manage',
-        name:'competitionManage',
-        component: ManageComView,
-    },
-    {
-        path: '/planet/competition/answer/:id/:title',
-        name:'AnswerQuestionView',
-        component: AnswerQuestionView,
-    },
-    {
-        path: '/planet/competition/edit/:cid',
-        name:'editCompetition',
-        component: EditComView,
-    },
-    {
-        path: '/planet/competition/record',
-        name:'competitionRecord',
-        component: ComRecordView,
-    },
-    {
-        path: '/planet/competition/record/:cid',
-        name:'historyCompetition',
-        component: HistoryCompView,
-    },
-    {
-        path: '/planet/activity',
-        name:'activity',
-        component: ActivityView,
-    },
-    {
-        path:'/personal',
-        name:'personalInformation',
-        component:PersonalInformationView
-    },
-    {
-        path:'/personal/favorite',
-        name:'personalFavorite',
-        component: PersonalFavoriteView
-    },
-    {
-        path:'/personal/competerecord',
-        name:'personalCompeteRecord',
-        component: PersonalCompeteRecordView
-    },
-    {
-        path:'/admin/systemnotice',
-        name:'systemNotice',
-        component: SystemNoticeView
-    },
-    {
-        path:'/admin/usermanage',
-        name:'userManage',
-        component: UserManagementView
-    },
-    {
-        path:'/admin/resourcecheck',
-        name:'resourceCheck',
-        component: ResourceCheckView
-    }
-
-]
-
 const router = new VueRouter({
     mode: 'history',
-    routes
+    routes:[
+        {
+            path: '/',
+            name:'',
+            redirect: {name: 'login'}
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView
+        },
+        {
+            path: '/adminLogin',
+            name: 'adminLogin',
+            component: AdminLoginView
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterView
+        },
+        {
+            path: '/findPassword',
+            name: 'findPassword',
+            component: FindPasswordView,
+        },
+        {
+            path: '/success',
+            name: 'success',
+            component: Success,
+        },
+        {
+            path: '/planet/resource',
+            name: 'resource',
+            component: ResourceView,
+        },
+        {
+            path: '/planet/resource/check',
+            name: 'checkResource',
+            component: CheckRscView,
+        },
+        {
+            path: '/planet/resource/detail/:rid',
+            name: 'resourceDetail',
+            component: ResourceDetail,
+        },
+        {
+            path: '/homepage',
+            name: 'homepage',
+            component: HomePageView,
+        },
+        {
+            path: '/planet',
+            name:'planetHomepage',
+            component: PlanetHomePageView,
+        },
+        {
+            path: '/planet/member',
+            name:'member',
+            component: MemberView,
+        },
+        {
+            path: '/planet/competition',
+            name:'competition',
+            component: CompetitionView,
+        },
+        {
+            path: '/planet/competition/manage',
+            name:'competitionManage',
+            component: ManageComView,
+        },
+        {
+            path: '/planet/competition/answer/:id/:title',
+            name:'AnswerQuestionView',
+            component: AnswerQuestionView,
+        },
+        {
+            path: '/planet/competition/edit/:cid',
+            name:'editCompetition',
+            component: EditComView,
+        },
+        {
+            path: '/planet/competition/record',
+            name:'competitionRecord',
+            component: ComRecordView,
+        },
+        {
+            path: '/planet/competition/record/:cid',
+            name:'historyCompetition',
+            component: HistoryCompView,
+        },
+        {
+            path: '/planet/activity',
+            name:'activity',
+            component: ActivityView,
+        },
+        {
+            path:'/personal',
+            name:'personalInformation',
+            component:PersonalInformationView
+        },
+        {
+            path:'/personal/favorite',
+            name:'personalFavorite',
+            component: PersonalFavoriteView
+        },
+        {
+            path:'/personal/competeRecord',
+            name:'personalCompeteRecord',
+            component: PersonalCompeteRecordView
+        },
+        {
+            path:'/admin/systemNotice',
+            name:'systemNotice',
+            component: SystemNoticeView
+        },
+        {
+            path:'/admin/userManage',
+            name:'userManage',
+            component: UserManagementView
+        },
+        {
+            path:'/admin/resourceCheck',
+            name:'resourceCheck',
+            component: ResourceCheckView
+        }
+
+    ]
+
+})
+
+router.beforeEach((to, from, next)=>{
+    let planetSet = new Set()
+    planetSet.add('resource')
+    planetSet.add('checkResource')
+    planetSet.add('planetHomepage')
+    planetSet.add('historyCompetition')
+    planetSet.add('activity')
+    planetSet.add('competitionRecord')
+    planetSet.add('editCompetition')
+    planetSet.add('AnswerQuestionView')
+    planetSet.add('competitionManage')
+    planetSet.add('competition')
+    planetSet.add('member')
+    planetSet.add('competition')
+    planetSet.add('competition')
+    let adminSet = new Set()
+    adminSet.add('resourceCheck')
+    adminSet.add('userManage')
+    adminSet.add('systemNotice')
+    adminSet.add('resourceCheck')
+    adminSet.add('resourceCheck')
+    if(window.sessionStorage.getItem('token')===null&&to.name!=='login'){
+        next('login')
+    }
+    else if(window.sessionStorage.getItem('planetCode')===null&&planetSet.has(to.name)){
+        next('homepage')
+    }
+    else if(adminSet.has(to.name)&&(from.name!=='adminLogin'||adminSet.has(from.name))){
+        next('adminLogin')
+    }
+    else{
+        next()
+    }
 })
 
 export default router
