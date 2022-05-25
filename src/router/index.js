@@ -172,15 +172,11 @@ router.beforeEach((to, from, next)=>{
     planetSet.add('competitionManage')
     planetSet.add('competition')
     planetSet.add('member')
-    planetSet.add('competition')
-    planetSet.add('competition')
     let adminSet = new Set()
     adminSet.add('resourceCheck')
     adminSet.add('userManage')
     adminSet.add('systemNotice')
-    adminSet.add('resourceCheck')
-    adminSet.add('resourceCheck')
-    if(window.sessionStorage.getItem('token')===null&&to.name!=='login'){
+    if(window.sessionStorage.getItem('token')===null&&(to.name!=='login'&&to.name!=='adminLogin')){
         next('login')
     }
     else if(window.sessionStorage.getItem('planetCode')===null&&planetSet.has(to.name)){
