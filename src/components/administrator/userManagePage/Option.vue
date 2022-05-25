@@ -24,8 +24,6 @@
 
 <script>
 
-import {getUserById} from "@/api/admin/manage";
-
 export default{
   data(){
     return{
@@ -46,16 +44,8 @@ export default{
     goToResourceCheck(){
       this.$router.push('/admin/resourceCheck')
     }
-
   },
   mounted(){
-    getUserById().then((res)=>{
-      if(res.data.success === true){
-        let data = res.data.data
-        this.information=data.result
-        console.log(this.information)
-      }
-    })
 
   }
 

@@ -29,7 +29,6 @@ import {getUserById} from "@/api/admin/manage";
 export default{
   data(){
     return{
-      information:{}
 
     }
   },
@@ -48,13 +47,6 @@ export default{
     }
   },
   mounted(){
-    getUserById().then((res)=>{
-      if(res.data.success === true){
-        let data = res.data.data
-        this.information=data.result
-        console.log(this.information)
-      }
-    })
 
   }
 
