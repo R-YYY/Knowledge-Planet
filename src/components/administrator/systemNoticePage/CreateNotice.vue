@@ -58,7 +58,7 @@ export default {
   methods: {
     release() {
       let data = JSON.stringify({
-        "adminId": this.information.userId,
+        "adminId": 1,
         "title": this.title,
         "content": this.content,
       })
@@ -77,13 +77,7 @@ export default {
     },
   },
   mounted() {
-    getUserById().then((res)=>{
-      if(res.data.success === true){
-        let data = res.data.data
-        this.information=data.result
-        console.log(this.information)
-      }
-    })
+
   }
 
 }

@@ -64,6 +64,27 @@
         </div>
       </div>
 
+      <el-dialog
+          title="搜索结果"
+          :visible.sync="isShowResult"
+          class="searchresult"
+      >
+        <div class="result_none" v-show="isShowResult && userResult.length==0" style="height:395px;">
+          <el-empty description="暂无数据"></el-empty>
+        </div>
+
+        <div class="searchResult" v-show="isShowResult && userResult.length>0" style="height:395px;overflow-y: auto" >
+          <div class="result" v-for="item in userResult">
+            <span class="user_text" >用户：<img :src="item.avatar" class="user_avatar">{{item.userName}}</span>
+            <span style="margin-left:20px;">邮箱：{{item.email}}</span>
+            <span style="margin-left:20px;">id：{{item.userId}}</span>
+            <el-button size="mini" type="primary" class="see_button" @click="seeuser(item.userId)">查看</el-button>
+            <el-divider></el-divider>
+          </div>
+        </div>
+
+      </el-dialog>
+
 
 
     </div>
@@ -90,54 +111,64 @@ export default {
       logId:'',
       logs:[],
       isUserInformation:false,
+      isShowResult:false,
+      userResult:[]
     }
   },
   methods: {
     search(){
-      let name=this.inputuser
-      searchUser(name).then((res)=>{
-        if(res.data.success === true){
-          let data=res.data.data.userList
-          console.log(data)
-          if(data.length==1){
-            this.information.userId=data[0].userId
-            this.information.email=data[0].email
-            this.information.userName=data[0].userName
-            this.information.status=data[0].status
-            this.information.avatar=data[0].avatar
-            this.isUserInformation=true
-            this.logId=this.information.userId
-            console.log(11448645)
-            console.log(data[0].status)
-            if(this.information.status==1){
-              this.information.isNot=true
-            }
-            else{
-              this.information.isNot=false
-            }
-            getLoginLogByUserId(this.logId).then((res)=>{
-              if(res.data.success === true){
-                console.log(998742754)
-                let data=res.data.data
-                console.log(data)
-                this.logs=data.loginLogList
-                console.log(this.logs)
-              }
-            })
+      if(this.inputuser!=''){
+        let name=this.inputuser
+        searchUser(name).then((res)=>{
+          if(res.data.success === true){
+            let data=res.data.data.userList
+            console.log(data)
+            this.isShowResult=true
+            this.userResult=data
+          }
+        })
+      }
+    },
+    seeuser(userId){
+      console.log(userId)
+      let len=this.userResult.length
+      for(let i=0;i<len;i++){
+        if(this.userResult[i].userId===userId){
+          console.log(145)
+          this.isShowResult=false
+          this.information.userId=this.userResult[i].userId
+          this.information.email=this.userResult[i].email
+          this.information.userName=this.userResult[i].userName
+          this.information.status=this.userResult[i].status
+          this.information.avatar=this.userResult[i].avatar
+          this.isUserInformation=true
+          this.logId=this.information.userId
+          if(this.information.status===1){
+            this.information.isNot=false
           }
           else{
-            this.isUserInformation=false
+            this.information.isNot=true
           }
+          console.log(this.logId)
+          getLoginLogByUserId(this.logId).then((res)=>{
+            if(res.data.success === true){
+              let data=res.data.data
+              console.log(data)
+              this.logs=data.loginLogList
+              console.log(this.logs)
+            }
+          })
         }
-      })
-    },
+      }
 
+
+    },
     changestatus(){
       console.log(this.information.isNot)
-      let userstatus=1
+      let userstatus=2
       console.log(111)
-      if(this.information.isNot==false){
-        userstatus=0
+      if(this.information.isNot===false){
+        userstatus=1
       }
       console.log(userstatus)
       let userId=this.information.userId
@@ -147,6 +178,8 @@ export default {
           console.log(userstatus)
         }
       })
+
+
     }
   },
   mounted() {
@@ -281,5 +314,19 @@ export default {
 .none{
   margin-left:0px;
   margin-top:150px;
+}
+.user_text{
+  vertical-align: middle;
+  line-height: 50px;
+}
+.user_avatar{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:10px;
+}
+.see_button{
+  margin-left: 30px;
 }
 </style>

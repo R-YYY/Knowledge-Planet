@@ -24,8 +24,6 @@
 
 <script>
 
-import {getUserById} from "@/api/admin/manage";
-
 export default{
   data(){
     return{

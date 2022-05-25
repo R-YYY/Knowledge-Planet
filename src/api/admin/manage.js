@@ -112,4 +112,14 @@ export function freezeOrThawResource(resourceId,type){
     })
 }
 
+export function adminSearchPlanet(searchContent) {
+    return axios({
+        method: "GET",
+        url: "/planet/adminSearchPlanet",
+        params:{
+            keyWord:searchContent
+        }
+    })
+}
+
 

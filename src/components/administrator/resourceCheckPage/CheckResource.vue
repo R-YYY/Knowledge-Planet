@@ -46,13 +46,12 @@
         <div class="planetresult_none" v-show="isShowResult && planetResult.length==0" style="height:395px;">
           <el-empty description="暂无数据"></el-empty>
         </div>
-
         <div class="longsearchResult" v-show="isShowResult && planetResult.length>0" style="height:395px;overflow-y: auto" >
           <div class="result" v-for="item in planetResult" >
-            <span class="planet_text" >星球：<img :src="item.planet.planetAvatar" class="planet_avatar">{{item.planet.planetName}}</span>
-            <span style="margin-left:20px;">星球热度：{{item.planet.hot}}</span>
-            <span style="margin-left:20px;">创建时间：{{item.planet.createTime}}</span>
-            <el-button size="mini" type="primary" class="see_button" @click="seeresource(item.planet.planetCode)">查看</el-button>
+            <span class="planet_text" >星球：<img :src="item.planetAvatar" class="planet_avatar">{{item.planetName}}</span>
+            <span style="margin-left:20px;">星球热度：{{item.hot}}</span>
+            <span style="margin-left:20px;">创建时间：{{item.createTime}}</span>
+            <el-button size="mini" type="primary" class="see_button" @click="seeresource(item.planetCode)">查看</el-button>
             <el-divider></el-divider>
           </div>
         </div>
@@ -65,8 +64,8 @@
 
 <script>
 
-import {getSearchPlanet} from "@/api/homepage/planet";
-import {getResourceByPCode} from "@/api/admin/manage";
+
+import {adminSearchPlanet, getResourceByPCode} from "@/api/admin/manage";
 import {freezeOrThawResource} from "@/api/admin/manage";
 import CheckResourceCard from "@/components/administrator/resourceCheckPage/CheckResourceCard";
 import CheckResourceDetail from "@/components/administrator/resourceCheckPage/CheckResourceDetail";
@@ -85,7 +84,7 @@ export default {
       logs:[],
       isNot:'',
       isUserInformation:false,
-      planetResult:[],
+      planetResult: {},
       resourceList:[],
       isShowResult:false
     }
@@ -95,8 +94,9 @@ export default {
       if(this.inputname!=''){
         let name=this.inputname
         console.log(name)
-        getSearchPlanet(name).then((res)=>{
+        adminSearchPlanet(name).then((res)=>{
           if(res.data.success === true){
+            console.log(112221)
             this.isShowResult=true
             let data = res.data.data.planetList
             console.log(data)
@@ -110,7 +110,7 @@ export default {
       if(this.inputname!=''){
         let name=this.inputname
         console.log(name)
-        getSearchPlanet(name).then((res)=>{
+        adminSearchPlanet(name).then((res)=>{
           if(res.data.success === true){
             let data = res.data.data.planetList
             console.log(data)
@@ -121,6 +121,7 @@ export default {
 
             getResourceByPCode(this.planetCode).then((res)=>{
               if(res.data.success === true){
+                console.log(12121212)
                 let data = res.data.data.resourceList
                 this.resourceList=data
                 console.log(this.resourceList)
@@ -136,7 +137,7 @@ export default {
         if(res.data.success === true){
           console.log(res)
 
-          getSearchPlanet(this.inputname).then((res)=>{
+          adminSearchPlanet(this.inputname).then((res)=>{
             if(res.data.success === true){
               let data = res.data.data.planetList
               console.log(data)
@@ -161,7 +162,7 @@ export default {
       freezeOrThawResource(resourceId,type).then((res)=>{
         if(res.data.success === true){
           console.log(res)
-          getSearchPlanet(this.inputname).then((res)=>{
+          adminSearchPlanet(this.inputname).then((res)=>{
             if(res.data.success === true){
               let data = res.data.data.planetList
               console.log(data)
