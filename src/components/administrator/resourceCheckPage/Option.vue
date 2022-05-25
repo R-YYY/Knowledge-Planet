@@ -38,13 +38,13 @@ export default{
       this.$router.push('/admin')
     },
     goToSystemNotice(){
-      this.$router.push('/admin/systemnotice')
+      this.$router.push('/admin/systemNotice')
     },
     goToUserManage(){
-      this.$router.push('/admin/usermanage')
+      this.$router.push('/admin/userManage')
     },
     goToResourceCheck(){
-      this.$router.push('/admin/resourcecheck')
+      this.$router.push('/admin/resourceCheck')
     }
   },
   mounted(){

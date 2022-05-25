@@ -1,6 +1,6 @@
 <template>
   <div id="systemNotice">
-    <Header></Header>
+    <AdminHeader></AdminHeader>
     <div id="main">
       <Option class="left"></Option>
       <CreateNotice class="center"></CreateNotice>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
+import AdminHeader from "@/components/AdminHeader";
 import Option from "@/components/administrator/systemNoticePage/Option";
 import CreateNotice from "@/components/administrator/systemNoticePage/CreateNotice";
 import NoticeHistory from "@/components/administrator/systemNoticePage/NoticeHistory";
@@ -20,7 +20,7 @@ export default{
   components:{
     NoticeHistory,
     CreateNotice,
-    Header,
+    AdminHeader,
     Option,
   },
   data(){

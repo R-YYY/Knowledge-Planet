@@ -186,7 +186,7 @@ router.beforeEach((to, from, next)=>{
     else if(window.sessionStorage.getItem('planetCode')===null&&planetSet.has(to.name)){
         next('homepage')
     }
-    else if(adminSet.has(to.name)&&(from.name!=='adminLogin'||adminSet.has(from.name))){
+    else if(adminSet.has(to.name)&&(from.name!=='adminLogin'&&!adminSet.has(from.name))){
         next('adminLogin')
     }
     else{

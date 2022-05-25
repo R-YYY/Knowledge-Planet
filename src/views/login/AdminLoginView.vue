@@ -66,7 +66,7 @@ export default {
         this.$message({message: res.data.message, type: res.data.success?'success':'error'});
         if(res.data.success){
           window.sessionStorage.setItem("token",res.data.data.token);
-          this.$router.push("/admin/systemnotice")
+          this.$router.push("/admin/systemNotice")
         }
       }).catch(()=>{
         this.$message({message: "系统错误" , type: 'error'});

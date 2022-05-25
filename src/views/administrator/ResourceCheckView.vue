@@ -1,6 +1,6 @@
 <template>
   <div id="resourceCheck">
-    <Header></Header>
+    <AdminHeader></AdminHeader>
     <div id="main">
       <Option class="left"></Option>
       <CheckResource class="center"></CheckResource>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
+import AdminHeader from "@/components/AdminHeader";
 import Option from "@/components/administrator/resourceCheckPage/Option";
 import CheckResource from "@/components/administrator/resourceCheckPage/CheckResource";
 import AllPlanet from "@/components/administrator/resourceCheckPage/AllPlanet";
@@ -18,7 +18,7 @@ import AllPlanet from "@/components/administrator/resourceCheckPage/AllPlanet";
 export default{
   name:"ResourceCheckView",
   components:{
-    Header,
+    AdminHeader,
     Option,
     CheckResource,
     AllPlanet
