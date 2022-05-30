@@ -15,25 +15,6 @@ export function getUserById(){
     })
 }
 
-export function updateNameById(newName) {
-    return axios({
-        method: "POST",
-        url: "/background/updateNameById",
-        params:{
-            newName:newName
-        }
-    })
-}
-
-export function updateAvatarById(newAvatar) {
-    return axios({
-        method: "POST",
-        url: "/background/updateAvatarById",
-        params:{
-            newAvatar:newAvatar
-        }
-    })
-}
 
 export function releaseNotice(data) {
     return axios({
@@ -91,16 +72,6 @@ export function getResourceByPCode(planetCode) {
     })
 }
 
-export function freezeResource(resourceId){
-    let data = new FormData();
-    data.append("resourceId",resourceId);
-    return axios({
-        method:"POST",
-        url:"/resource/freezeResource",
-        data:data
-    })
-}
-
 export function freezeOrThawResource(resourceId,type){
     let data = new FormData();
     data.append("resourceId",resourceId);
@@ -119,6 +90,16 @@ export function adminSearchPlanet(searchContent) {
         params:{
             keyWord:searchContent
         }
+    })
+}
+
+export function adminGetResourceByPCode(planetCode){
+    let data = new FormData();
+    data.append("planetCode",planetCode);
+    return axios({
+        method:"GET",
+        url:"/resource/adminGetResourceByPCode?planetCode="+planetCode,
+        data:data
     })
 }
 

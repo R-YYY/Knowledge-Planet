@@ -7,7 +7,7 @@
       <div class="planets">
         <div class="joinplanet">
           <h1 style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我加入的星球</h1>
-          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-20px;">
+          <div class="jp" style="width:500px;margin-left:-30px;margin-top:-20px;">
             <el-tag
                 v-for="item in joinplanets"
                 :key="item.planet.planetCode"
@@ -20,7 +20,7 @@
         </div>
         <div class="createplanet" style="margin-top:30px;">
           <h1 style="font-family: 'Microsoft YaHei';font-weight:bold;font-size:20px;">我创建的星球</h1>
-          <div class="jp" style="width:300px;margin-left:-30px;margin-top:-10px;">
+          <div class="jp" style="width:500px;margin-left:-30px;margin-top:-10px;">
             <el-tag
                 v-for="item in createplanets"
                 :key="item.planet.planetCode"

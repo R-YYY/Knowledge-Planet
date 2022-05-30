@@ -19,7 +19,7 @@
                 width="200"
                 trigger="hover"
                 :content="item.planetDescription">
-              <el-tag slot="reference" class="planet_tag" type="plain" @click="searchResourceById(item.planetName)">
+              <el-tag slot="reference" class="planet_tag" type="plain" @click="searchResourceById(item.planetName,item.planetCode)">
                 <img :src="item.planetAvatar" class="planet_avatar">
                 {{ item.planetName }}
               </el-tag>
@@ -45,8 +45,8 @@ export default{
     }
   },
   methods:{
-    searchResourceById(planetName){
-      eventBus.$emit('CodeResource',planetName)
+    searchResourceById(planetName,planetCode){
+      eventBus.$emit('CodeResource',planetName,planetCode)
 
 
     }

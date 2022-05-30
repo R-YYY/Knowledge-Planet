@@ -74,7 +74,7 @@
 <script>
 
 import cos from "@/api/cos";
-import {getUserById, updateAvatarById, updateNameById} from "@/api/admin/manage";
+import {getUserById, updateAvatarById, updateNameById} from "@/api/personal/information";
 
 export default {
   data() {
@@ -196,8 +196,6 @@ export default {
   font-size: 20px;
   margin-left: 40px;
   margin-top: 20px;
-  background-color: #99ffff;
-  box-shadow: 0 0 10px #dcdcdc;
   width: 375px;
   height: 35px;
   border-radius: 5px;
@@ -212,8 +210,6 @@ export default {
   font-size: 20px;
   margin-left: 40px;
   margin-top: 20px;
-  background-color: #99ffff;
-  box-shadow: 0 0 10px #dcdcdc;
   width: 375px;
   height: 35px;
   border-radius: 5px;
@@ -226,8 +222,6 @@ export default {
   font-size: 20px;
   margin-left: 40px;
   margin-top: 20px;
-  background-color: #99ffff;
-  box-shadow: 0 0 10px #dcdcdc;
   width: 375px;
   height: 35px;
   border-radius: 5px;

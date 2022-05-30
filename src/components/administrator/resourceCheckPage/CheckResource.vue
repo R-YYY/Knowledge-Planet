@@ -67,6 +67,7 @@
 
 import {adminSearchPlanet, getResourceByPCode} from "@/api/admin/manage";
 import {freezeOrThawResource} from "@/api/admin/manage";
+import {adminGetResourceByPCode} from "@/api/admin/manage";
 import CheckResourceCard from "@/components/administrator/resourceCheckPage/CheckResourceCard";
 import CheckResourceDetail from "@/components/administrator/resourceCheckPage/CheckResourceDetail";
 import eventBus from "@/utils/eventBus";
@@ -79,6 +80,7 @@ export default {
   data() {
     return {
       inputname:'',
+      inputcode:'',
       planetCode:'',
       information: {},
       logs:[],
@@ -99,37 +101,22 @@ export default {
             console.log(112221)
             this.isShowResult=true
             let data = res.data.data.planetList
-            console.log(data)
             this.planetResult=data
             console.log(this.planetResult)
           }
         })
       }
     },
-    searchplanet(){
-      if(this.inputname!=''){
-        let name=this.inputname
-        console.log(name)
-        adminSearchPlanet(name).then((res)=>{
-          if(res.data.success === true){
-            let data = res.data.data.planetList
-            console.log(data)
-            this.planetResult=data
-            this.planetCode=this.planetResult[0].planet.planetCode
-            console.log(this.planetCode)
-            console.log(this.planetResult)
-
-            getResourceByPCode(this.planetCode).then((res)=>{
-              if(res.data.success === true){
-                console.log(12121212)
-                let data = res.data.data.resourceList
-                this.resourceList=data
-                console.log(this.resourceList)
-              }
-            })
-          }
-        })
-      }
+    getclickresource(inputName,inputCode){
+      this.inputname=inputName
+      this.inputcode=inputCode
+      adminGetResourceByPCode(this.inputcode).then((res)=>{
+        if(res.data.success === true){
+          let data = res.data.data.resourceList
+          this.resourceList=data
+          console.log(this.resourceList)
+        }
+      })
     },
     freezeresource(resourceId){
       let type=3
@@ -145,7 +132,7 @@ export default {
               this.planetCode=this.planetResult[0].planet.planetCode
               console.log(this.planetCode)
 
-              getResourceByPCode(this.planetCode).then((res)=>{
+              adminGetResourceByPCode(this.planetCode).then((res)=>{
                 if(res.data.success === true){
                   let data = res.data.data.resourceList
                   this.resourceList=data
@@ -170,7 +157,7 @@ export default {
               this.planetCode=this.planetResult[0].planet.planetCode
               console.log(this.planetCode)
 
-              getResourceByPCode(this.planetCode).then((res)=>{
+              adminGetResourceByPCode(this.planetCode).then((res)=>{
                 if(res.data.success === true){
                   let data = res.data.data.resourceList
                   this.resourceList=data
@@ -183,8 +170,11 @@ export default {
       })
     },
     seeresource(planetCode){
-      getResourceByPCode(planetCode).then((res)=>{
+      console.log(123)
+      console.log(planetCode)
+      adminGetResourceByPCode(planetCode).then((res)=>{
         if(res.data.success === true){
+          console.log(123)
           this.isShowResult=false
           let data = res.data.data.resourceList
           this.resourceList=data
@@ -196,9 +186,12 @@ export default {
   },
 
   mounted() {
-    eventBus.$on('CodeResource',(res)=>{
-      this.inputname=res
-      this.searchplanet(this.inputname)
+    eventBus.$on('CodeResource',(planetName,planetCode)=>{
+      console.log(planetName)
+      console.log(planetCode)
+      this.inputname=planetName
+      this.inputcode=planetCode
+      this.getclickresource(planetName,planetCode)
     })
   }
 }
