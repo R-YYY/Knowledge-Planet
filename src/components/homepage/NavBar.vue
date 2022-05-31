@@ -72,8 +72,8 @@
 
     <div class="createplanet">
       <el-dialog :visible.sync="showCreatePlanet">
-        <el-form :model="planetform" class="planetform">
-          <el-form-item label="星球图片" :label-width="planetformLabelWidth">
+        <el-form :model="planetform" ref="planetform" class="planetform" :rules="rules">
+          <el-form-item label="星球图片" :label-width="planetformLabelWidth" prop="avatar">
             <el-upload
                 class="avatar-uploader"
                 :auto-upload="false"
@@ -83,23 +83,28 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item label="星球名字" :label-width="planetformLabelWidth">
-            <el-input class="input" v-model="planetform.name" autocomplete="off"></el-input>
+          <el-form-item label="星球名字" :label-width="planetformLabelWidth" prop="name">
+            <el-input class="input" v-model="planetform.name" autocomplete="off" maxlength="15" show-word-limit></el-input>
           </el-form-item>
-          <el-form-item label="星球描述" :label-width="planetformLabelWidth">
+          <el-form-item label="星球描述" :label-width="planetformLabelWidth" prop="description">
             <el-input
                 class="input"
                 type="textarea"
-                :rows="2"
+                :rows="3"
+                maxlength="90"
+                show-word-limit
                 placeholder="请输入内容"
                 v-model="planetform.description">
             </el-input>
           </el-form-item>
+          <el-form-item class="dialog-footer">
+            <el-button @click="showCreatePlanet = false">取 消</el-button>
+            <el-button @click="submitForm('planetform')">确 定</el-button>
+
+          </el-form-item>
+
+
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="showCreatePlanet = false">取 消</el-button>
-          <el-button @click="upload">确 定</el-button>
-        </div>
       </el-dialog>
     </div>
   </div>
@@ -116,7 +121,7 @@ export default{
   data(){
     return{
       showCreatePlanet:false,
-      planetformLabelWidth: '5em',
+      planetformLabelWidth: '6em',
       notices:[],
       noticePage:false,
       planetform:{
@@ -125,6 +130,19 @@ export default{
         createtime:'',
         description:'',
         coverage:{}
+      },
+      rules:{
+        avatar:[
+          {required:true,message:'请加入图片',trigger:'blur'},
+        ],
+        name:[
+          {required:true,message:'请输入星球名字',trigger:'blur'},
+          {min:1,max:15,message:'长度在1到15个字符',trigger:'blur'}
+        ],
+        description:[
+          {required:true,message:'请输入星球介绍',trigger:'blur'},
+          {min:1,max:90,message:'长度在1到90个字符',trigger:'blur'}
+        ]
       },
       joinplanets:[],
       createplanets:[]
@@ -161,6 +179,21 @@ export default{
         }
       })
       this.showCreatePlanet = false
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.upload();
+          this.$message({
+            message: '成功创建',
+            type: 'success'
+          });
+
+        } else {
+          this.$message.error('创建失败');
+          return false;
+        }
+      });
     },
     handlePicturePreview(file) {
       this.planetform.coverage = file.raw

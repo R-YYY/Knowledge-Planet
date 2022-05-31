@@ -20,7 +20,21 @@
         </div>
       </div>
       <div id="right">
-        <div id="icon1" class="icon" @click="goToPersonalPage"></div>
+        <el-popover
+            placement="top-start"
+            width="50"
+            trigger="click">
+            <img :src="avatar" class="myavatar" slot="reference">
+          <div class="personal_page" @click="goToPersonalPage">
+            <img src="../assets/icon/my.png" class="personal_png">个人主页
+          </div>
+
+          <div class="login_page" @click="goToLoginPage">
+            <img src="../assets/homepageimg/leave.png" class="leave_png" >退出登录
+          </div>
+
+        </el-popover>
+
         <div id="icon2" class="icon" @click="showMessage"></div>
         <div id="icon3" class="icon" @click="showNotice"></div>
         <span>
@@ -108,6 +122,7 @@ export default {
   data() {
     return {
       searchContent: '',
+      avatar:window.sessionStorage.getItem("avatar"),
       color: 'color:#E4E7ED',
       screenWidth: document.body.clientWidth,
       mode: true,
@@ -188,6 +203,9 @@ export default {
     },
     goToPersonalPage(){
       this.$router.push('/personal')
+    },
+    goToLoginPage(){
+      this.$router.push('/login')
     },
     goinplanet(planetCode,planetName){
       window.sessionStorage.setItem("planetCode",planetCode)
@@ -315,12 +333,6 @@ export default {
   background-size: cover;
 }
 
-#icon1 {
-  background-image: url("../assets/icon/my.png");
-  height: 40px;
-  width: 40px;
-  margin-top: 5px;
-}
 #icon2 {
   background-image: url("../assets/icon/message.png");
 }
@@ -329,6 +341,15 @@ export default {
   background-image: url("../assets/icon/notice2.png");
 }
 
+.myavatar{
+  float: right;
+  margin-top:8px;
+  margin-left: 20px;
+  height: 35px;
+  width: 35px;
+  background-size: cover;
+  border-radius: 50%;
+}
 
 .searchBar {
   margin-top: 7px;
@@ -364,8 +385,8 @@ i {
   line-height: 36px;
 }
 .messagenumber{
-  margin-left:85px;
-  margin-top:-85px;
+  margin-left:90px;
+  margin-top:-80px;
 }
 .readmessage{
   margin-left: 300px;
@@ -394,5 +415,26 @@ i {
 }
 .searchresult{
   margin-left:100px;
+}
+.personal_png{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:5px;
+}
+.leave_png{
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  vertical-align:middle;
+  margin-right:5px;
+}
+.login_page{
+  margin-top:10px;
+  margin-left:10px;
+}
+.personal_page{
+  margin-left:10px;
 }
 </style>

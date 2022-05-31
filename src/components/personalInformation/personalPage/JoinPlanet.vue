@@ -92,7 +92,7 @@ export default{
   /*background-color:white;*/
   /*border-color:white;*/
   color:black;
-  width:200px;
+  width:250px;
 }
 .longjoinplanet{
   text-align: center;

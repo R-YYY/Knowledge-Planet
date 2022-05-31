@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div class="nonecontent" v-if="recommendplanet.length==0">
+      <div class="nonecontent" v-if="recommendplanet.length===0">
         <el-empty description="暂无推荐星球"></el-empty>
       </div>
 
@@ -184,5 +184,8 @@ export default{
   width:25px;
   height:25px;
   margin-left:5px;
+}
+.nonecontent{
+  margin-top: -500px;
 }
 </style>

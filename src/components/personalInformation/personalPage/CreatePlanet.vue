@@ -91,7 +91,7 @@ export default{
 }
 .el-tag{
   color:black;
-  width:200px;
+  width:250px;
 }
 .longcreateplanet{
   text-align: center;

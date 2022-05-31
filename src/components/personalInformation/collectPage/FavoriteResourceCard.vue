@@ -154,7 +154,7 @@ export default {
   height: 175px;
   width: 100%;
   border-bottom: 2px solid #dadada;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .content_left {

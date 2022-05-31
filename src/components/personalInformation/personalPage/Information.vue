@@ -19,9 +19,6 @@
         <div class="mail">
           <span>邮箱：</span><span>{{ information.email }}</span>
         </div>
-        <div class="id">
-          <span>ID：</span><span>{{ information.userId }}</span>
-        </div>
       </div>
 
       <div class="changebutton">
@@ -51,11 +48,6 @@
             <el-form-item label="邮箱" :label-width="informationformLabelWidth">
               <el-col :span="18">
                 <el-input class="input" v-model="information.email" autocomplete="off" disabled="true"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="ID" :label-width="informationformLabelWidth">
-              <el-col :span="18">
-                <el-input class="input" v-model="information.userId" autocomplete="off" disabled="true"></el-input>
               </el-col>
             </el-form-item>
 
@@ -206,18 +198,6 @@ export default {
 
 
 .mail {
-  font-family: "Microsoft YaHei";
-  font-size: 20px;
-  margin-left: 40px;
-  margin-top: 20px;
-  width: 375px;
-  height: 35px;
-  border-radius: 5px;
-  line-height: 35px;
-  padding-left: 5px;
-}
-
-.id {
   font-family: "Microsoft YaHei";
   font-size: 20px;
   margin-left: 40px;
