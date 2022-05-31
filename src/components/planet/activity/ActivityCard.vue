@@ -132,7 +132,9 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then((res) => {
-          checkActivity(this.activity.activityId, res.value, index).then((res) => {
+
+          let planetCode = window.sessionStorage.getItem('planetCode')
+          checkActivity(planetCode, this.activity.activityId, res.value, index).then((res) => {
             if (res.data.success) {
               console.log(res)
               this.$message.success("操作成功！")
@@ -148,7 +150,8 @@ export default {
           });
         });
       } else {
-        checkActivity(this.activity.activityId, '通过', index).then((res) => {
+        let planetCode = window.sessionStorage.getItem('planetCode')
+        checkActivity(planetCode, this.activity.activityId, '通过', index).then((res) => {
           if (res.data.success) {
             console.log(res)
             this.$message.success("操作成功！")

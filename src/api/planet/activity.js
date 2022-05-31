@@ -15,11 +15,12 @@ export function getActivity(planetId) {
     })
 }
 
-export function checkActivity(activityId,checkInfo,checkResult) {
+export function checkActivity(planetCode,activityId,checkInfo,checkResult) {
     let formData = new FormData()
     formData.append('activityId',activityId)
     formData.append('checkInfo',checkInfo)
     formData.append('checkResult',checkResult)
+    formData.append('planetCode',planetCode)
     return axios({
         method: 'POST',
         url: '/activity/checkActivity',

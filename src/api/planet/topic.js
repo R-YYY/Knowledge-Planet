@@ -22,7 +22,7 @@ export function getFirstComment(topicId) {
     })
 }
 
-export function addComment(topicId,parentId,firstCommentId,content,type) {
+export function addComment(planetCode,topicId,parentId,firstCommentId,content,type) {
     return axios({
         method: 'POST',
         url: '/topic/addComment',
@@ -31,7 +31,8 @@ export function addComment(topicId,parentId,firstCommentId,content,type) {
             parentId:parentId,
             firstCommentId:firstCommentId,
             content:content,
-            type:type
+            type:type,
+            planetCode:planetCode
         }
     })
 }
