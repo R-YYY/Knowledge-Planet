@@ -13,7 +13,8 @@
                 :on-remove="removePicture"
                 :limit="1"
                 action="string">
-              <div v-if="competition.picture!==null" :style="{backgroundImage:'url('+competition.picture+')'}" class="picture"></div>
+              <div v-if="competition.picture!==null" :style="{backgroundImage:'url('+competition.picture+')'}"
+                   class="picture"></div>
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -50,32 +51,32 @@ import {addCompetition} from "@/api/planet/competition";
 
 export default {
   name: "AddCompetition",
-  data(){
-    return{
-      dialogVisible:false,
-      competition:{
-        title:"",
-        description:"",
-        picture:null,
-        createTime:"",
-        startTime:"",
-        endTime:"",
-        questionNumber:0,
-        score:0,
-        status:0,
+  data() {
+    return {
+      dialogVisible: false,
+      competition: {
+        title: "",
+        description: "",
+        picture: null,
+        createTime: "",
+        startTime: "",
+        endTime: "",
+        questionNumber: 0,
+        score: 0,
+        status: 0,
       },
-      rules:{
+      rules: {
         title: [
-          { required: true, message: '请输入竞赛名称', trigger: 'blur' },
+          {required: true, message: '请输入竞赛名称', trigger: 'blur'},
         ],
-        description:[
-          { required: true, message: '请输入竞赛描述', trigger: 'blur' },
+        description: [
+          {required: true, message: '请输入竞赛描述', trigger: 'blur'},
         ],
         startTime: [
-          { type: 'date', required: true, message: '请选择开始时间', trigger: 'change' }
+          {type: 'date', required: true, message: '请选择开始时间', trigger: 'change'}
         ],
-        endTime:[
-          { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }
+        endTime: [
+          {type: 'date', required: true, message: '请选择结束时间', trigger: 'change'}
         ],
         picture: [
           {required: true, message: '请上传封面', trigger: 'blur'},
@@ -83,17 +84,17 @@ export default {
       }
     }
   },
-  methods:{
-    create(){
-      this.$refs.ruleForm.validate((valid)=>{
-        if(valid){
+  methods: {
+    create() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
           let planetCode = window.sessionStorage.getItem("planetCode")
-          addCompetition(this.competition,planetCode).then((res)=>{
+          addCompetition(this.competition, planetCode).then((res) => {
             console.log(res.data)
             this.dialogVisible = false
             this.open(res.data.data.competitionId)
-          }).catch(()=>{
-            this.$message({type:"error",message:"系统错误，创建失败"})
+          }).catch(() => {
+            this.$message({type: "error", message: "系统错误，创建失败"})
           })
         }
       })
@@ -110,8 +111,8 @@ export default {
           params: {
             cid: competitionId,
           },
-          query:{
-            competition:JSON.stringify(this.competition)
+          query: {
+            competition: JSON.stringify(this.competition)
           }
         })
       }).catch(() => {
@@ -152,7 +153,7 @@ export default {
       cos.deleteObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: file.raw.uid + file.raw.name,              /* 必须 */
+        Key: 'competitionPicture/' + file.raw.uid + file.raw.name,              /* 必须 */
       }, function (err, data) {
         console.log(err, data)
         if (err || data.statusCode !== 204) {
@@ -168,12 +169,12 @@ export default {
 </script>
 
 <style scoped>
-.form{
+.form {
   padding-left: 50px;
   padding-right: 110px;
 }
 
-.create_btn{
+.create_btn {
   color: white;
   font-weight: bold;
   text-align: center;
@@ -187,7 +188,7 @@ export default {
   border-radius: 10px;
 }
 
-.cancel{
+.cancel {
   margin: 20px 120px 20px 220px;
 }
 

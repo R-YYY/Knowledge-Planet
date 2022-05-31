@@ -89,7 +89,7 @@ export default {
       cos.deleteObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: that.picturesKey[index],              /* 必须 */
+        Key: 'discuss/' + that.picturesKey[index],              /* 必须 */
       }, function (err, data) {
         console.log(err, data)
         if (err || data.statusCode !== 204) {

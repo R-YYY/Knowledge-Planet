@@ -90,7 +90,7 @@ export default {
       this.information.avatar = URL.createObjectURL(file.raw);
     },
     upload(name,avatar) {
-      let key = this.information.userId+this.information.userName
+      let key = 'userAvatar/'+this.information.userId+this.information.userName
       let coverage = this.information.coverage
       let information = this.information
       let that = this

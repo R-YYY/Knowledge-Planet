@@ -132,27 +132,27 @@ export default {
           this.$message.error('提交失败!!');
           return false;
         }
+        let resource = JSON.stringify({
+          "planetCode": this.form.planetCode,
+          "resourceName": this.form.resourceName,
+          "link": this.form.link,
+          "coverage": this.form.coverage,
+          "resourceDescription": this.form.description,
+          "details": this.form.detail,
+          "tagList": this.form.tags
+        })
+        console.log(resource)
+        let that = this
+        uploadResource(resource).then((res) => {
+          console.log(res)
+          if (res.data.success === true) {
+            that.$message.success("上传成功")
+            that.dialogFormVisible = false
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       });
-      let resource = JSON.stringify({
-        "planetCode": this.form.planetCode,
-        "resourceName": this.form.resourceName,
-        "link": this.form.link,
-        "coverage": this.form.coverage,
-        "resourceDescription": this.form.description,
-        "details": this.form.detail,
-        "tagList": this.form.tags
-      })
-      console.log(resource)
-      let that = this
-      uploadResource(resource).then((res) => {
-        console.log(res)
-        if (res.data.success === true) {
-          that.$message.success("上传成功")
-          that.dialogFormVisible = false
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
     },
     handleClose(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
@@ -202,7 +202,7 @@ export default {
       cos.deleteObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: file.raw.uid + file.raw.name,              /* 必须 */
+        Key: 'resourceCoverage/' + file.raw.uid + file.raw.name,              /* 必须 */
       }, function (err, data) {
         console.log(err, data)
         if (err || data.statusCode !== 204) {
@@ -244,7 +244,7 @@ export default {
       cos.deleteObject({
         Bucket: 'covenant-1308013334', /* 必须 */
         Region: 'ap-shanghai',     /* 存储桶所在地域，必须字段 */
-        Key: file.raw.uid + file.raw.name,              /* 必须 */
+        Key: 'resourceFiles/' + file.raw.uid + file.raw.name,              /* 必须 */
       }, function (err, data) {
         console.log(err, data)
         if (err || data.statusCode !== 204) {

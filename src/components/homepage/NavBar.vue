@@ -132,7 +132,7 @@ export default{
   },
   methods:{
     upload() {
-      let key = this.planetform.coverage.uid+this.planetform.coverage.name
+      let key = 'planetAvatar/' +this.planetform.coverage.uid+this.planetform.coverage.name
       let coverage = this.planetform.coverage
       let planetform = this.planetform
       let that = this
