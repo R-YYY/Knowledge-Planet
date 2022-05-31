@@ -155,6 +155,7 @@ export default{
           let coverage="https://"+data.Location
           createPlanet(name,description,coverage).then((res)=>{
             window.sessionStorage.setItem("planetName",name)
+            window.sessionStorage.setItem("planetCode",res.data.data.planetCode)
             that.$router.push("/planet")
           })
         }
