@@ -2,7 +2,7 @@
   <div class="commentArea" v-show="isShow">
     <div class="head">
       <span class="commentNum">{{ commentList.length }}&nbsp条评论</span>
-      <span class="el-icon-sort sort" @click="sortMethod=!sortMethod">
+      <span class="el-icon-sort sort" @click="compare">
           切换为按{{ sortMethod ? '热度' : '时间' }}排序</span>
     </div>
     <div>
@@ -58,7 +58,8 @@ import throttle from "@/utils/throttle";
 import showReplyCard from "@/components/planet/homepage/discussion/replyCard";
 import {getFirstComment, addComment, praise, unPraise} from "@/api/planet/topic";
 import eventBus from "@/utils/eventBus";
-import {loginPost} from "@/api/login/login";
+import {compareByDesc, compareByAsc} from "@/utils/compare";
+
 
 export default {
   name: "commentArea",
@@ -75,7 +76,6 @@ export default {
   },
   created() {
     this.throttleLike = throttle(this.like, 1000)
-    console.log(1)
     this.updateComment()
     eventBus.$on('addMyComment', () => {
       this.updateComment()
@@ -113,14 +113,19 @@ export default {
       }
 
     },
+    compare() {
+      this.sortMethod = !this.sortMethod
+      if (this.sortMethod)
+        this.commentList.sort(compareByDesc("time"))
+      else
+        this.commentList.sort(compareByDesc("praiseCount"))
+    },
     updateComment() {
       getFirstComment(this.topicId).then((res) => {
         this.commentList = []
         let commentList = res.data.data.result.commentList
         for (let item of commentList) {
-          console.log(1)
           let shortContent = this.analyseContent(item.comment.content)
-          console.log(shortContent)
           this.commentList.push({
             topicId: item.comment.topicId,
             commentId: item.comment.commentId,
@@ -144,12 +149,13 @@ export default {
       })
     },
     reply(comment) {
-      if(!comment.myReplyContent){
+      if (!comment.myReplyContent) {
         this.$message.error("内容不能为空")
         return
       }
       let that = this
-      addComment(comment.topicId, comment.commentId, comment.commentId, comment.myReplyContent, 0).then((res) => {
+      let planetCode = window.sessionStorage.getItem('planetCode')
+      addComment(planetCode, comment.topicId, comment.commentId, comment.commentId, comment.myReplyContent, 0).then((res) => {
         if (res.data.success) {
           that.$message.success("回复成功")
           comment.myReplyContent = ''

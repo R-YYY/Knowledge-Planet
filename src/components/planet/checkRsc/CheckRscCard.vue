@@ -218,4 +218,9 @@ content_right_bottom {
   font-weight: bold;
   cursor: pointer;
 }
+
+.tag {
+  display: inline-block;
+  margin-left: 10px;
+}
 </style>
