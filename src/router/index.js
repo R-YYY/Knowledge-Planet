@@ -160,6 +160,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next)=>{
+    let loginSet = new Set()
+    loginSet.add('login')
+    loginSet.add('adminLogin')
+    loginSet.add('register')
+    loginSet.add('findPassword')
     let planetSet = new Set()
     planetSet.add('resource')
     planetSet.add('checkResource')
@@ -176,7 +181,7 @@ router.beforeEach((to, from, next)=>{
     adminSet.add('resourceCheck')
     adminSet.add('userManage')
     adminSet.add('systemNotice')
-    if(window.sessionStorage.getItem('token')===null&&(to.name!=='login'&&to.name!=='adminLogin')){
+    if(window.sessionStorage.getItem('token')===null&&(!loginSet.has(to.name))){
         next('login')
     }
     else if(window.sessionStorage.getItem('planetCode')===null&&planetSet.has(to.name)){
