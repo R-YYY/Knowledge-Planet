@@ -19,7 +19,7 @@
           <div class="placing">{{item.index}}</div>
           <span class="aaa">{{item.title}}</span>
           <span ><img src="../../assets/homepageimg/hot.png" class="hot_img"></span>
-          <span style="height: 30px;line-height: 30px;float:right;margin-right:-30px;margin-top:12px;">{{item.planethot}}</span>
+          <span style="height: 30px;line-height: 30px;float:right;margin-right:-63px;margin-top:12px;">{{item.planethot}}</span>
         </div>
       </div>
     </div>
@@ -122,7 +122,7 @@ export default{
   height:15px;
 }
 .hot_img{
-  margin-right:40px;
+  margin-right:50px;
   float:right;
   margin-top:15px;
   width:20px;
