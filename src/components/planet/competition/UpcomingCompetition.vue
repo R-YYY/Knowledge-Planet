@@ -3,7 +3,7 @@
     <el-carousel :interval="4000" type="card" height="290px">
       <el-carousel-item v-if="competitionList.length===0" class="empty_card">
         <img src="../../../assets/picture/empty.png" alt="">
-        <div class="empty_word">当前星球没有竞赛可以参加</div>
+        <div class="empty_word">当前星球没有正在进行的竞赛</div>
       </el-carousel-item>
       <div v-else v-for="item in competitionList" :key="item.competitionId">
         <el-carousel-item class="item_card">
