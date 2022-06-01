@@ -66,7 +66,7 @@
               :on-remove="removeFile"
               :limit="1">
             <el-button size="small">点击上传</el-button>
-            <span slot="tip" style="margin-left: 20px" class="el-upload__tip">只能上传文件，且不超过2M</span>
+            <span slot="tip" style="margin-left: 20px" class="el-upload__tip">只能上传文件，且不超过50M</span>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -214,9 +214,9 @@ export default {
       })
     },
     uploadFile(e) {
-      const isLt2M = e.file.size / 1024 / 1024 < 2;
+      const isLt2M = e.file.size / 1024 / 1024 < 50;
       if (!isLt2M) {
-        this.$message.error('上传文件不能超过 2MB!');
+        this.$message.error('上传文件不能超过 50MB!');
       }
       let that = this
       cos.putObject({
