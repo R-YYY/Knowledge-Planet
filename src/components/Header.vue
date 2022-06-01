@@ -322,9 +322,11 @@ export default {
   background-repeat: no-repeat;
   height: 80%;
   top: 10%;
+  cursor:pointer;
 }
 
 .icon {
+  cursor:pointer;
   float: right;
   margin-top: 10px;
   margin-left: 20px;
@@ -334,14 +336,17 @@ export default {
 }
 
 #icon2 {
+  cursor:pointer;
   background-image: url("../assets/icon/message.png");
 }
 
 #icon3 {
+  cursor:pointer;
   background-image: url("../assets/icon/notice2.png");
 }
 
 .myavatar{
+  cursor:pointer;
   float: right;
   margin-top:8px;
   margin-left: 20px;
@@ -431,10 +436,12 @@ i {
   margin-right:5px;
 }
 .login_page{
+  cursor:pointer;
   margin-top:10px;
   margin-left:10px;
 }
 .personal_page{
+  cursor:pointer;
   margin-left:10px;
 }
 </style>

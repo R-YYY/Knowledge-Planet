@@ -243,6 +243,7 @@ export default{
 #navbar{
 }
 .box{
+  cursor:pointer;
   position: relative;
   display: flex;
   height: 76px;
@@ -398,5 +399,9 @@ export default{
   height:25px;
   vertical-align:middle;
   margin-right:5px;
+}
+.jp{
+  cursor:pointer;
+
 }
 </style>

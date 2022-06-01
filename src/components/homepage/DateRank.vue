@@ -129,8 +129,14 @@ export default{
 }
 .aaa{
   display: inline-block;
-  /*width:50px;*/
+  height: 50px;
+  line-height: 50px;
+  width:180px;
   margin-left:20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
 }
 .rank{
   height: 50px;
