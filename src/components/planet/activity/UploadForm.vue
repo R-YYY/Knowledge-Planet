@@ -104,33 +104,39 @@ export default {
   methods: {
     upload() {
       let date = dateFormat("YYYY-mm-dd HH:MM:SS",new Date())
-      if(this.form.time[1]<=date){
+      if(this.form.time[1]<=date||!this.form.time[1]||!this.form.time[0]){
         this.$message.error("时间有误，请重新选择时间")
         return
       }
-      console.log(this.form.time[0])
-      let data = JSON.stringify({
-        "planetCode": this.form.planetCode,
-        "title": this.form.title,
-        "description": this.form.description,
-        "tag": this.form.tag,
-        "maxNumber": this.form.maxNumber,
-        "startTime": this.form.time[0],
-        "endTime": this.form.time[1],
-        "address": this.form.address,
-      })
-      addActivity(data).then((res) => {
-        console.log(res)
-        if (res.data.success) {
-          this.dialogFormVisible = false
-          this.$message.success("发布成功！")
-          this.$emit('update')
-        } else {
-          this.$message.error("发布失败!")
+      this.$refs.ruleForm.validate((valid) => {
+        if (!valid) {
+          this.$message.error('提交失败!!');
+          return false;
         }
-      }).catch((err) => {
-        this.$message.error("发布失败，系统错误！")
-        console.log(err)
+        console.log(this.form.time[0])
+        let data = JSON.stringify({
+          "planetCode": this.form.planetCode,
+          "title": this.form.title,
+          "description": this.form.description,
+          "tag": this.form.tag,
+          "maxNumber": this.form.maxNumber,
+          "startTime": this.form.time[0],
+          "endTime": this.form.time[1],
+          "address": this.form.address,
+        })
+        addActivity(data).then((res) => {
+          console.log(res)
+          if (res.data.success) {
+            this.dialogFormVisible = false
+            this.$message.success("发布成功！")
+            this.$emit('update')
+          } else {
+            this.$message.error("发布失败!")
+          }
+        }).catch((err) => {
+          this.$message.error("发布失败，系统错误！")
+          console.log(err)
+        })
       })
     },
 

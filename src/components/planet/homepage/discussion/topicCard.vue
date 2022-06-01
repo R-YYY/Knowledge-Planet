@@ -127,7 +127,8 @@ export default {
         return
       }
       let that = this
-      addComment(this.topic.topicId, null, null, this.myComment, 1).then((res) => {
+      let planetCode = window.sessionStorage.getItem('planetCode')
+      addComment(planetCode, this.topic.topicId, null, null, this.myComment, 1).then((res) => {
         if (res.data.success) {
           that.$message.success("添加成功")
           that.myComment = ''

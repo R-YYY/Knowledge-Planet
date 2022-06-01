@@ -214,6 +214,8 @@ content_right_bottom {
   margin-left: 15%;
   border-radius: 8px;
   height: auto;
+  min-height: 80px;
+  max-height: 100px;
 }
 
 .tag {
