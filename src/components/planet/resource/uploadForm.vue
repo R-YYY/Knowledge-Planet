@@ -201,7 +201,7 @@ export default {
         } else {
           that.form.coverage = 'https://' + data.Location
           console.log("图片上传成功")
-          this.form.hasCoverage = true
+          that.form.hasCoverage = true
         }
       })
     },
