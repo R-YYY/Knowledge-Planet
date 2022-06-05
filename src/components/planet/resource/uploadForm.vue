@@ -96,6 +96,7 @@ export default {
         link: 'https://',
         tags: [],
         coverage: '',
+        hasCoverage:false
       },
       type: "1",
       inputVisible: false,
@@ -127,6 +128,11 @@ export default {
   },
   methods: {
     upload() {
+      if(!this.form.hasCoverage)
+      {
+        this.$message.error('提交失败!!请上传资源图片!!')
+        return
+      }
       this.$refs.ruleForm.validate((valid) => {
         if (!valid) {
           this.$message.error('提交失败!!');
@@ -174,8 +180,10 @@ export default {
     uploadCoverage(e) {
       const isJPG = e.file.type === 'image/jpeg';
       if (!isJPG) {
-        this.$message.error("请上传图片")
+        this.$message.error("请上传image和jpeg格式的图片")
+        return
       }
+      console.log(1)
       let that = this
       cos.putObject({
         Bucket: 'covenant-1308013334', /* 必须 */
@@ -193,6 +201,7 @@ export default {
         } else {
           that.form.coverage = 'https://' + data.Location
           console.log("图片上传成功")
+          this.form.hasCoverage = true
         }
       })
     },
@@ -217,6 +226,7 @@ export default {
       const isLt2M = e.file.size / 1024 / 1024 < 50;
       if (!isLt2M) {
         this.$message.error('上传文件不能超过 50MB!');
+        return
       }
       let that = this
       cos.putObject({

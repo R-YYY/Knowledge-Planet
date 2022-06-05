@@ -125,6 +125,7 @@ export default {
       const isJPG = e.file.type === 'image/jpeg';
       if (!isJPG) {
         this.$message.error("请上传图片")
+        return
       }
       let that = this
       cos.putObject({
