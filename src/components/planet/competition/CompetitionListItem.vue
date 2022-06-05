@@ -47,7 +47,7 @@ export default {
         console.log(res.data)
         if(res.data.success){
           this.competition.userScore = type===1?0:null
-          this.$message.success(type===1?"已取消报名":"报名成功")
+          this.$message.success(type===1?"报名成功":"已取消报名")
         }
       })
     }
