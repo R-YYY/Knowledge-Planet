@@ -78,6 +78,11 @@ export default {
   },
   methods: {
     handlePicturePreview(file) {
+      if(file.raw.type!=='image/jpeg'&&file.raw.type!=='image/png')
+      {
+        this.$message.error('请上传jpg或png格式的图片！')
+        return
+      }
       this.information.coverage = file.raw
       this.information.avatar = URL.createObjectURL(file.raw);
     },

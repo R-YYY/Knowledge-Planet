@@ -41,7 +41,7 @@
         <el-form-item label="描述" prop="description" :label-width="formLabelWidth">
           <el-input class="input" v-model="form.description" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="简介" prop="detail" :label-width="formLabelWidth">
+        <el-form-item label="详情" prop="detail" :label-width="formLabelWidth">
           <el-input
               class="input"
               type="textarea"
@@ -178,9 +178,8 @@ export default {
       this.inputValue = '';
     },
     uploadCoverage(e) {
-      const isJPG = e.file.type === 'image/jpeg';
-      if (!isJPG) {
-        this.$message.error("请上传image和jpeg格式的图片")
+      if (e.file.type!=='image/png' &&e.file.type!=='image/jpeg') {
+        this.$message.error("请上传png或jpeg格式的图片")
         return
       }
       console.log(1)

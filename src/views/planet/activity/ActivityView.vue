@@ -11,7 +11,7 @@
       </div>
       <div id="content">
         <div v-if="!checkMode&&item.isShow" class="card" v-for="(item, index) in activityList" :key="item.activityId">
-          <ActivityCard :activity="item" @quit="item.isShow=false"></ActivityCard>
+          <ActivityCard :activity="item" @quit="updateActivity"></ActivityCard>
         </div>
         <div v-if="checkMode&&item.isShow" class="card" v-for="(item, index) in noCheckActivityList" :key="item.activityId">
           <ActivityCard :activity="item" @update="updateActivity"></ActivityCard>

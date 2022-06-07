@@ -196,6 +196,10 @@ export default{
       });
     },
     handlePicturePreview(file) {
+      if(file.raw.type!=='image/jpeg'&&file.raw.type!=='image/png'){
+        this.$message.error('请上传图片')
+        return
+      }
       this.planetform.coverage = file.raw
       this.planetform.avatar = URL.createObjectURL(file.raw);
     },
