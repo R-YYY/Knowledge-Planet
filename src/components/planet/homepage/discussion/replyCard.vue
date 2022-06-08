@@ -154,7 +154,7 @@ export default {
         return
       }
       let that = this
-      addComment(comment.topicId, comment.commentId, this.comment.commentId, comment.myReplyContent, 0).then((res) => {
+      addComment(window.sessionStorage.getItem('planetCode'),comment.topicId, comment.commentId, this.comment.commentId, comment.myReplyContent, 0).then((res) => {
         if (res.data.success) {
           that.$message.success("回复成功")
           comment.myReplyContent = ''
