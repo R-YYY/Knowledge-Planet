@@ -122,7 +122,7 @@ export default {
     },
 
     uploadPicture(e) {
-      const isJPG = e.file.type === 'image/jpeg';
+      const isJPG = e.file.type === 'image/jpeg' || e.file.type === 'image/png';
       if (!isJPG) {
         this.$message.error("请上传图片")
         return
