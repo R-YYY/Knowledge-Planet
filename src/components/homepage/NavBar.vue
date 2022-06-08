@@ -163,6 +163,7 @@ export default{
       }, function (err, data) {
         if(err||data.statusCode!==200){
           console.log("图片上传失败，请重新上传")
+          that.$message.error("图片上传失败，请重新上传")
         }
         else{
           let name=planetform.name
@@ -172,6 +173,10 @@ export default{
             window.sessionStorage.setItem("planetName",name)
             window.sessionStorage.setItem("planetCode",res.data.data.planetCode)
             that.$router.push("/planet")
+            that.$message({
+              message: '成功创建',
+              type: 'success'
+            });
           })
         }
       })
@@ -181,11 +186,6 @@ export default{
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.upload();
-          this.$message({
-            message: '成功创建',
-            type: 'success'
-          });
-
         } else {
           this.$message.error('创建失败');
           return false;
