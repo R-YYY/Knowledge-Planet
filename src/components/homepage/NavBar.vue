@@ -132,9 +132,6 @@ export default{
         coverage:{}
       },
       rules:{
-        avatar:[
-          {required:true,message:'请加入图片',trigger:'blur'},
-        ],
         name:[
           {required:true,message:'请输入星球名字',trigger:'blur'},
           {min:1,max:15,message:'长度在1到15个字符',trigger:'blur'}
