@@ -33,6 +33,7 @@
                   class="avatar-uploader"
                   :auto-upload="false"
                   action="string"
+                  :limit="1"
                   :on-change="handlePicturePreview">
                 <div v-if="information.avatar" :style="{backgroundImage:'url('+information.avatar+')'}"
                      class="picture"></div>

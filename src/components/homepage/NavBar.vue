@@ -78,6 +78,7 @@
                 class="avatar-uploader"
                 :auto-upload="false"
                 action="string"
+                :limit="1"
                 :on-change="handlePicturePreview">
               <div v-if="planetform.avatar" :style="{backgroundImage:'url('+planetform.avatar+')'}" class="picture"></div>
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
