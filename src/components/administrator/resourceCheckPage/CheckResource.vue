@@ -27,6 +27,7 @@
           <div class="long_resource_content" style="height:450px;overflow-y: auto" v-if="this.inputname!=null && resourceList.length>=1">
             <div class="card" v-for="item in resourceList" :key="item.resourceId" >
               <CheckResourceCard :resource="item"></CheckResourceCard>
+              <div class="status_text" v-if="item.status==0">未审核</div>
               <div class="status_text" v-if="item.status==1">通过</div>
               <div class="status_text" v-if="item.status==2">不通过</div>
               <div class="status_text" v-if="item.status==3">冻结</div>
@@ -98,7 +99,6 @@ export default {
         console.log(name)
         adminSearchPlanet(name).then((res)=>{
           if(res.data.success === true){
-            console.log(112221)
             this.isShowResult=true
             let data = res.data.data.planetList
             this.planetResult=data
@@ -129,10 +129,9 @@ export default {
               let data = res.data.data.planetList
               console.log(data)
               this.planetResult=data
-              this.planetCode=this.planetResult[0].planet.planetCode
-              console.log(this.planetCode)
 
-              adminGetResourceByPCode(this.planetCode).then((res)=>{
+              console.log(this.inputcode)
+              adminGetResourceByPCode(this.inputcode).then((res)=>{
                 if(res.data.success === true){
                   let data = res.data.data.resourceList
                   this.resourceList=data
@@ -154,10 +153,8 @@ export default {
               let data = res.data.data.planetList
               console.log(data)
               this.planetResult=data
-              this.planetCode=this.planetResult[0].planet.planetCode
-              console.log(this.planetCode)
-
-              adminGetResourceByPCode(this.planetCode).then((res)=>{
+              console.log(this.inputcode)
+              adminGetResourceByPCode(this.inputcode).then((res)=>{
                 if(res.data.success === true){
                   let data = res.data.data.resourceList
                   this.resourceList=data
@@ -174,7 +171,6 @@ export default {
       console.log(planetCode)
       adminGetResourceByPCode(planetCode).then((res)=>{
         if(res.data.success === true){
-          console.log(123)
           this.isShowResult=false
           let data = res.data.data.resourceList
           this.resourceList=data
