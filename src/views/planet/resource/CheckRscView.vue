@@ -1,6 +1,7 @@
 <template>
   <div id="checkRsc">
     <Header></Header>
+    <BackToHome></BackToHome>
     <div id="main">
       <el-backtop target="#checkRsc"><i class="el-icon-caret-top"></i></el-backtop>
       <div style="display: flex">
@@ -35,9 +36,11 @@
 import CheckRscHeader from "@/components/planet/checkRsc/CheckRscHeader";
 import CheckRscCard from "@/components/planet/checkRsc/CheckRscCard";
 import {getResourceByPCode} from "@/api/planet/resource";
+import BackToHome from "@/components/planet/BackToHome";
 export default {
   name: "CheckRscView",
   components: {
+    BackToHome,
     CheckRscCard,
     CheckRscHeader,
   },

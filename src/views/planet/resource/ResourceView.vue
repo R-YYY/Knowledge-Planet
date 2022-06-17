@@ -1,6 +1,7 @@
 <template>
   <div id="resource">
     <Header></Header>
+    <BackToHome></BackToHome>
     <div id="main">
       <el-backtop target="#resource"><i class="el-icon-caret-top"></i></el-backtop>
       <div style="display: flex">
@@ -35,10 +36,12 @@ import HeadBar from "@/components/planet/resource/ResourceHeader"
 import Card from "@/components/planet/resource/ResourceCard"
 import {getResourceByPCode} from "@/api/planet/resource"
 import {compareByDesc, compareByAsc} from "@/utils/compare";
+import BackToHome from "@/components/planet/BackToHome";
 
 export default {
   name: "ResourceView",
   components: {
+    BackToHome,
     HeadBar,
     Card
   },

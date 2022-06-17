@@ -4,6 +4,7 @@
     <div class="top"></div>
     <div class="bottom">
       <UpcomingCompetition :competition-list="ongoingCompetitionList"></UpcomingCompetition>
+      <BackToHome></BackToHome>
       <div style="display: flex">
         <div class="left">
           <CompetitionHeader></CompetitionHeader>
@@ -24,9 +25,10 @@ import CompetitionList from "@/components/planet/competition/CompetitionList";
 import CompetitionHeader from "@/components/planet/competition/CompetitionHeader";
 import {getCompetitionByPlanet} from "@/api/planet/competition";
 import {compareCompetition} from "@/utils/compare";
+import BackToHome from "@/components/planet/BackToHome";
 export default {
   name: "CompetitionView",
-  components: {CompetitionHeader, CompetitionList, IntegralRank, UpcomingCompetition},
+  components: {BackToHome, CompetitionHeader, CompetitionList, IntegralRank, UpcomingCompetition},
   data(){
     return{
       competitionList:[],

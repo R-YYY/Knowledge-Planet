@@ -1,6 +1,7 @@
 <template>
   <div id="detail">
     <Header></Header>
+    <BackToHome></BackToHome>
     <div id="detailCard">
       <div id="header">
         <h1>资源详情</h1>
@@ -57,9 +58,11 @@
 <script>
 import {praise, unPraise, collect, unCollect} from "@/api/planet/resource"
 import throttle from "@/utils/throttle";
+import BackToHome from "@/components/planet/BackToHome";
 
 export default {
   name: "DetailView",
+  components: {BackToHome},
   data() {
     return {
       page: false,

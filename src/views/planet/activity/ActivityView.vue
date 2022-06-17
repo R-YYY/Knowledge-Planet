@@ -2,6 +2,7 @@
   <div>
     <Header></Header>
     <div id="main">
+      <BackToHome></BackToHome>
       <div id="head">
         <HeadBar class="left" @select="select" @update="updateActivity" :checkMode="checkMode"></HeadBar>
         <InfoCard class="center"></InfoCard>
@@ -27,10 +28,12 @@ import InfoCard from "@/components/planet/activity/InfoCard"
 import ActivityCard from "@/components/planet/activity/ActivityCard";
 import {getActivity} from "@/api/planet/activity";
 import {compareByAsc, compareByDesc} from "@/utils/compare";
+import BackToHome from "@/components/planet/BackToHome";
 
 export default {
   name: "ActivityView",
   components: {
+    BackToHome,
     HeadBar,
     InfoCard,
     ActivityCard
